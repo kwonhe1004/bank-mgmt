@@ -1,0 +1,58 @@
+/* Title */
+#title-label {
+	-fx-font: 48px "Arial Black";
+}
+
+.table-view {
+    -fx-background-color: white;
+    -fx-border-color: -color-border;
+    -fx-border-radius: 8;
+}
+
+/* Header */
+.table-view .column-header {
+    -fx-background-color: #b3b3b3;
+}
+
+/* Rows */
+.table-row-cell {
+    -fx-background-color: white;
+}
+
+/* Selected */
+.table-row-cell:filled:selected {
+	-fx-background-color: #cce5ff; /* pastel blue */
+}
+
+/* Cell text */
+.table-cell {
+    -fx-padding: 5;
+}
+
+/* =========================
+   ROW STYLING (TRANSACTIONS)
+========================= */
+
+.table-row-expense {
+	-fx-background-color: #f8e0e0; /* light red */
+}
+
+.table-row-income {
+	-fx-background-color: #e4f0e0; /* light green */
+}
+
+/* =========================
+   AMOUNT STYLING
+========================= */
+
+.amount-expense {
+	-fx-text-fill: #d32f2f;
+	-fx-font-weight: bold;
+}
+
+.amount-income {
+	-fx-text-fill: #2e7d32;
+	-fx-font-weight: bold;
+}
+
+
