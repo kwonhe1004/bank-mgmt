@@ -11,12 +11,15 @@ public class Main extends Application {
 
 	@Override
 	public void start(Stage stage) throws IOException {
-//		Parent root = FXMLLoader.load(getClass().getResource("/fxml/Dashboard.fxml"));
-//		Scene scene = new Scene(root);
-
+//		FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/login/Login.fxml"));
 		FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/Dashboard.fxml"));
+//		FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/txn/TransactionsView.fxml"));
+
 		Scene scene = new Scene(loader.load());
-		scene.getStylesheets().add(getClass().getResource("/css/app.css").toExternalForm());
+		scene.getStylesheets().add(getClass().getResource("/css/main.css").toExternalForm());
+//		scene.getStylesheets().addAll(
+//				getClass().getResource("/css/app.css").toExternalForm(),
+//				getClass().getResource("/css/sidebar.css").toExternalForm());
 		stage.setScene(scene);
 		stage.show();
 	}

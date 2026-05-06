@@ -1,105 +1,66 @@
-/* GLOBAL CSS (loaded in Main.java) for shared UI rules
- * 	- base fonts
- * 	- app-wide colors (theme)
- * 	- button (UI control) styling consistency
- * 	- input field defaults
- * 	- error/success (i.e., "error-field" in UIUtil.java
- * 	- layout spacing rules (margins, padding)
- */
- 
- /* =========================
-   TABLE VIEW
-========================= */
-
-.table-view {
-	-fx-background-color: white;
-	-fx-border-color: #e0e0e0; /* gray */
+ /* =====================================================
+   ROOT (GLOBAL DESIGN TOKENS)
+   -----------------------------------------------------
+   Define reusable colors, fonts, and spacing variables.
+   These act as the foundation for the entire UI.
+   * base fonts
+   * app-wide colors (theme)
+   * button (UI control) styling consistency
+   * input field defaults
+   * error/success (i.e., "error-field" in UIUtil.java
+   * layout spacing rules (margins, padding)
+===================================================== */
+.root{
+	-fx-background-color: #eef0f2; /* App background */
+	
+    /* Primary colors */
+    -color-white: #eef0f2;
+    -color-white-muted: #c0c7d3;
+    -color-black: #495057;
+    -color-black-muted: #6b7280;
+    -color-accent: #adbfce; /* #4f6170 */
+    
+    /* Transaction highlight backgrounds & Semantic colors */
+    -color-green: #dbe7d0;
+    -color-red: #f6dada;
 }
 
-.table-view .column-header-background {
-    -fx-background-color: #b3b3b3;
-}
+/* =====================================================
+   BASE CONTAINERS
+   -----------------------------------------------------
+   Ensures all layout containers inherit the same background.
+===================================================== */
 
-.table-view .column-header-background .text {
-	-fx-font-weight: bold;
-}
 
-.table-row-cell {
-	-fx-background-color: white;
-}
+/* =====================================================
+   INPUT CONTROLS
+   -----------------------------------------------------
+   Applies to TextField, ComboBox, DatePicker, etc.
+===================================================== */
 
-.table-row-cell:filled:selected {
-	-fx-background-color: #cce5ff; /* pastel blue */
-}
-
-/* =========================
-   ROW STYLING (TRANSACTIONS)
-========================= */
-
-.table-row-expense {
-	-fx-background-color: #f8e0e0; /* light red */
-}
-
-.table-row-income {
-	-fx-background-color: #e4f0e0; /* light green */
-}
-
-/* =========================
-   AMOUNT STYLING
-========================= */
-
-.amount-expense {
-	-fx-text-fill: #d32f2f;
-}
-
-.amount-income {
-	-fx-text-fill: #2e7d32;
-}
 
 /* =========================
    ACTION BUTTONS
 ========================= */
-
 .action-btn {
 	-fx-background-color: transparent;
 	-fx-cursor: hand;
-	-fx-padding: 4;
 }
 
 .action-btn:hover {
-	-fx-background-color: #e0e0e0;
+	-fx-background-color: -color-white;
 	-fx-background-radius: 5;
 }
 
 /* =========================
-   INPUT CONTROLS
+   SHOW/HIDE PW BUTTON
 ========================= */
-
-.text-field {
-	-fx-background-radius: 5;
-	-fx-border-radius: 5;
-	-fx-border-color: #e0e0e0;
+.pw-btn{
+	-fx-background-color: transparent;
+    -fx-cursor: hand;
 }
 
-.date-picker {
-	-fx-background-radius: 5;
-}
 
-/* =========================
-   MENU BUTTON
-========================= */
 
-.menu-button {
-	-fx-background-radius: 5;
-}
 
-/* =========================
-   SPECIFIC LABEL TITLES
-========================= */
-#table-label {
-	-fx-font: 48px "Arial Black";
-}
 
-#form-label {
-	-fx-font: 36px "Arial Black";
-}

@@ -1,0 +1,21 @@
+.login-container {
+	-fx-background-color: #ced4da;
+}
+
+.hyperlink{
+	-fx-text-fill: -color-black;
+	-fx-cursor: hand;	
+}
+
+/*	
+.login-container (LAYOUT STRUCTURE) {
+	-fx-alignment: center;
+    -fx-spacing: 15;
+}
+
+.login-card (LOGN CARD STYLING, TIES INTO .CARD SYSTEM) {
+    -fx-padding: 30;
+    -fx-background-radius: 12;
+}
+
+ */

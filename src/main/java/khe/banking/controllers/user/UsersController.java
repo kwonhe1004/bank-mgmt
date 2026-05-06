@@ -1,5 +1,8 @@
 package khe.banking.controllers.user;
 
+import static khe.banking.controllers.BaseFormController.Mode.ADD;
+import static khe.banking.controllers.BaseFormController.Mode.EDIT;
+
 import java.time.LocalDate;
 
 import javafx.collections.FXCollections;
@@ -12,8 +15,8 @@ import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
 import khe.banking.dao.UserDaoImpl;
 import khe.banking.models.User;
-import khe.banking.services.UserService;
 import khe.banking.services.UserServiceImpl;
+import khe.banking.utils.ModalManager;
 import khe.banking.utils.TableActionFactory;
 import khe.banking.utils.UIUtil;
 
@@ -38,13 +41,15 @@ public class UsersController {
 	@FXML
 	private TableColumn<User, Integer> ageCol;
 	@FXML
+	private TableColumn<User, String> pwCol;
+	@FXML
 	private TableColumn<User, Void> actionCol;
 
 	// OTHER VARIABLES
 	private final ObservableList<User> masterList = FXCollections.observableArrayList();
 	private FilteredList<User> filteredList;
 
-	private UserService us = new UserServiceImpl(new UserDaoImpl());
+	private UserServiceImpl us = new UserServiceImpl(new UserDaoImpl());
 
 	public void initialize() {
 		setupColumns();
@@ -66,6 +71,7 @@ public class UsersController {
 		emailCol.setCellValueFactory(new PropertyValueFactory<>("email"));
 		dobCol.setCellValueFactory(new PropertyValueFactory<>("dob"));
 		ageCol.setCellValueFactory(new PropertyValueFactory<>("age"));
+		pwCol.setCellValueFactory(new PropertyValueFactory<>("password"));
 
 		TableActionFactory.addActions(actionCol, this::handleEdit, this::handleDelete);
 	}
@@ -80,12 +86,25 @@ public class UsersController {
 	}
 
 	private void handleEdit(User u) {
+		Boolean saved = ModalManager.showModal("/fxml/user/FormView.fxml", "Edit User", (FormController c) -> {
+			c.setMode(EDIT);
+			c.setUser(u);
+		}, FormController::isSaved);
 
+		if (Boolean.TRUE.equals(saved)) {
+			loadData(); // only reloads if saved
+		}
 	}
 
 	@FXML
 	private void createNew() {
+		Boolean saved = ModalManager.showModal("/fxml/user/FormView.fxml", "Add User", (FormController c) -> {
+			c.setMode(ADD);
+		}, FormController::isSaved);
 
+		if (Boolean.TRUE.equals(saved)) {
+			loadData(); // only reloads if saved
+		}
 	}
 
 	private void handleFilters() {

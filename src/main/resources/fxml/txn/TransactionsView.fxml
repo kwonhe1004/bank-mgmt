@@ -45,7 +45,7 @@
 						</ImageView>
 					</graphic>
 				</Button>
-				<MenuButton fx:id="filterMenu" alignment="CENTER" maxWidth="-Infinity" minWidth="-Infinity" mnemonicParsing="false" prefHeight="30.0" style="-fx-border-width: 10;" text="Filter:" HBox.hgrow="NEVER">
+				<MenuButton fx:id="filterMenu" alignment="CENTER" maxWidth="-Infinity" minWidth="-Infinity" mnemonicParsing="false" prefHeight="30.0" style="-fx-border-width: 10;" text="Filter: All" HBox.hgrow="NEVER">
 					<items>
 						<RadioMenuItem fx:id="allItem" mnemonicParsing="false" selected="true" text="All">
                      <toggleGroup>
@@ -63,7 +63,7 @@
 				<DatePicker fx:id="endDate" prefHeight="30.0" prefWidth="150.0" promptText="End Date" />
 			</children>
 		</HBox>
-		<TableView fx:id="txnTable">
+		<TableView fx:id="txnTable" styleClass="txn-table">
 			<columns>
 				<TableColumn fx:id="idCol" prefWidth="50.0" text="ID" />
 				<TableColumn fx:id="nameCol" prefWidth="150.0" text="Name" />

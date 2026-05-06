@@ -235,7 +235,12 @@ public class TransactionsController {
 
 				setText("$" + amt);
 
-				Transaction tr = getTableRow().getItem();
+				// handles index safety
+				if (getIndex() < 0 || getIndex() >= getTableView().getItems().size()) {
+					return;
+				}
+
+				Transaction tr = getTableView().getItems().get(getIndex());
 
 				if (tr != null && "EXPENSE".equalsIgnoreCase(tr.getType())) {
 					getStyleClass().add("amount-expense");

@@ -80,4 +80,9 @@ public class User {
 		this.password = password;
 	}
 
+	@Override
+	public String toString() {
+		return String.format("%d, %s: email= %s, pw= %s", id, getFullName(), email, password);
+	}
+
 }

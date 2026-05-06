@@ -13,7 +13,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="760.0" prefWidth="910.0" spacing="25.0" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" fx:controller="khe.banking.controllers.user.UsersController">
+<VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="760.0" prefWidth="910.0" spacing="25.0" stylesheets="@../../css/table.css" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" fx:controller="khe.banking.controllers.user.UsersController">
 
 	<children>
       <Label text="USERS">
@@ -53,12 +53,13 @@
 		</HBox>
 		<TableView fx:id="userTable">
 			<columns>
-				<TableColumn fx:id="idCol" prefWidth="75.0" text="ID" />
-            <TableColumn prefWidth="175.0" text="Name" />
-            <TableColumn prefWidth="175.0" text="Email" />
-            <TableColumn prefWidth="150.0" text="DOB" />
-            <TableColumn prefWidth="100.0" text="Age" />
-				<TableColumn fx:id="actionCol" prefWidth="175.0" text="Actions" />
+				<TableColumn fx:id="idCol" prefWidth="50.0" text="ID" />
+            <TableColumn fx:id="nameCol" prefWidth="150.0" text="Name" />
+            <TableColumn fx:id="emailCol" prefWidth="225.0" text="Email" />
+            <TableColumn fx:id="dobCol" prefWidth="100.0" text="DOB" />
+            <TableColumn fx:id="ageCol" prefWidth="50.0" text="Age" />
+            <TableColumn fx:id="pwCol" prefWidth="125.0" text="Password" />
+				<TableColumn fx:id="actionCol" prefWidth="150.0" text="Actions" />
 			</columns>
 		</TableView>
 	</children>

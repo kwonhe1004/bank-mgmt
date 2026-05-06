@@ -1,0 +1,36 @@
+/* =====================================================
+   SIDEBAR CONTAINER (NAVIGATOR)
+   -----------------------------------------------------
+   Background and base layout for sidebar navigation.
+===================================================== */
+.sidebar {
+    -fx-background-color: -color-accent;
+}
+
+/* =====================================================
+   SIDEBAR BUTTONS
+   -----------------------------------------------------
+   Navigation buttons inside sidebar.
+===================================================== */
+.sidebar .button {
+    -fx-background-color: transparent;
+    -fx-font-size: 18px;
+    -fx-font-weight: bold;
+}
+
+/* Hover effect for navigation items */
+.sidebar .button:hover {
+    -fx-background-color: -color-white-muted; 
+}
+
+.sidebar .button.active {
+    -fx-background-color: -color-white;
+}
+
+/*
+.sidebar .button.active {
+    -fx-background-color: -color-black-muted;
+    -fx-text-fill: -color-white;
+}
+*/
+

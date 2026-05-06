@@ -1,0 +1,124 @@
+/* =====================================================
+   TABLE ROOT
+   -----------------------------------------------------
+   Overall table appearance (background, border, rounding)
+===================================================== */
+.table-view {
+    -fx-background-color: -color-white;
+    -fx-border-color: -color-white-muted;
+    -fx-border-radius: 8 8 0 0;
+}
+
+/* =====================================================
+   TABLE HEADER
+   -----------------------------------------------------
+   Styles for column headers and header row.
+===================================================== */
+.table-view .column-header-background {		/* Header background strip */
+    -fx-background-color: -color-black-muted;
+    -fx-background-radius: 8 8 0 0; /* Top-Left, Top-Right, Bottom-Right, Bottom-Left. */
+}
+
+.table-view .column-header {	/* Individual column header */
+    -fx-background-color: transparent;
+    -fx-border-color: transparent transparent -color-black-muted transparent;
+}
+
+.table-view .column-header .label {		/* Header text */
+    -fx-text-fill: -color-white;
+    -fx-font-weight: bold;
+}
+
+/* =====================================================
+   DEFAULT ROW STRIPING
+   -----------------------------------------------------
+   Applies alternating row colors for readability.
+===================================================== */
+.table-row-cell:filled {
+	-fx-border-color: -color-white;
+    -fx-border-width: 1;
+}
+
+.table-row-cell:filled:even {
+    -fx-background-color: #adb5bd;
+}
+
+.table-row-cell:filled:odd {
+    -fx-background-color: #ced4da;
+}
+
+.table-row-cell:empty {
+	-fx-background-color: transparent;
+	-fx-border-width: 0px;
+}
+
+/* =====================================================
+   ROW INTERACTIONS
+   -----------------------------------------------------
+   Hover and selection states for rows.
+===================================================== */
+/* Hover effect */
+.table-row-cell:filled:hover {
+    -fx-border-color: -color-black;
+    -fx-border-width: 1;
+}
+
+.table-row-cell:empty:hover {
+    -fx-background-color: transparent;
+}
+ 
+.table-row-cell:filled:selected {
+	-fx-background-color: -color-white-muted; 
+}
+
+/* =====================================================
+   CELL STYLING
+   -----------------------------------------------------
+   Padding and text color for table cells.
+===================================================== */
+.table-cell {
+    -fx-padding: 10;
+    -fx-text-fill: -color-black;
+}
+
+/* =====================================================
+   FOCUS FIX
+   -----------------------------------------------------
+   Removes default JavaFX focus border (cleaner UI).
+===================================================== */
+.table-view:focused {
+    -fx-background-insets: 0;
+}
+
+/* =====================================================
+   TRANSACTION TABLE OVERRIDES
+   -----------------------------------------------------
+   Applies ONLY to tables with styleClass="transaction-table"
+   Used for income/expense row highlighting.
+===================================================== */
+
+/* Expense rows (light red background) */
+.txn-table .table-row-expense {
+    -fx-background-color: -color-red;
+}
+
+/* Income rows (light green background) */
+.txn-table .table-row-income {
+    -fx-background-color: -color-green;
+}
+
+/* =====================================================
+   AMOUNT COLUMN STYLING
+   -----------------------------------------------------
+   Colors amount text based on transaction type.
+===================================================== */
+
+/* Expense text (red) */
+.txn-table .amount-expense {
+    -fx-text-fill: #d32f2f;
+}
+
+/* Income text (green) */
+.txn-table .amount-income {
+    -fx-text-fill: #2e7d32;
+}

@@ -1,0 +1,141 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.layout.VBox?>
+
+<VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="800.0" spacing="10.0" style="-fx-background-color: #eef0f2;" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1">
+   <children>
+      <GridPane>
+        <columnConstraints>
+            <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+            <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+            <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+            <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+          <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+        </columnConstraints>
+        <rowConstraints>
+          <RowConstraints minHeight="10.0" prefHeight="100.0" vgrow="SOMETIMES" />
+        </rowConstraints>
+         <children>
+            <Pane prefHeight="200.0" prefWidth="200.0" style="-fx-background-color: #F4FAFF;">
+               <children>
+                  <Label layoutX="50.0" layoutY="42.0" text="Alice Blue" />
+               </children></Pane>
+            <Pane prefHeight="200.0" prefWidth="200.0" style="-fx-background-color: #DEE3E8;" GridPane.columnIndex="1">
+               <children>
+                  <Label layoutX="40.0" layoutY="42.0" text="Albaster Grey" />
+               </children></Pane>
+            <Pane prefHeight="200.0" prefWidth="200.0" style="-fx-background-color: #ADBFCE;" GridPane.columnIndex="2">
+               <children>
+                  <Label layoutX="43.0" layoutY="41.0" text="Powder Blue" />
+               </children></Pane>
+            <Pane prefHeight="200.0" prefWidth="200.0" style="-fx-background-color: #4F6170;" GridPane.columnIndex="3">
+               <children>
+                  <Label layoutX="50.0" layoutY="42.0" style="-fx-text-fill: #e9ecef;" text="Blue Slate" />
+               </children></Pane>
+            <Pane prefHeight="200.0" prefWidth="200.0" style="-fx-background-color: #525456;" GridPane.columnIndex="4">
+               <children>
+                  <Label layoutX="53.0" layoutY="42.0" style="-fx-text-fill: white;" text="Charcoal" />
+               </children></Pane>
+         </children>
+      </GridPane>
+      <GridPane>
+         <columnConstraints>
+            <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+            <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+            <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+            <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+            <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+         </columnConstraints>
+         <rowConstraints>
+            <RowConstraints minHeight="10.0" prefHeight="100.0" vgrow="SOMETIMES" />
+         </rowConstraints>
+         <children>
+            <Pane prefHeight="200.0" prefWidth="200.0" style="-fx-background-color: #eaf2ff;" GridPane.columnIndex="2">
+               <children>
+                  <Label layoutX="50.0" layoutY="42.0" text="Alice Blue" />
+               </children></Pane>
+            <Pane prefHeight="200.0" prefWidth="200.0" style="-fx-background-color: #C0C7D3;" GridPane.columnIndex="1">
+               <children>
+                  <Label layoutX="50.0" layoutY="42.0" text="Pale Slate" />
+               </children></Pane>
+            <Pane prefHeight="200.0" prefWidth="200.0" style="-fx-background-color: #8E9AAF;">
+               <children>
+                  <Label layoutX="45.0" layoutY="40.0" style="-fx-text-fill: white;" text="Lavender Grey" />
+               </children></Pane>
+            <Pane prefHeight="200.0" prefWidth="200.0" style="-fx-background-color: #eef0f2;" GridPane.columnIndex="3">
+               <children>
+                  <Label layoutX="45.0" layoutY="40.0" style="-fx-text-fill: #495057;" text="Platinum" />
+               </children>
+            </Pane>
+            <Pane prefHeight="200.0" prefWidth="200.0" style="-fx-background-color: #9babb9;" GridPane.columnIndex="4" />
+         </children>
+      </GridPane>
+      <GridPane>
+         <columnConstraints>
+            <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+            <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+            <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+            <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+            <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+         </columnConstraints>
+         <rowConstraints>
+            <RowConstraints minHeight="10.0" prefHeight="100.0" vgrow="SOMETIMES" />
+         </rowConstraints>
+         <children>
+            <Pane prefHeight="200.0" prefWidth="200.0" style="-fx-background-color: #adb5bd;">
+               <children>
+                  <Label layoutX="55.0" layoutY="41.0" text="Pale Slate" />
+               </children></Pane>
+            <Pane prefHeight="200.0" prefWidth="200.0" style="-fx-background-color: #ced4da;" GridPane.columnIndex="1">
+               <children>
+                  <Label layoutX="44.0" layoutY="43.0" text="Pale Slate" />
+               </children></Pane>
+            <Pane prefHeight="200.0" prefWidth="200.0" style="-fx-background-color: #dee2e6;" GridPane.columnIndex="2">
+               <children>
+                  <Label layoutX="40.0" layoutY="42.0" text="Albaster Grey" />
+               </children></Pane>
+            <Pane prefHeight="200.0" prefWidth="200.0" style="-fx-background-color: #e9ecef;" GridPane.columnIndex="3">
+               <children>
+                  <Label layoutX="56.0" layoutY="40.0" text="Platinum" />
+               </children></Pane>
+            <Pane prefHeight="200.0" prefWidth="200.0" style="-fx-background-color: #f8f9fa;" GridPane.columnIndex="4">
+               <children>
+                  <Label layoutX="45.0" layoutY="40.0" text="Bright Snow" />
+               </children></Pane>
+         </children>
+      </GridPane>
+      <GridPane>
+         <columnConstraints>
+            <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+            <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+            <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+            <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+            <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+         </columnConstraints>
+         <rowConstraints>
+            <RowConstraints minHeight="10.0" prefHeight="100.0" vgrow="SOMETIMES" />
+         </rowConstraints>
+         <children>
+            <Pane prefHeight="200.0" prefWidth="200.0" style="-fx-background-color: #eef0f2;" />
+            <Pane prefHeight="200.0" prefWidth="200.0" style="-fx-background-color: #c0c7d3;" GridPane.columnIndex="1" />
+            <Pane prefHeight="200.0" prefWidth="200.0" style="-fx-background-color: #495057;" GridPane.columnIndex="2" />
+            <Pane prefHeight="200.0" prefWidth="200.0" style="-fx-background-color: #6b7280;" GridPane.columnIndex="3" />
+            <Pane prefHeight="200.0" prefWidth="200.0" style="-fx-background-color: #adbfce;" GridPane.columnIndex="4" />
+            <Label text="-color-white" GridPane.halignment="CENTER" />
+            <Label text="-color-white-muted" GridPane.columnIndex="1" GridPane.halignment="CENTER" />
+            <Label style="-fx-text-fill: white;" text="-color-black" GridPane.columnIndex="2" GridPane.halignment="CENTER" />
+            <Label style="-fx-text-fill: white;" text="-color-black-muted" GridPane.columnIndex="3" GridPane.halignment="CENTER" />
+            <Label text="-color-accent" GridPane.columnIndex="4" GridPane.halignment="CENTER" />
+         </children>
+      </GridPane>
+   </children>
+   <padding>
+      <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
+   </padding>
+</VBox>

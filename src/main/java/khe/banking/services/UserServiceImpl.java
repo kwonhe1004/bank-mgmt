@@ -14,8 +14,18 @@ public class UserServiceImpl implements UserService {
 	}
 
 	@Override
+	public User checkLogin(String email, String pw) {
+		return ud.login(email, pw);
+	}
+
+	@Override
 	public List<User> getAllUsers() {
 		return ud.findAll();
+	}
+
+	@Override
+	public User getOne(String email) {
+		return ud.findOne(email);
 	}
 
 	@Override
@@ -24,6 +34,11 @@ public class UserServiceImpl implements UserService {
 			return false;
 		}
 		return ud.add(u);
+	}
+
+	@Override
+	public User updatePw(User u, String pw) {
+		return ud.updatePw(u, pw);
 	}
 
 	@Override
@@ -46,5 +61,7 @@ public class UserServiceImpl implements UserService {
 	public int countUser() {
 		return ud.countUsers();
 	}
+
+
 
 }

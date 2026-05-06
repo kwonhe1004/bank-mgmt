@@ -1,0 +1,22 @@
+/* =====================================================
+   MAIN STYLESHEET ENTRY POINT
+   -----------------------------------------------------
+   Controls load order for the entire application.
+===================================================== */
+
+/* 1. CORE (must come first) */
+@import "app.css";
+
+/* 2. COMPONENTS (reusable UI pieces) */
+@import "sidebar.css";
+@import "table.css";
+@import "form.css";
+
+/* 3. VIEW-SPECIFIC (screens/pages) */
+@import "login.css";
+
+/* 
+@import "core/app.css";
+@import "components/sidebar.css";
+@import "views/login.css"; 
+*/
