@@ -3,28 +3,22 @@ package khe.banking.controllers;
 import javafx.scene.Node;
 import javafx.scene.control.Control;
 import javafx.stage.Stage;
+import khe.banking.models.enums.FormMode;
 import khe.banking.utils.UIUtil;
 
 public abstract class BaseFormController<T> {
 
 	// =========================
-    // MODE ENUM (SHARED)
-    // =========================
-	public enum Mode {
-		ADD, EDIT;
-	}
-
-	// =========================
     // COMMON STATE
     // =========================
-	protected Mode mode;
+	protected FormMode mode;
 	protected boolean saved = false;
 	protected T entity;
 
 	// =========================
     // MODE SETUP
     // =========================
-	public void setMode(Mode mode) {
+	public void setMode(FormMode mode) {
 		this.mode = mode;
 		updateTitle(mode);
 	}
@@ -35,7 +29,7 @@ public abstract class BaseFormController<T> {
 
 	// Each form decides how UI reacts to mode change
 	// (e.g., setting title label, disabling fields, etc.)
-	protected abstract void updateTitle(Mode mode);
+	protected abstract void updateTitle(FormMode mode);
 
 	// Each form implements how data is saved
 	protected abstract void save();
@@ -61,7 +55,4 @@ public abstract class BaseFormController<T> {
     public boolean isSaved() {
         return saved;
     }
-
-
-
 }

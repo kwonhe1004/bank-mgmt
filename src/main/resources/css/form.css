@@ -23,6 +23,19 @@
    -----------------------------------------------------
    Labels inside forms (field names)
 ===================================================== */
-.form-label {
-    -fx-font-weight: 600;
+.form-container .label {
+    -fx-font-size: 24px;
 }
+
+/* =====================================================
+   FORM INPUTS
+   -----------------------------------------------------
+   Form-specific input sizing and spacing.
+===================================================== */
+.form-container .text-field,
+.form-container .choice-box,
+.form-container .date-picker {
+	-fx-pref-height:30;
+}
+
+

@@ -1,5 +1,5 @@
 .login-container {
-	-fx-background-color: #ced4da;
+	-fx-background-color: -color-accent;
 }
 
 .hyperlink{
@@ -7,7 +7,11 @@
 	-fx-cursor: hand;	
 }
 
-/*	
+/*
+.hyperlink:visited {
+	
+}
+	
 .login-container (LAYOUT STRUCTURE) {
 	-fx-alignment: center;
     -fx-spacing: 15;

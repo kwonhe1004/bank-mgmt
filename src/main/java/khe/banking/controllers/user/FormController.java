@@ -7,6 +7,7 @@ import javafx.scene.control.TextField;
 import khe.banking.controllers.BaseFormController;
 import khe.banking.dao.UserDaoImpl;
 import khe.banking.models.User;
+import khe.banking.models.enums.FormMode;
 import khe.banking.services.UserServiceImpl;
 import khe.banking.utils.UIUtil;
 
@@ -31,8 +32,8 @@ public class FormController extends BaseFormController<User> {
 	}
 
 	@Override
-	protected void updateTitle(Mode mode) {
-		if (mode == Mode.ADD) {
+	protected void updateTitle(FormMode mode) {
+		if (mode == FormMode.ADD) {
 			titleLabel.setText("ADD USER");
 
 		} else {
@@ -67,7 +68,7 @@ public class FormController extends BaseFormController<User> {
 
 	@Override
 	protected void save() {
-		if (mode == Mode.ADD) {
+		if (mode == FormMode.ADD) {
 			User u = new User();
 			setFieldVariables(u);
 			us.addUser(u);

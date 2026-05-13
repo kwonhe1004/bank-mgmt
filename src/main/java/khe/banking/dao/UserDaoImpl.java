@@ -17,8 +17,8 @@ public class UserDaoImpl implements UserDao {
 		User u = null;
 		String sql = "SELECT * FROM users WHERE email=? AND password=?";
 
-		try (Connection c = ConnectDB.getConnection();
-				PreparedStatement ps = c.prepareStatement(sql)) {
+		try (Connection conn = ConnectDB.getConnection();
+				PreparedStatement ps = conn.prepareStatement(sql)) {
 			ps.setString(1,
 					email);
 			ps.setString(2,
@@ -30,9 +30,9 @@ public class UserDaoImpl implements UserDao {
 						rs.getInt("id"), 
 						rs.getString("last"), 
 						rs.getString("first"), 
-						rs.getString("email"),
-						rs.getDate("dob").toLocalDate(), 
-						rs.getString("password"));
+						rs.getString("email"), 
+						rs.getString("password"),
+						rs.getDate("dob").toLocalDate());
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -46,8 +46,8 @@ public class UserDaoImpl implements UserDao {
 
 		String sql = "SELECT * FROM users";
 
-		try (Connection c = ConnectDB.getConnection();
-				PreparedStatement ps = c.prepareStatement(sql);
+		try (Connection conn = ConnectDB.getConnection();
+				PreparedStatement ps = conn.prepareStatement(sql);
 				ResultSet rs = ps.executeQuery()) {
 			while (rs.next()) {
 				User u = new User(
@@ -55,8 +55,8 @@ public class UserDaoImpl implements UserDao {
 						rs.getString("last"), 
 						rs.getString("first"), 
 						rs.getString("email"),
-						rs.getDate("dob").toLocalDate(), 
-						rs.getString("password"));
+						rs.getString("password"),
+						rs.getDate("dob").toLocalDate());
 				list.add(u);
 			}
 		} catch (SQLException e) {
@@ -70,10 +70,9 @@ public class UserDaoImpl implements UserDao {
 		User u = null;
 		String sql = "SELECT * FROM users WHERE email=?";
 
-		try (Connection c = ConnectDB.getConnection();
-				PreparedStatement ps = c.prepareStatement(sql)) {
-			ps.setString(1,
-					email);
+		try (Connection conn = ConnectDB.getConnection();
+				PreparedStatement ps = conn.prepareStatement(sql)) {
+			ps.setString(1, email);
 
 			ResultSet rs = ps.executeQuery();
 			while (rs.next()) {
@@ -82,8 +81,8 @@ public class UserDaoImpl implements UserDao {
 						rs.getString("last"), 
 						rs.getString("first"), 
 						rs.getString("email"),
-						rs.getDate("dob").toLocalDate(), 
-						rs.getString("password"));
+						rs.getString("password"),
+						rs.getDate("dob").toLocalDate());
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -97,8 +96,8 @@ public class UserDaoImpl implements UserDao {
 				INSERT INTO users (last, first, email, dob, password)
 				         VALUES (?, ?, ?, ?, ?)""";
 
-		try (Connection c = ConnectDB.getConnection();
-				PreparedStatement ps = c.prepareStatement(sql)) {
+		try (Connection conn = ConnectDB.getConnection();
+				PreparedStatement ps = conn.prepareStatement(sql)) {
 			ps.setString(1, o.getLast());
 			ps.setString(2, o.getFirst());
 			ps.setString(3, o.getEmail());
@@ -121,8 +120,8 @@ public class UserDaoImpl implements UserDao {
 	public boolean delete(User o) {
 		String sql = "DELETE FROM users WHERE id=?";
 
-		try (Connection c = ConnectDB.getConnection();
-				PreparedStatement ps = c.prepareStatement(sql)) {
+		try (Connection conn = ConnectDB.getConnection();
+				PreparedStatement ps = conn.prepareStatement(sql)) {
 			ps.setInt(1, o.getId());
 			return ps.executeUpdate() > 0;
 
@@ -139,8 +138,8 @@ public class UserDaoImpl implements UserDao {
 				SET password=?
 				WHERE email=? AND id=?""";
 
-		try (Connection c = ConnectDB.getConnection();
-				PreparedStatement ps = c.prepareStatement(sql)) {
+		try (Connection conn = ConnectDB.getConnection();
+				PreparedStatement ps = conn.prepareStatement(sql)) {
 			ps.setString(1, pw);
 			ps.setString(2, o.getEmail());
 			ps.setInt(3, o.getId());
@@ -167,8 +166,8 @@ public class UserDaoImpl implements UserDao {
 				SET email=?, password=?
 				WHERE id=?""";
 
-		try (Connection c = ConnectDB.getConnection();
-				PreparedStatement ps = c.prepareStatement(sql)) {
+		try (Connection conn = ConnectDB.getConnection();
+				PreparedStatement ps = conn.prepareStatement(sql)) {
 			ps.setString(1, o.getEmail());
 			ps.setString(2, o.getPassword());
 			ps.setInt(3, o.getId());
@@ -185,8 +184,8 @@ public class UserDaoImpl implements UserDao {
 		String sql = "SELECT COUNT(*) FROM users";
 		int num = 0;
 
-		try (Connection c = ConnectDB.getConnection();
-				PreparedStatement ps = c.prepareStatement(sql);
+		try (Connection conn = ConnectDB.getConnection();
+				PreparedStatement ps = conn.prepareStatement(sql);
 				ResultSet rs = ps.executeQuery()) {
 			while (rs.next()) {
 				num = rs.getInt(1);

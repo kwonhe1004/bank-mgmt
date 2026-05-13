@@ -11,11 +11,12 @@
    * layout spacing rules (margins, padding)
 ===================================================== */
 .root{
-	-fx-background-color: #eef0f2; /* App background */
+	-fx-background-color: #e0e3e7; /* App background */
 	
     /* Primary colors */
-    -color-white: #eef0f2;
+    -color-white: #e0e3e7;
     -color-white-muted: #c0c7d3;
+    -white-focused: #d2d7e0;
     -color-black: #495057;
     -color-black-muted: #6b7280;
     -color-accent: #adbfce; /* #4f6170 */
@@ -30,26 +31,83 @@
    -----------------------------------------------------
    Ensures all layout containers inherit the same background.
 ===================================================== */
+.pane { 	/* borderpane, stackpane, vbox, hbox, gridpane */
+    -fx-background-color: -fx-background-color;
+}
 
+/* =====================================================
+   LABEL STYLES
+   -----------------------------------------------------
+   Standard text styling for labels across the app.
+===================================================== */
+.label{
+	-fx-text-fill: -color-black;	
+}
+
+.view-title {
+	-fx-font: 48px "Arial Black";
+	-fx-text-fill: black;
+}
+
+/* =====================================================
+   BUTTON STYLES
+   -----------------------------------------------------
+   Default button styling and variants.
+===================================================== */
+.button {
+	-fx-background-color: transparent;
+    -fx-border-color: -color-white-muted;
+    -fx-border-radius: 5;
+    -fx-border-width: 2;
+}
+
+.button:hover {
+	-fx-border-color: -color-black-muted;
+	-fx-cursor: hand;
+}
 
 /* =====================================================
    INPUT CONTROLS
    -----------------------------------------------------
    Applies to TextField, ComboBox, DatePicker, etc.
 ===================================================== */
-
-
-/* =========================
-   ACTION BUTTONS
-========================= */
-.action-btn {
+.text-field{
 	-fx-background-color: transparent;
-	-fx-cursor: hand;
+    -fx-border-color: -color-white-muted;
+    -fx-border-radius: 5;
+    -fx-border-width: 0 0 2 0;
 }
 
-.action-btn:hover {
-	-fx-background-color: -color-white;
-	-fx-background-radius: 5;
+.text-area,
+.combo-box,
+.choice-box,
+.date-picker {
+    -fx-background-color: transparent;
+    -fx-border-color: -color-white-muted;
+    -fx-border-radius: 5;
+    -fx-border-width: 2;
+}
+
+.text-field:focused,
+.text-area:focused,
+.combo-box:focused,
+.date-picker:focused {	/* Focus state (active input field) */
+    -fx-border-color: -color-black-muted;
+    -fx-cursor: hand;
+}
+
+.text-input {
+	-fx-prompt-text-fill: -color-black-muted;
+}
+
+/* =====================================================
+   VALIDATION STYLES
+   -----------------------------------------------------
+   Used by UIUtil.hasEmptyFields() to highlight errors.
+===================================================== */
+.error-field {
+    -fx-border-color: red;
+    -fx-border-width: 1;
 }
 
 /* =========================

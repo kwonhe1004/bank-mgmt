@@ -11,6 +11,8 @@ import javafx.scene.control.TextField;
 import khe.banking.controllers.BaseFormController;
 import khe.banking.dao.TxnDaoImpl;
 import khe.banking.models.Transaction;
+import khe.banking.models.enums.FormMode;
+import khe.banking.models.enums.TxnType;
 import khe.banking.services.TxnService;
 import khe.banking.services.TxnServiceImpl;
 import khe.banking.utils.UIUtil;
@@ -26,7 +28,7 @@ public class FormController extends BaseFormController<Transaction> {
 	@FXML
 	private DatePicker datePicker;
 	@FXML
-	private ChoiceBox<String> typeChoice;
+	private ChoiceBox<TxnType> typeChoice;
 	@FXML
 	private TextArea noteField;
 
@@ -34,15 +36,15 @@ public class FormController extends BaseFormController<Transaction> {
 
 	@FXML
 	public void initialize() {
-		typeChoice.getItems().addAll("INCOME", "EXPENSE");
+		typeChoice.getItems().setAll(TxnType.values());
 	}
 
 	// =========================
 	// MODE HANDLING
 	// =========================
 	@Override
-	protected void updateTitle(Mode mode) {
-		if (mode == Mode.ADD) {
+	protected void updateTitle(FormMode mode) {
+		if (mode == FormMode.ADD) {
 			titleLabel.setText("ADD TRANSACTION");
 
 		} else {
@@ -81,7 +83,7 @@ public class FormController extends BaseFormController<Transaction> {
 
 	@Override
 	protected void save() {
-		if(mode == Mode.ADD) {
+		if(mode == FormMode.ADD) {
 			Transaction t = new Transaction();
 			setFieldVariables(t);
 			ts.addTransaction(t);

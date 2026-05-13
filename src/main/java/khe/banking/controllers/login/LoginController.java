@@ -79,7 +79,7 @@ public class LoginController {
 
 		if (u != null) {
 			SessionManager.setCurrentUser(u);
-			SceneManager.switchScene((Node) e.getSource(), "/fxml/Dashboard.fxml");
+			SceneManager.switchScene((Node) e.getSource(), "/fxml/Dashboard.fxml", true);
 		} else {
 			UIUtil.showWarning("Incorrect email or password.");
 		}

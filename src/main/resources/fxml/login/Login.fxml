@@ -18,11 +18,7 @@
    <center>
       <VBox alignment="CENTER" maxWidth="500.0" spacing="25.0" styleClass="login-container" BorderPane.alignment="CENTER">
          <children>
-            <Text strokeType="OUTSIDE" strokeWidth="0.0" text="WELCOME" textAlignment="CENTER">
-               <font>
-                  <Font name="Arial Black" size="36.0" />
-               </font>
-            </Text>
+            <Text strokeType="OUTSIDE" strokeWidth="0.0" styleClass="view-title" text="LOGIN" textAlignment="CENTER" />
             <TextField fx:id="username" prefHeight="40.0" promptText="Enter username:" />
             <StackPane alignment="CENTER_RIGHT">
                <children>

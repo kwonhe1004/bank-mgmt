@@ -1,8 +1,5 @@
 package khe.banking.controllers.user;
 
-import static khe.banking.controllers.BaseFormController.Mode.ADD;
-import static khe.banking.controllers.BaseFormController.Mode.EDIT;
-
 import java.time.LocalDate;
 
 import javafx.collections.FXCollections;
@@ -15,6 +12,7 @@ import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
 import khe.banking.dao.UserDaoImpl;
 import khe.banking.models.User;
+import khe.banking.models.enums.FormMode;
 import khe.banking.services.UserServiceImpl;
 import khe.banking.utils.ModalManager;
 import khe.banking.utils.TableActionFactory;
@@ -41,7 +39,9 @@ public class UsersController {
 	@FXML
 	private TableColumn<User, Integer> ageCol;
 	@FXML
-	private TableColumn<User, String> pwCol;
+	private TableColumn<User, String> pwCol; //roleCol
+	@FXML
+	private TableColumn<User, String> roleCol;
 	@FXML
 	private TableColumn<User, Void> actionCol;
 
@@ -72,6 +72,7 @@ public class UsersController {
 		dobCol.setCellValueFactory(new PropertyValueFactory<>("dob"));
 		ageCol.setCellValueFactory(new PropertyValueFactory<>("age"));
 		pwCol.setCellValueFactory(new PropertyValueFactory<>("password"));
+        roleCol.setCellValueFactory(new PropertyValueFactory<>("role"));
 
 		TableActionFactory.addActions(actionCol, this::handleEdit, this::handleDelete);
 	}
@@ -87,7 +88,7 @@ public class UsersController {
 
 	private void handleEdit(User u) {
 		Boolean saved = ModalManager.showModal("/fxml/user/FormView.fxml", "Edit User", (FormController c) -> {
-			c.setMode(EDIT);
+			c.setMode(FormMode.EDIT);
 			c.setUser(u);
 		}, FormController::isSaved);
 
@@ -99,7 +100,7 @@ public class UsersController {
 	@FXML
 	private void createNew() {
 		Boolean saved = ModalManager.showModal("/fxml/user/FormView.fxml", "Add User", (FormController c) -> {
-			c.setMode(ADD);
+			c.setMode(FormMode.ADD);
 		}, FormController::isSaved);
 
 		if (Boolean.TRUE.equals(saved)) {

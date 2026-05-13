@@ -1,8 +1,5 @@
 package khe.banking.controllers.txn;
 
-import static khe.banking.controllers.BaseFormController.Mode.ADD;
-import static khe.banking.controllers.BaseFormController.Mode.EDIT;
-
 import java.math.BigDecimal;
 import java.time.LocalDate;
 
@@ -22,6 +19,8 @@ import javafx.scene.control.ToggleGroup;
 import javafx.scene.control.cell.PropertyValueFactory;
 import khe.banking.dao.TxnDaoImpl;
 import khe.banking.models.Transaction;
+import khe.banking.models.enums.FormMode;
+import khe.banking.models.enums.TxnType;
 import khe.banking.services.TxnService;
 import khe.banking.services.TxnServiceImpl;
 import khe.banking.utils.ModalManager;
@@ -49,6 +48,9 @@ public class TransactionsController {
 	private DatePicker startDate;
 	@FXML
 	private DatePicker endDate;
+	
+	@FXML
+	private TextField balance;
 
 	// TABLE
 	@FXML
@@ -57,13 +59,17 @@ public class TransactionsController {
 	@FXML
 	private TableColumn<Transaction, Integer> idCol;
 	@FXML
-	private TableColumn<Transaction, String> nameCol;
+	private TableColumn<Transaction, String> accountCol;
 	@FXML
-	private TableColumn<Transaction, LocalDate> dateCol;
+	private TableColumn<Transaction, String> nameCol;
 	@FXML
 	private TableColumn<Transaction, BigDecimal> amountCol;
 	@FXML
-	private TableColumn<Transaction, String> typeCol;
+	private TableColumn<Transaction, TxnType> typeCol;
+	@FXML
+	private TableColumn<Transaction, String> categoryCol;
+	@FXML
+	private TableColumn<Transaction, LocalDate> dateCol;
 	@FXML
 	private TableColumn<Transaction, String> noteCol;
 	@FXML
@@ -106,10 +112,12 @@ public class TransactionsController {
 	// =========================
 	private void setupColumns() {
 		idCol.setCellValueFactory(new PropertyValueFactory<>("id"));
+		accountCol.setCellValueFactory(new PropertyValueFactory<>("accountNumber"));
 		nameCol.setCellValueFactory(new PropertyValueFactory<>("name"));
-		dateCol.setCellValueFactory(new PropertyValueFactory<>("date"));
 		amountCol.setCellValueFactory(new PropertyValueFactory<>("amount"));
 		typeCol.setCellValueFactory(new PropertyValueFactory<>("type"));
+		categoryCol.setCellValueFactory(new PropertyValueFactory<>("categoryName"));
+		dateCol.setCellValueFactory(new PropertyValueFactory<>("date"));
 		noteCol.setCellValueFactory(new PropertyValueFactory<>("note"));
 
 		TableActionFactory.addActions(actionCol, this::handleEdit, this::handleDelete);
@@ -134,7 +142,7 @@ public class TransactionsController {
 
 	private void handleEdit(Transaction t) {
 		Boolean saved = ModalManager.showModal("/fxml/txn/FormView.fxml", "Edit Transaction", (FormController c) -> {
-			c.setMode(EDIT);
+			c.setMode(FormMode.EDIT);
 			c.setTransaction(t);
 		}, FormController::isSaved);
 
@@ -146,7 +154,7 @@ public class TransactionsController {
 	@FXML
 	private void createNew() {
 		Boolean saved = ModalManager.showModal("/fxml/txn/FormView.fxml", "Add Transaction", (FormController c) -> {
-			c.setMode(ADD);
+			c.setMode(FormMode.ADD);
 		}, FormController::isSaved);
 
 		if (Boolean.TRUE.equals(saved)) {
@@ -174,14 +182,35 @@ public class TransactionsController {
 
 		filteredList.setPredicate(tr -> {
 
-			String type = tr.getType();
+//			String type = tr.getType().name();
+			
+			boolean matchesSearch = true;
+			
+			if(search.startsWith("S")) {
+				String amountText = search.substring(1).trim();
+				
+				// VALID FORMATS: $10, 10.5, 10.50, 9999.99
+				boolean validAmount = amountText.matches("\\d+(\\.\\d{1,2})?");
+				
+				if(validAmount) {
+					BigDecimal searchAmount = new BigDecimal(amountText);
+					
+					// Compare BigDecimal values
+					matchesSearch = tr.getAmount().compareTo(searchAmount) == 0;
+				} else {
+					// Invalid amount format
+					matchesSearch = false;
+				}
+			} else {
+				matchesSearch = search.isEmpty() 
+						|| tr.getName().toLowerCase().contains(search) 
+						|| tr.getNote().toLowerCase().contains(search);
+			}
 
-			boolean matchesSearch = search.isEmpty() || tr.getName().toLowerCase().contains(search)
-					|| tr.getNote().toLowerCase().contains(search);
-
-			boolean matchesType = allItem.isSelected() || (incomeItem.isSelected() && "INCOME".equalsIgnoreCase(type))
-					|| (expenseItem.isSelected() && "EXPENSE".equalsIgnoreCase(type));
-
+			boolean matchesType = allItem.isSelected() 
+					|| (incomeItem.isSelected() && tr.getType() == TxnType.INCOME) 
+					|| (expenseItem.isSelected() && tr.getType() == TxnType.EXPENSE);
+			
 			boolean matchesStart = (start == null) || !tr.getDate().isBefore(start);
 			boolean matchesEnd = (end == null) || !tr.getDate().isAfter(end);
 
@@ -211,9 +240,15 @@ public class TransactionsController {
 					return;
 				}
 
-				if ("EXPENSE".equalsIgnoreCase(tr.getType())) {
+//				if ("EXPENSE".equalsIgnoreCase(tr.getType())) {
+//					getStyleClass().add("table-row-expense");
+//				} else {
+//					getStyleClass().add("table-row-income");
+//				}
+				
+				if(tr.getType() == TxnType.EXPENSE) {
 					getStyleClass().add("table-row-expense");
-				} else {
+				} else if(tr.getType() == TxnType.INCOME) {
 					getStyleClass().add("table-row-income");
 				}
 			}
@@ -242,11 +277,19 @@ public class TransactionsController {
 
 				Transaction tr = getTableView().getItems().get(getIndex());
 
-				if (tr != null && "EXPENSE".equalsIgnoreCase(tr.getType())) {
-					getStyleClass().add("amount-expense");
-				} else {
-					getStyleClass().add("amount-income");
+//				if (tr != null && tr.getType() == TxnType.EXPENSE) {
+//					getStyleClass().add("amount-expense");
+//				} else {
+//					getStyleClass().add("amount-income");
+//				}
+				if(tr != null) {
+					if(tr.getType() == TxnType.EXPENSE) {
+						getStyleClass().add("amount-expense");
+					} else if(tr.getType() == TxnType.INCOME) {
+						getStyleClass().add("amount-income");
+					}
 				}
+				
 			}
 		});
 	}

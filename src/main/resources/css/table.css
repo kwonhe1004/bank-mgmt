@@ -4,9 +4,9 @@
    Overall table appearance (background, border, rounding)
 ===================================================== */
 .table-view {
-    -fx-background-color: -color-white;
-    -fx-border-color: -color-white-muted;
-    -fx-border-radius: 8 8 0 0;
+    -fx-background-color: transparent;
+    -fx-border-color: -color-black-muted;
+    -fx-border-radius: 8;
 }
 
 /* =====================================================
@@ -22,6 +22,7 @@
 .table-view .column-header {	/* Individual column header */
     -fx-background-color: transparent;
     -fx-border-color: transparent transparent -color-black-muted transparent;
+    -fx-padding: 10px;
 }
 
 .table-view .column-header .label {		/* Header text */
@@ -30,15 +31,33 @@
 }
 
 /* =====================================================
+   CELL STYLING
+   -----------------------------------------------------
+   Padding and text color for table cells.
+===================================================== */
+.table-cell {
+	-fx-border-color: transparent;
+    -fx-text-fill: -color-black;
+}
+
+/* =====================================================
    DEFAULT ROW STRIPING
    -----------------------------------------------------
    Applies alternating row colors for readability.
 ===================================================== */
 .table-row-cell:filled {
-	-fx-border-color: -color-white;
-    -fx-border-width: 1;
+	-fx-background-color: -color-white-muted;
+	-fx-background-radius: 5;
+	-fx-border-color: -color-white-muted;
+	-fx-border-width: 2;
 }
 
+.table-row-cell:empty {
+	-fx-background-color: transparent;
+	-fx-border-width: 0px;
+}
+
+/*
 .table-row-cell:filled:even {
     -fx-background-color: #adb5bd;
 }
@@ -46,11 +65,8 @@
 .table-row-cell:filled:odd {
     -fx-background-color: #ced4da;
 }
-
-.table-row-cell:empty {
-	-fx-background-color: transparent;
-	-fx-border-width: 0px;
-}
+ 
+ */
 
 /* =====================================================
    ROW INTERACTIONS
@@ -59,8 +75,9 @@
 ===================================================== */
 /* Hover effect */
 .table-row-cell:filled:hover {
-    -fx-border-color: -color-black;
-    -fx-border-width: 1;
+    -fx-background-color: white-focused;
+	-fx-background-radius: 5;
+	-fx-cursor: hand;
 }
 
 .table-row-cell:empty:hover {
@@ -68,17 +85,8 @@
 }
  
 .table-row-cell:filled:selected {
-	-fx-background-color: -color-white-muted; 
-}
-
-/* =====================================================
-   CELL STYLING
-   -----------------------------------------------------
-   Padding and text color for table cells.
-===================================================== */
-.table-cell {
-    -fx-padding: 10;
-    -fx-text-fill: -color-black;
+	-fx-border-color: -color-black-muted; 
+	-fx-cursor: hand;
 }
 
 /* =====================================================
@@ -90,10 +98,44 @@
     -fx-background-insets: 0;
 }
 
+/* =========================
+   MENU BUTTON
+========================= */
+.table-menu-btn {
+	-fx-background-color: transparent;
+    -fx-border-color: -color-white-muted;
+    -fx-border-radius: 5;
+    -fx-border-width: 2;
+}
+
+.table-menu-btn:hover {
+	-fx-border-color: -color-black-muted;
+    -fx-cursor: hand;
+}
+
+.table-menu-btn:focused {
+	-fx-border-color: -color-black-muted;
+    -fx-cursor: hand;
+}
+
+/* =========================
+   ACTION BUTTONS
+========================= */
+.action-btn {
+	-fx-background-color: transparent;
+	-fx-cursor: hand;
+}
+
+.action-btn:hover {
+	-fx-background-color: -color-white-muted;
+	-fx-background-radius: 5;
+	-fx-cursor: hand;
+}
+
 /* =====================================================
    TRANSACTION TABLE OVERRIDES
    -----------------------------------------------------
-   Applies ONLY to tables with styleClass="transaction-table"
+   Applies ONLY to tables with styleClass="txn-table"
    Used for income/expense row highlighting.
 ===================================================== */
 
