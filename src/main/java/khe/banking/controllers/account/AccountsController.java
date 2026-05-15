@@ -1,36 +1,57 @@
 package khe.banking.controllers.account;
 
-import java.math.BigDecimal;
+import java.util.List;
 
 import javafx.fxml.FXML;
-import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableView;
+import javafx.scene.layout.FlowPane;
+import khe.banking.controllers.components.AccountCardController;
+import khe.banking.dao.AccountDaoImpl;
 import khe.banking.models.Account;
-import khe.banking.models.enums.AccountStatus;
+import khe.banking.models.User;
+import khe.banking.services.AccountService;
+import khe.banking.services.AccountServiceImpl;
+import khe.banking.utils.NavigationManager;
+import khe.banking.utils.SessionManager;
+import khe.banking.utils.ViewData;
+import khe.banking.utils.ViewLoader;
 
 public class AccountsController {
 	
 	@FXML
-	private TableView<Account> accountTable;
+    private FlowPane accountsContainer;
 	
-	@FXML
-	private TableColumn<Account, Integer> idCol;
-	@FXML
-	private TableColumn<Account, String> numCol;
-	@FXML
-	private TableColumn<Account, String> nicknameCol;
-	@FXML
-	private TableColumn<Account, String> typeCol;
-	@FXML
-	private TableColumn<Account, BigDecimal> balanceCol;
-	@FXML
-	private TableColumn<Account, AccountStatus> statusCol;
-	@FXML
-	private TableColumn<Account, Void> actionCol;
-	
-//	private void setupColumns() {
-//		typeCol.setCellValueFactory(cell -> 
-//			new SimpleStringProperty(cell.getValue().getAccountType().getName()));
-//	}
+	private final AccountService as = new AccountServiceImpl(new AccountDaoImpl());
 
+    private final User currentUser = SessionManager.getCurrentUser();
+	
+	public void initialize() {
+		if(currentUser != null) {
+            loadAccounts(currentUser.getId());
+        }
+	}
+		
+	private void loadAccounts(int userId) {
+		List<Account> accounts = as.getAccounts(userId);
+        accountsContainer.getChildren().clear();
+
+        for(Account account : accounts) {
+        	ViewData<AccountCardController> data = ViewLoader.loadView("/fxml/components/AccountCard.fxml");
+        	AccountCardController controller = data.getController();
+        	controller.setAccount(account);
+//        	controller.setOnViewTransactions(this::showAccountDetails);
+        	controller.setOnViewTransactions(a -> {
+                showAccountDetails(a);
+            });
+        	accountsContainer.getChildren().add(data.getView());        	
+        }
+    }
+	
+    public void showAccountDetails(Account account) {
+    	ViewData<AccountTxnController> data = ViewLoader.loadView("/fxml/account/AccountTxnView.fxml");
+        AccountTxnController controller = data.getController();
+        controller.setAccount(account);
+        NavigationManager.switchView(data.getView());
+    }
+	
+	
 }

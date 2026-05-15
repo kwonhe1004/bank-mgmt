@@ -9,6 +9,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import khe.banking.models.User;
+import khe.banking.models.enums.UserRole;
 
 public class UserDaoImpl implements UserDao {
 
@@ -32,7 +33,8 @@ public class UserDaoImpl implements UserDao {
 						rs.getString("first"), 
 						rs.getString("email"), 
 						rs.getString("password"),
-						rs.getDate("dob").toLocalDate());
+						rs.getDate("dob").toLocalDate(),
+						UserRole.valueOf(rs.getString("role")));
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -56,7 +58,8 @@ public class UserDaoImpl implements UserDao {
 						rs.getString("first"), 
 						rs.getString("email"),
 						rs.getString("password"),
-						rs.getDate("dob").toLocalDate());
+						rs.getDate("dob").toLocalDate(),
+						UserRole.valueOf(rs.getString("role")));
 				list.add(u);
 			}
 		} catch (SQLException e) {
@@ -82,7 +85,8 @@ public class UserDaoImpl implements UserDao {
 						rs.getString("first"), 
 						rs.getString("email"),
 						rs.getString("password"),
-						rs.getDate("dob").toLocalDate());
+						rs.getDate("dob").toLocalDate(),
+						UserRole.valueOf(rs.getString("role")));
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();

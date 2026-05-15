@@ -19,6 +19,11 @@ public class AccountTypeServiceImpl implements AccountTypeService {
 	}
 
 	@Override
+	public AccountType getAccountTypeById(int id) {
+		return atd.findById(id);
+	}
+	
+	@Override
 	public boolean addAccountType(AccountType at) {
 		return atd.add(at);
 	}
@@ -32,6 +37,5 @@ public class AccountTypeServiceImpl implements AccountTypeService {
 	public boolean deleteAccountType(AccountType at) {
 		return atd.delete(at);
 	}
-	
 
 }

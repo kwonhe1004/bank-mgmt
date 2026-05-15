@@ -1,6 +1,6 @@
 package khe.banking.models.enums;
 
-public enum Role {
+public enum UserRole {
 	ADMIN,
 	USER	
 }

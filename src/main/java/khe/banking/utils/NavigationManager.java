@@ -23,5 +23,9 @@ public class NavigationManager {
 		pane.getChildren().clear();
 		pane.getChildren().add(view);
 	}
+	
+//	public static void switchView(String fxml) throws IOException {
+//		FXMLLoader loader = new FXMLLoader()
+//	}
 
 }

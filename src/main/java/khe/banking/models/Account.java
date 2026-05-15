@@ -84,6 +84,10 @@ public class Account {
 		this.status = status;
 	}
 
+	@Override
+	public String toString() {
+		return nickname + " - " + accountNum;
+	}
 	
 
 }

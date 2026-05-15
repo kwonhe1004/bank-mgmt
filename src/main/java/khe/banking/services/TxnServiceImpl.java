@@ -49,4 +49,9 @@ public class TxnServiceImpl implements TxnService {
 		return td.countT();
 	}
 
+	@Override
+	public List<Transaction> getAccountTransactions(int accountId) {
+		return td.getTransactionsByAccount(accountId);
+	}
+	
 }

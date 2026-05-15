@@ -17,6 +17,16 @@ public class AccountServiceImpl implements AccountService {
 	public List<Account> getAllAccounts() {
 		return ad.findAll();
 	}
+	
+	@Override
+	public List<Account> getAccountsByUser(int userId) {
+		return ad.findByUser(userId);
+	}
+
+	@Override
+	public Account getAccountById(int id) {
+		return ad.findById(id);
+	}
 
 	@Override
 	public boolean addAccout(Account a) {
@@ -31,6 +41,11 @@ public class AccountServiceImpl implements AccountService {
 	@Override
 	public boolean deleteAccount(Account a) {
 		return ad.delete(a);
+	}
+	
+	@Override
+	public List<Account> getAccounts(int userId) {
+		return ad.getAccounts(userId);
 	}
 	
 }

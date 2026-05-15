@@ -11,11 +11,7 @@ public class Main extends Application {
 
 	@Override
 	public void start(Stage stage) throws IOException {
-//		FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/login/Login.fxml"));
-//		FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/Dashboard.fxml"));
-		FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/txn/TransactionsView.fxml"));
-//		FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/user/UsersView.fxml"));
-
+		FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/Dashboard.fxml"));
 		Scene scene = new Scene(loader.load());
 		
 //		scene.getStylesheets().add(getClass().getResource("/css/main.css").toExternalForm());
@@ -27,3 +23,7 @@ public class Main extends Application {
 		launch(args);
 	}
 }
+
+//FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/login/Login.fxml"));
+//FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/txn/TransactionsView.fxml"));
+//FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/user/UsersView.fxml"));

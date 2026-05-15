@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+
+<VBox fx:id="root" alignment="CENTER" spacing="10.0" xmlns="http://javafx.com/javafx/26" xmlns:fx="http://javafx.com/fxml/1" fx:controller="khe.banking.controllers.components.AccountCardController">
+   <padding>
+      <Insets bottom="15.0" left="15.0" right="15.0" top="15.0" />
+   </padding>
+   <children>
+      <HBox alignment="CENTER" spacing="10.0">
+         <children>
+            <VBox spacing="5.0">
+               <children>
+                  <Label fx:id="nicknameLabel" />
+                  <Label fx:id="typeLabel" />
+               </children>
+            </VBox>
+         </children>
+      </HBox>
+      <Label fx:id="balanceLabel" text="Label" />
+      <Label fx:id="statusLabel" text="Label" />
+      <Button fx:id="detailsBtn" mnemonicParsing="false" text="View Transactions" />
+   </children>
+</VBox>

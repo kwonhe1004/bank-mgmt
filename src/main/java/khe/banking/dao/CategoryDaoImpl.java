@@ -77,13 +77,13 @@ public class CategoryDaoImpl implements CategoryDao {
 	}
 
 	@Override
-	public List<Category> findByType(String type) {
+	public List<Category> findByType(TxnType type) {
 		List<Category> list = new ArrayList<>();
 		String sql = "SELECT * FROM categories WHERE type=? ORDER BY name";
 
 		try (Connection conn = ConnectDB.getConnection();
 				PreparedStatement ps = conn.prepareStatement(sql)) {
-			ps.setString(1, type);
+			ps.setString(1, type.name());
 
 			ResultSet rs = ps.executeQuery();
 			while (rs.next()) {

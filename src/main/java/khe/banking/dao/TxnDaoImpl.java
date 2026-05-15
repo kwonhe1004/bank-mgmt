@@ -8,6 +8,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
+import khe.banking.models.Account;
 import khe.banking.models.Category;
 import khe.banking.models.Transaction;
 import khe.banking.models.enums.TxnType;
@@ -100,7 +101,6 @@ public class TxnDaoImpl implements TxnDao {
             ps.setString(5, o.getNote());
             ps.setInt(6, o.getId());
             return ps.executeUpdate() > 0;
-
 		} catch(SQLException e) {
 			e.printStackTrace();
 		}
@@ -115,7 +115,6 @@ public class TxnDaoImpl implements TxnDao {
 				PreparedStatement ps = conn.prepareStatement(sql)) {
 			ps.setInt(1, o.getId());
 			return ps.executeUpdate() > 0;
-
 		} catch(SQLException e) {
 			e.printStackTrace();
 		}
@@ -137,6 +136,71 @@ public class TxnDaoImpl implements TxnDao {
 			e.printStackTrace();
 		}
 		return num;
+	}
+	
+	@Override
+	public List<Transaction> getTransactionsByAccount(int accountId) {
+		List<Transaction> list = new ArrayList<>();
+
+	    String sql = """
+	        SELECT
+	            t.id,
+	            t.name,
+	            t.amount,
+	            t.type,
+	            t.date,
+
+	            c.id AS category_id,
+				    c.name AS category_name,
+
+				    a.id AS account_id,
+				    a.account_number
+
+				FROM transactions t
+
+				LEFT JOIN categories c
+				    ON t.category_id = c.id
+
+				JOIN accounts a
+				    ON t.account_id = a.id
+
+				WHERE t.account_id = ?
+
+				ORDER BY t.date DESC""";
+
+	    try(Connection conn = ConnectDB.getConnection();
+	        PreparedStatement ps = conn.prepareStatement(sql)) {
+
+	        ps.setInt(1, accountId);
+
+	        ResultSet rs = ps.executeQuery();
+
+	        while(rs.next()) {
+
+	            Account account = new Account();
+				account.setId(rs.getInt("account_id"));
+				account.setAccountNum(rs.getString("account_number"));
+
+				Category category = new Category();
+				category.setId(rs.getInt("category_id"));
+				category.setName(rs.getString("category_name"));
+
+				Transaction txn = new Transaction(
+						rs.getInt("id"),
+						account,
+						rs.getString("name"),
+						rs.getBigDecimal("amount"),
+						TxnType.valueOf(rs.getString("type")),
+						category,
+						rs.getDate("date").toLocalDate());
+				list.add(txn);
+	        }
+
+	    } catch(SQLException e) {
+	        e.printStackTrace();
+	    }
+
+	    return list;
 	}
 
 }

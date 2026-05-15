@@ -7,7 +7,7 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 
-<VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="780.0" prefWidth="880.0" spacing="25.0" xmlns="http://javafx.com/javafx/26" xmlns:fx="http://javafx.com/fxml/1">
+<VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="780.0" prefWidth="880.0" spacing="25.0" xmlns="http://javafx.com/javafx/26" xmlns:fx="http://javafx.com/fxml/1" fx:controller="khe.banking.controllers.account.AccountTypesController">
    <children>
       <Label styleClass="view-title" text="VIEW" />
       <HBox />
@@ -15,7 +15,7 @@
         <columns>
           <TableColumn fx:id="idCol" prefWidth="65.0" text="ID" />
           <TableColumn fx:id="nameCol" prefWidth="175.0" text="Name" />
-            <TableColumn fx:id="rateCol" prefWidth="150.0" text="Interest Rate" />
+            <TableColumn fx:id="interestCol" prefWidth="150.0" text="Interest Rate" />
             <TableColumn fx:id="feeCol" prefWidth="150.0" text="Monthly Fee" />
             <TableColumn fx:id="limitCol" prefWidth="150.0" text="Withdrawal Limit" />
             <TableColumn fx:id="minCol" prefWidth="150.0" text="Minimum Balance" />

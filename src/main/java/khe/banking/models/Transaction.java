@@ -41,6 +41,16 @@ public class Transaction {
 		this.date = date;
 		this.note = note;
 }
+    
+    public Transaction(int id, Account account, String name, BigDecimal amount, TxnType type, Category category, LocalDate date) {
+    	this.id = id;
+		this.account = account;
+		this.name = name;
+		this.amount = amount;
+		this.type = type;
+		this.category = category;
+		this.date = date;
+    }
 
 	public int getId() {
 		return id;
@@ -56,6 +66,14 @@ public class Transaction {
 
 	public void setAccountId(int accountId) {
 		this.accountId = accountId;
+	}
+	
+	public Account getAccount() {
+		return account;
+	}
+	
+	public void setAccount(Account account) {
+		this.account = account;
 	}
 
 	public String getName() {

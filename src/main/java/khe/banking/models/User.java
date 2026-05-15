@@ -3,7 +3,7 @@ package khe.banking.models;
 import java.time.LocalDate;
 import java.time.Period;
 
-import khe.banking.models.enums.Role;
+import khe.banking.models.enums.UserRole;
 
 public class User {
 
@@ -13,18 +13,26 @@ public class User {
 	private String email;
 	private String password;
 	private LocalDate dob;
-	private Role role; // enum
+	private UserRole role; // enum
 
 	public User() {
 	}
 	
-	public User(int id, String last, String first, String email, String password, LocalDate dob) {
+	public User(int id, String last, String first, String email, String password, LocalDate dob, UserRole role) {
 		this.id = id;
 		this.last = last;
 		this.first = first;
 		this.email = email;
 		this.password = password;
 		this.dob = dob;
+		this.role = role;
+	}
+	
+	public User(int id, String last, String first, String email) {
+		this.id = id;
+		this.last = last;
+		this.first = first;
+		this.email = email;
 	}
 
 //	public User(int id, String last, String first, String email, String password, LocalDate dob, String role) {
@@ -37,7 +45,10 @@ public class User {
 //      this.role = role;
 //	}
 	
-
+	public String getInitials() {		
+		return first.substring(0, 1) + last.substring(0, 1);		
+	}
+	
 	public int getAge() {
 		return Period.between(dob, LocalDate.now()).getYears();
 	}
@@ -94,17 +105,17 @@ public class User {
 		this.dob = dob;
 	}
 	
-	public Role getRole() {
+	public UserRole getRole() {
         return role;
     }
 
-    public void setRole(Role role) {
+    public void setRole(UserRole role) {
         this.role = role;
     }
 
 	@Override
 	public String toString() {
-		return String.format("%d, %s: email= %s, pw= %s", id, getFullName(), email, password);
+		return String.format("%d, %s: email= %s", id, getFullName(), email);
 	}
 
 }

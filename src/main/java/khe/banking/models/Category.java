@@ -41,7 +41,10 @@ public class Category {
 		this.type = type;
 	}
 	
-	
+	@Override
+	public String toString() {
+		return name;
+	}
     
     
 }

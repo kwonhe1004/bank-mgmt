@@ -10,4 +10,5 @@ public interface TxnService {
     boolean updateTransaction(Transaction t);
     boolean deleteTransaction(Transaction t);
     int countTransactions();
+	List<Transaction> getAccountTransactions(int accountId);
 }

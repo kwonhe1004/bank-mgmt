@@ -7,8 +7,11 @@ import javafx.fxml.FXML;
 import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.control.MenuButton;
+import javafx.scene.layout.HBox;
 import javafx.scene.layout.StackPane;
 import khe.banking.dao.UserDaoImpl;
+import khe.banking.models.User;
 import khe.banking.services.UserServiceImpl;
 import khe.banking.utils.NavigationManager;
 import khe.banking.utils.SceneManager;
@@ -40,6 +43,15 @@ public class DashboardController extends BaseController {
 	@FXML
 	private Label profileRole;
 	
+	@FXML
+	private MenuButton menubtn;
+	@FXML
+	private HBox menu;
+	@FXML
+	private Button settingbtn;
+	@FXML
+	private Button logoutbtn;
+		
 	private UserServiceImpl us = new UserServiceImpl(new UserDaoImpl());
 
 	/* =========================================
@@ -47,7 +59,7 @@ public class DashboardController extends BaseController {
 	 * ========================================= */
 	public void initialize() {
 		if(SessionManager.getCurrentUser() == null) {
-			SessionManager.setCurrentUser(us.getOne("admin"));
+			SessionManager.setCurrentUser(us.getOne("admin@admin.com"));
 		}
 		
 		NavigationManager.setContentArea(pane);
@@ -55,6 +67,8 @@ public class DashboardController extends BaseController {
 		// DEFAULT VIEW
         setActiveButton(home);
 		navigate("/fxml/HomeView.fxml");
+		setMenuButtons();
+		setLabels(SessionManager.getCurrentUser());		
 	}
 	
 	/* =========================================
@@ -70,7 +84,20 @@ public class DashboardController extends BaseController {
 		 // add active style to selected button
 		selected.getStyleClass().add("active");
 	}
-
+	
+	private void setMenuButtons() {
+		settingbtn.prefWidthProperty().bind(menubtn.widthProperty().subtract(10));
+		settingbtn.prefHeightProperty().bind(menubtn.heightProperty().subtract(10));
+		logoutbtn.prefWidthProperty().bind(menubtn.widthProperty().subtract(10));
+		logoutbtn.prefHeightProperty().bind(menubtn.heightProperty().subtract(10));
+	}
+	
+	private void setLabels(User u) {
+		initials.setText(u.getInitials());
+		profileName.setText(u.getFullName());
+		profileRole.setText(u.getRole().name());
+	}
+	
 	/* =========================================
 	 * 	NAVIGATION
 	 * ========================================= */
@@ -83,19 +110,19 @@ public class DashboardController extends BaseController {
 	@FXML
 	private void accountsView(ActionEvent e) {
 		setActiveButton(accounts);
-		navigate("");
+		navigate("/fxml/account/AccountsView.fxml");
 	}
 	
 	@FXML
 	private void transactionsView(ActionEvent e) {
 		setActiveButton(transactions);
-		navigate("/fxml/txn/TransactionsView.fxml");
+//		navigate("/fxml/txn/TransactionsView.fxml");
 	}
 	
 	@FXML
 	private void categoriesView(ActionEvent e) {
 		setActiveButton(categories);
-		navigate("");
+//		navigate("");
 	}
 
 	@FXML
@@ -115,7 +142,7 @@ public class DashboardController extends BaseController {
 	 * ========================================= */
 	@FXML
 	private void settings(ActionEvent e) {
-		navigate("");
+//		navigate("");
 	}
 	
 	@FXML
@@ -126,4 +153,5 @@ public class DashboardController extends BaseController {
 		}
 	}
 
+	
 }
