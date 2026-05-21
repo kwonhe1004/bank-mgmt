@@ -12,10 +12,13 @@ public class Main extends Application {
 	@Override
 	public void start(Stage stage) throws IOException {
 		FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/Dashboard.fxml"));
+//		FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/login/Login.fxml"));
+		
 		Scene scene = new Scene(loader.load());
 		
-//		scene.getStylesheets().add(getClass().getResource("/css/main.css").toExternalForm());
+		scene.getStylesheets().add(getClass().getResource("/css/main.css").toExternalForm());
 		stage.setScene(scene);
+//		stage.setMaximized(true);
 		stage.show();
 	}
 
@@ -24,6 +27,6 @@ public class Main extends Application {
 	}
 }
 
-//FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/login/Login.fxml"));
+
 //FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/txn/TransactionsView.fxml"));
 //FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/user/UsersView.fxml"));

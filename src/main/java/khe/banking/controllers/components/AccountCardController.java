@@ -3,7 +3,6 @@ package khe.banking.controllers.components;
 import java.util.function.Consumer;
 
 import javafx.fxml.FXML;
-import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.layout.VBox;
 import khe.banking.models.Account;
@@ -20,26 +19,19 @@ public class AccountCardController {
     private Label balanceLabel;
     @FXML
     private Label statusLabel;
-    @FXML
-    private Button detailsBtn;
 
     private Account account;
     
     private Consumer<Account> onViewTransactions;
-    
-    @FXML
-    private void initialize() {
-        detailsBtn.setOnAction(e -> {
-            if(onViewTransactions != null) {
-                onViewTransactions.accept(account);
-            }
-        });
-    }
-
+        
     public void setAccount(Account account) {
-        this.account = account;        
-        nicknameLabel.setText(account.getNickname());
-        typeLabel.setText(account.getAccountType().getName());
+        this.account = account;
+        loadAccountCard();
+    }
+    
+    private void loadAccountCard() {
+    	nicknameLabel.setText(account.getNickname());
+        typeLabel.setText(account.getAccountType().getCodeName());
         balanceLabel.setText("$" + account.getBalance());
         statusLabel.setText(account.getStatus().name());
     }
@@ -47,9 +39,14 @@ public class AccountCardController {
     public void setOnViewTransactions(Consumer<Account> callback) {
         this.onViewTransactions = callback;
     }
-
-    public VBox getRoot() {
-        return root;
+    
+    @FXML
+    private void showDetails() {
+    	if(onViewTransactions != null) {
+            onViewTransactions.accept(account);
+        }
     }
+    
+    
 
 }

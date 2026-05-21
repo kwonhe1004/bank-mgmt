@@ -1,0 +1,95 @@
+/* =========================================================
+   ACCORDION CONTAINER
+========================================================= */
+
+.accounts-accordion {
+    -fx-background-color: transparent;
+    -fx-spacing: 10;
+}
+
+/* =========================================================
+   TITLED PANE
+========================================================= */
+
+.accounts-accordion .titled-pane {
+    -fx-background-color: white;
+    -fx-background-radius: 10;
+    -fx-border-radius: 10;
+}
+
+/* =========================================================
+   HEADER AREA
+========================================================= */
+
+.accounts-accordion .titled-pane > .title {
+    -fx-background-color: white;
+    -fx-background-radius: 10;
+    -fx-border-color: black;
+    -fx-border-radius: 10;
+    -fx-border-width: 3;
+    -fx-padding: 10;
+    -fx-font-size: 16px;
+    -fx-font-weight: bold;
+}
+
+/* =========================================================
+   HEADER HOVER
+========================================================= */
+
+.accounts-accordion .titled-pane > .title:hover {
+    -fx-background-color: #f8fafc;
+    -fx-cursor: hand;
+}
+
+/* =========================================================
+   EXPANDED HEADER
+========================================================= */
+
+.accounts-accordion .titled-pane:expanded > .title {
+
+    -fx-background-color: #f1f5f9;
+}
+
+/* =========================================================
+   CONTENT AREA
+========================================================= */
+
+.accounts-accordion .titled-pane > .content {
+
+    -fx-background-color: white;
+
+    -fx-background-radius: 0 0 10 10;
+
+    -fx-padding: 20;
+}
+
+/* =========================================================
+   REMOVE DEFAULT FOCUS RING
+========================================================= */
+
+.accounts-accordion .titled-pane:focused {
+
+    -fx-focus-color: transparent;
+
+    -fx-faint-focus-color: transparent;
+}
+
+/* =========================================================
+   ARROW BUTTON
+========================================================= */
+
+.accounts-accordion .arrow-button {
+
+    -fx-background-color: transparent;
+}
+
+/* =========================================================
+   ARROW
+========================================================= */
+
+.accounts-accordion .arrow {
+
+    -fx-background-color: #475569;
+
+    -fx-padding: 5;
+}

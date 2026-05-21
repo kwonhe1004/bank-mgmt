@@ -1,7 +1,6 @@
 package khe.banking.models;
 
 import java.time.LocalDate;
-import java.time.Period;
 
 import khe.banking.models.enums.UserRole;
 
@@ -10,6 +9,7 @@ public class User {
 	private int id;
 	private String last;
 	private String first;
+	private String fullName;
 	private String email;
 	private String password;
 	private LocalDate dob;
@@ -34,29 +34,11 @@ public class User {
 		this.first = first;
 		this.email = email;
 	}
-
-//	public User(int id, String last, String first, String email, String password, LocalDate dob, String role) {
-//		this.id = id;
-//		this.last = last;
-//		this.first = first;
-//		this.email = email;
-//		this.password = password;
-//		this.dob = dob;
-//      this.role = role;
-//	}
 	
 	public String getInitials() {		
 		return first.substring(0, 1) + last.substring(0, 1);		
 	}
 	
-	public int getAge() {
-		return Period.between(dob, LocalDate.now()).getYears();
-	}
-
-	public String getFullName() {
-		return first + " " + last;
-	}
-
 	public int getId() {
 		return id;
 	}
@@ -81,6 +63,14 @@ public class User {
 		this.first = first;
 	}
 
+	public String getFullName() {
+		return fullName;
+	}
+
+	public void setFullName(String fullName) {
+		this.fullName = fullName;
+	}
+
 	public String getEmail() {
 		return email;
 	}
@@ -96,7 +86,7 @@ public class User {
 	public void setPassword(String password) {
 		this.password = password;
 	}
-	
+
 	public LocalDate getDob() {
 		return dob;
 	}
@@ -104,18 +94,19 @@ public class User {
 	public void setDob(LocalDate dob) {
 		this.dob = dob;
 	}
-	
-	public UserRole getRole() {
-        return role;
-    }
 
-    public void setRole(UserRole role) {
-        this.role = role;
-    }
+	public UserRole getRole() {
+		return role;
+	}
+
+	public void setRole(UserRole role) {
+		this.role = role;
+	}
 
 	@Override
 	public String toString() {
-		return String.format("%d, %s: email= %s", id, getFullName(), email);
+//		return String.format("%d, %s: email= %s", id, getFullName(), email);
+		return getFullName();
 	}
 
 }

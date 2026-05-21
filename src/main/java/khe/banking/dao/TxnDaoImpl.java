@@ -10,6 +10,7 @@ import java.util.List;
 
 import khe.banking.models.Account;
 import khe.banking.models.Category;
+import khe.banking.models.Category.CategoryType;
 import khe.banking.models.Transaction;
 import khe.banking.models.enums.TxnType;
 
@@ -42,7 +43,7 @@ public class TxnDaoImpl implements TxnDao {
 					category = new Category(
 							c_id,
 							rs.getString("c_name"),
-							TxnType.valueOf(rs.getString("c_type")));
+							CategoryType.valueOf(rs.getString("c_type")));
 				}
 				
 				Transaction t = new Transaction(
@@ -143,30 +144,14 @@ public class TxnDaoImpl implements TxnDao {
 		List<Transaction> list = new ArrayList<>();
 
 	    String sql = """
-	        SELECT
-	            t.id,
-	            t.name,
-	            t.amount,
-	            t.type,
-	            t.date,
-
-	            c.id AS category_id,
-				    c.name AS category_name,
-
-				    a.id AS account_id,
-				    a.account_number
-
-				FROM transactions t
-
-				LEFT JOIN categories c
-				    ON t.category_id = c.id
-
-				JOIN accounts a
-				    ON t.account_id = a.id
-
-				WHERE t.account_id = ?
-
-				ORDER BY t.date DESC""";
+	        SELECT t.id, t.name, t.amount, t.type, t.date,
+	            c.id AS category_id, c.name AS category_name,
+	            a.id AS account_id, a.account_number
+	        FROM transactions t
+	        LEFT JOIN categories c ON t.category_id = c.id
+	        JOIN accounts a ON t.account_id = a.id
+	        WHERE t.account_id = ?
+	        ORDER BY t.date DESC""";
 
 	    try(Connection conn = ConnectDB.getConnection();
 	        PreparedStatement ps = conn.prepareStatement(sql)) {
@@ -200,6 +185,45 @@ public class TxnDaoImpl implements TxnDao {
 	        e.printStackTrace();
 	    }
 
+	    return list;
+	}
+
+	@Override
+	public List<Transaction> getTransactionsByUser(int userId) {
+		List<Transaction> list = new ArrayList<>();
+	    String sql = """
+	        SELECT t.id, t.account_id, t.name, t.amount, t.type, t.date, t.note,
+	    		c.id AS c_id, c.name AS c_name, c.type AS c_type
+	        FROM transactions t
+	        LEFT JOIN categories c ON t.category_id = c.id
+	        JOIN accounts a ON t.account_id = a.id
+	        WHERE a.user_id = ?
+	        ORDER BY t.date DESC""";
+	    
+	    try(Connection conn = ConnectDB.getConnection();
+	        PreparedStatement ps = conn.prepareStatement(sql)) {
+	    	ps.setInt(1, userId);
+	        ResultSet rs = ps.executeQuery();
+	        
+	        while(rs.next()) {
+	        	Category category = new Category(
+	        			rs.getInt("c_id"),
+	        			rs.getString("c_name"),
+	        			CategoryType.valueOf(rs.getString("c_type")));
+	        	Transaction t = new Transaction(
+	        			rs.getInt("id"),
+	                    rs.getInt("account_id"),
+	                    rs.getString("name"),
+	                    rs.getBigDecimal("amount"),
+	                    TxnType.valueOf(rs.getString("type")),
+	                    category,
+	                    rs.getDate("date").toLocalDate(),
+						rs.getString("note"));				
+				list.add(t);
+	        }	    	
+	    } catch (SQLException e) {
+	        e.printStackTrace();	    
+	    }
 	    return list;
 	}
 

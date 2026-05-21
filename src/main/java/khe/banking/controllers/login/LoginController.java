@@ -13,6 +13,7 @@ import javafx.scene.image.ImageView;
 import javafx.scene.layout.BorderPane;
 import khe.banking.dao.UserDaoImpl;
 import khe.banking.models.User;
+import khe.banking.services.UserService;
 import khe.banking.services.UserServiceImpl;
 import khe.banking.utils.ModalManager;
 import khe.banking.utils.SceneManager;
@@ -42,12 +43,9 @@ public class LoginController {
 	private Image show;
 	private Image hide;
 
-//	User u;
-	private UserServiceImpl us;
+	private final UserService us = new UserServiceImpl(new UserDaoImpl());
 
 	public void initialize() {
-		us = new UserServiceImpl(new UserDaoImpl());
-
 		tf.textProperty().bindBidirectional(pf.textProperty());
 
 		show = new Image(getClass().getResource("/img/show.png").toExternalForm());
@@ -75,6 +73,7 @@ public class LoginController {
 			UIUtil.emptyAlert();
 			return;
 		}
+		
 		User u = us.checkLogin(username.getText(), pf.getText());
 
 		if (u != null) {

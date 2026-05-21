@@ -1,14 +1,32 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Accordion?>
 <?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TitledPane?>
 <?import javafx.scene.layout.VBox?>
 
-<VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="780.0" prefWidth="880.0" spacing="25.0" xmlns="http://javafx.com/javafx/26" xmlns:fx="http://javafx.com/fxml/1" fx:controller="khe.banking.controllers.HomeController">
+<VBox prefHeight="780.0" prefWidth="880.0" spacing="25.0" xmlns="http://javafx.com/javafx/26" xmlns:fx="http://javafx.com/fxml/1" fx:controller="khe.banking.controllers.HomeController">
    <children>
-      <Label fx:id="label" styleClass="view-title" text="homeview" />
+      <Label fx:id="welcomeLabel" styleClass="view-title" text="WELCOME" VBox.vgrow="ALWAYS" />
+      <VBox spacing="15.0">
+         <children>
+            <Label text="Accounts Overview" VBox.vgrow="ALWAYS" />
+            <Accordion fx:id="accordion" styleClass="accounts-accordion" VBox.vgrow="ALWAYS">
+              <panes>
+                <TitledPane animated="false" text="untitled 1" />
+                <TitledPane animated="false" text="untitled 2" />
+              </panes>
+            </Accordion>
+         </children>
+      </VBox>
+      <VBox fx:id="analytics" spacing="15.0" VBox.vgrow="ALWAYS">
+         <children>
+            <Label text="Analytics Overview" />
+         </children>
+      </VBox>
    </children>
    <padding>
-      <Insets bottom="30.0" left="30.0" right="30.0" top="30.0" />
+      <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
    </padding>
 </VBox>

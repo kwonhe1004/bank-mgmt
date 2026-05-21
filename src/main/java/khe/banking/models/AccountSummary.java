@@ -2,7 +2,7 @@ package khe.banking.models;
 
 import java.math.BigDecimal;
 
-public class DashboardSummary {
+public class AccountSummary {
 
 	private BigDecimal totalBalance;
     private BigDecimal totalIncome;
@@ -11,17 +11,15 @@ public class DashboardSummary {
 
     private int totalAccounts;
 
-    public DashboardSummary(BigDecimal totalBalance,
+    public AccountSummary(BigDecimal totalBalance,
                             BigDecimal totalIncome,
                             BigDecimal totalExpense,
-                            BigDecimal netSavings,
-                            int totalAccounts) {
+                            BigDecimal netSavings) {
 
         this.totalBalance = totalBalance;
         this.totalIncome = totalIncome;
         this.totalExpense = totalExpense;
         this.netSavings = netSavings;
-        this.totalAccounts = totalAccounts;
     }
 
     public BigDecimal getTotalBalance() {

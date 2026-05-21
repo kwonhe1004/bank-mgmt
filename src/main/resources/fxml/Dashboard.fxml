@@ -16,15 +16,15 @@
 
 <BorderPane prefHeight="800.0" prefWidth="1200.0" xmlns="http://javafx.com/javafx/26" xmlns:fx="http://javafx.com/fxml/1" fx:controller="khe.banking.controllers.DashboardController">
    <center>
-      <StackPane fx:id="pane" BorderPane.alignment="CENTER">
+      <StackPane fx:id="pane" styleClass="container-border" BorderPane.alignment="CENTER">
          <BorderPane.margin>
             <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
          </BorderPane.margin></StackPane>
    </center>
    <left>
-      <VBox alignment="TOP_CENTER" prefWidth="300.0" spacing="25.0" BorderPane.alignment="CENTER">
+      <VBox alignment="TOP_CENTER" prefWidth="300.0" spacing="25.0" styleClass="sidebar" BorderPane.alignment="CENTER">
          <children>
-            <VBox alignment="CENTER" spacing="10.0">
+            <VBox alignment="CENTER" spacing="10.0" VBox.vgrow="ALWAYS">
                <children>
                   <ImageView fitHeight="100.0" fitWidth="100.0" pickOnBounds="true" preserveRatio="true">
                      <image>
@@ -37,12 +37,12 @@
                      </font></Label>
                </children>
                <padding>
-                  <Insets left="10.0" right="10.0" />
+                  <Insets left="10.0" right="10.0" top="20.0" />
                </padding>
             </VBox>
-            <VBox alignment="CENTER" spacing="20.0">
+            <VBox alignment="CENTER" spacing="20.0" VBox.vgrow="ALWAYS">
                <children>
-                  <Button fx:id="home" graphicTextGap="10.0" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#homeView" text="Home">
+                  <Button fx:id="home" graphicTextGap="10.0" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#homeView" text="Home" VBox.vgrow="ALWAYS">
                      <graphic>
                         <ImageView fitHeight="40.0" pickOnBounds="true" preserveRatio="true">
                            <image>
@@ -54,7 +54,7 @@
                         <Insets bottom="10.0" top="10.0" />
                      </padding>
                   </Button>
-                  <Button fx:id="accounts" graphicTextGap="10.0" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#accountsView" text="Accounts">
+                  <Button fx:id="accounts" graphicTextGap="10.0" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#accountsView" text="Accounts" VBox.vgrow="ALWAYS">
                      <graphic>
                         <ImageView fitHeight="40.0" pickOnBounds="true" preserveRatio="true">
                            <image>
@@ -66,19 +66,7 @@
                         <Insets bottom="10.0" top="10.0" />
                      </padding>
                   </Button>
-                  <Button fx:id="transactions" graphicTextGap="10.0" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#transactionsView" text="Transactions">
-                     <graphic>
-                        <ImageView fitHeight="40.0" pickOnBounds="true" preserveRatio="true">
-                           <image>
-                              <Image url="@../img/transaction.png" />
-                           </image>
-                        </ImageView>
-                     </graphic>
-                     <padding>
-                        <Insets bottom="10.0" top="10.0" />
-                     </padding>
-                  </Button>
-                  <Button fx:id="categories" graphicTextGap="10.0" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#categoriesView" text="Categories">
+                  <Button fx:id="categories" graphicTextGap="10.0" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#categoriesView" text="Categories" VBox.vgrow="ALWAYS">
                      <graphic>
                         <ImageView fitHeight="40.0" pickOnBounds="true" preserveRatio="true">
                            <image>
@@ -90,7 +78,7 @@
                         <Insets bottom="10.0" top="10.0" />
                      </padding>
                   </Button>
-                  <Button fx:id="reports" graphicTextGap="10.0" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#reportsView" text="Reports">
+                  <Button fx:id="reports" graphicTextGap="10.0" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#reportsView" text="Reports" VBox.vgrow="ALWAYS">
                      <graphic>
                         <ImageView fitHeight="40.0" pickOnBounds="true" preserveRatio="true">
                            <image>
@@ -102,7 +90,7 @@
                         <Insets bottom="10.0" top="10.0" />
                      </padding>
                   </Button>
-                  <Button fx:id="users" graphicTextGap="10.0" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#usersView" text="Users">
+                  <Button fx:id="users" graphicTextGap="10.0" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#usersView" text="Users" VBox.vgrow="ALWAYS">
                      <graphic>
                         <ImageView fitHeight="40.0" pickOnBounds="true" preserveRatio="true">
                            <image>
@@ -116,7 +104,7 @@
                   </Button>
                </children>
             </VBox>
-            <MenuButton fx:id="menubtn" alignment="CENTER" graphicTextGap="10.0" maxWidth="1.7976931348623157E308" mnemonicParsing="false" popupSide="TOP">
+            <MenuButton fx:id="menubtn" alignment="CENTER" graphicTextGap="10.0" maxWidth="1.7976931348623157E308" mnemonicParsing="false" popupSide="TOP" VBox.vgrow="ALWAYS">
               <items>
                   <CustomMenuItem mnemonicParsing="false">
                      <content>
@@ -148,7 +136,7 @@
                   </HBox>
                </graphic>
                <VBox.margin>
-                  <Insets />
+                  <Insets top="15.0" />
                </VBox.margin>
                <padding>
                   <Insets bottom="5.0" top="5.0" />
@@ -156,7 +144,7 @@
             </MenuButton>
          </children>
          <padding>
-            <Insets top="15.0" />
+            <Insets bottom="10.0" left="10.0" right="10.0" top="20.0" />
          </padding>
       </VBox>
    </left>

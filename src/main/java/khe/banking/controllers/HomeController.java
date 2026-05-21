@@ -1,20 +1,71 @@
 package khe.banking.controllers;
 
+import java.util.List;
+
 import javafx.fxml.FXML;
+import javafx.scene.control.Accordion;
 import javafx.scene.control.Label;
+import javafx.scene.control.TitledPane;
+import javafx.scene.layout.VBox;
+import khe.banking.controllers.components.AccountOverviewController;
+import khe.banking.controllers.components.AnalyticsViewController;
+import khe.banking.dao.AccountDaoImpl;
+import khe.banking.models.Account;
 import khe.banking.models.User;
+import khe.banking.services.AccountService;
+import khe.banking.services.AccountServiceImpl;
 import khe.banking.utils.SessionManager;
+import khe.banking.utils.ViewData;
+import khe.banking.utils.ViewLoader;
 
 public class HomeController {
 	
 	@FXML
-	private Label label;
+	private Label welcomeLabel;
 	
-	User u;
+	@FXML 
+	private Accordion accordion;
+	
+	@FXML
+	private VBox analytics;
+	
+	private final AccountService as = new AccountServiceImpl(new AccountDaoImpl());
 	
 	public void initialize() {
-		u = SessionManager.getCurrentUser();
-		label.setText("Welcome " + u.getFirst());
+		User u = SessionManager.getCurrentUser();
+		welcomeLabel.setText("Welcome " + u.getFirst());
+		loadAccounts(u);
+		loadAnalytics(u);
+	}
+	
+	private void loadAccounts(User u) {
+		List<Account> accounts = as.getAccounts(u.getId());
+		accordion.getPanes().clear();
+		
+		for(Account a : accounts) {
+			addAccountPane(a);
+		}
+	}
+	
+	private void addAccountPane(Account a) {
+		ViewData<AccountOverviewController> data = ViewLoader.loadView("/fxml/components/AccountOverview.fxml");
+		AccountOverviewController controller = data.getController();
+		controller.setAccount(a);
+		
+		TitledPane pane = new TitledPane();
+		pane.setText(a.getNickname());
+		pane.setContent(data.getView());
+		pane.setExpanded(false);
+		pane.getStyleClass().add("account-pane");
+		
+		accordion.getPanes().add(pane);		
+	}
+	
+	private void loadAnalytics(User u) {
+		ViewData<AnalyticsViewController> data = ViewLoader.loadView("/fxml/components/AnalyticsView.fxml");
+		AnalyticsViewController controller = data.getController();
+		controller.loadCharts(u);	
+		analytics.getChildren().add(data.getView());
 	}
 
 }

@@ -8,6 +8,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import khe.banking.models.Category;
+import khe.banking.models.Category.CategoryType;
 import khe.banking.models.enums.TxnType;
 
 public class CategoryDaoImpl implements CategoryDao {
@@ -123,7 +124,7 @@ public class CategoryDaoImpl implements CategoryDao {
 
 				rs.getString("name"),
 
-				TxnType.valueOf(rs.getString("type")));
+				CategoryType.valueOf(rs.getString("type")));
 	}
 
 }

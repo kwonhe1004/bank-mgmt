@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Tab?>
+<?import javafx.scene.control.TabPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.StackPane?>
+
+<HBox fx:id="root" alignment="CENTER" spacing="20.0" styleClass="analytics-section" xmlns="http://javafx.com/javafx/26" xmlns:fx="http://javafx.com/fxml/1" fx:controller="khe.banking.controllers.components.AnalyticsViewController">
+   <children>
+      <TabPane styleClass="analytics-tabs" tabClosingPolicy="UNAVAILABLE" HBox.hgrow="ALWAYS">
+              <tabs>
+                <Tab text="Weekly Cash Flow">
+                     <content>
+                        <StackPane fx:id="weeklyPane" styleClass="chart-card" />
+                     </content>
+                  </Tab>
+                <Tab text="Monthly Cash Flow">
+                     <content>
+                        <StackPane fx:id="monthlyPane" prefHeight="150.0" prefWidth="200.0" styleClass="chart-card" />
+                     </content>
+                  </Tab>
+              </tabs>
+            </TabPane>
+            <TabPane styleClass="analytics-tabs" tabClosingPolicy="UNAVAILABLE" HBox.hgrow="ALWAYS">
+               <tabs>
+                  <Tab text="Expenses By Category">
+                     <content>
+                        <StackPane fx:id="expensePane" styleClass="chart-card" />
+                     </content>
+                  </Tab>
+                  <Tab text="Income By Category">
+                     <content>
+                        <StackPane fx:id="incomePane" prefHeight="150.0" prefWidth="200.0" styleClass="chart-card" />
+                     </content>
+                  </Tab>
+               </tabs>
+            </TabPane>
+   </children>
+</HBox>

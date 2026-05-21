@@ -1,17 +1,19 @@
 package khe.banking.models;
 
-import khe.banking.models.enums.TxnType;
-
 public class Category {
+	
+	public enum CategoryType {
+		INCOME, EXPENSE;
+	}
 	
 	private int id;
     private String name;
-    private TxnType type; // enum
+    private CategoryType type; // enum
 
     public Category() {
     }
 
-    public Category(int id, String name, TxnType type) {
+    public Category(int id, String name, CategoryType type) {
         this.id = id;
         this.name = name;
         this.type = type;
@@ -33,11 +35,11 @@ public class Category {
 		this.name = name;
 	}
 
-	public TxnType getType() {
+	public CategoryType getType() {
 		return type;
 	}
 
-	public void setType(TxnType type) {
+	public void setType(CategoryType type) {
 		this.type = type;
 	}
 	
@@ -45,6 +47,8 @@ public class Category {
 	public String toString() {
 		return name;
 	}
+	
+	
     
     
 }

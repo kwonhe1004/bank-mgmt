@@ -35,8 +35,9 @@ public class AccountType {
 		this.minimumBalance = minimumBalance;
 	}
     
-    public AccountType(int id, String name) {
+    public AccountType(int id, AccountTypeEnum code, String name) {
     	this.id = id;
+    	this.code = code;
     	this.name = name;
     }
     
@@ -46,6 +47,10 @@ public class AccountType {
 
 	public void setId(int id) {
 		this.id = id;
+	}
+	
+	public String getCodeName() {
+		return code.getDisplayName();
 	}
 
 	public AccountTypeEnum getCode() {

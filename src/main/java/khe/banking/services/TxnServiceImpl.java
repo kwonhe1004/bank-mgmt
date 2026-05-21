@@ -50,8 +50,13 @@ public class TxnServiceImpl implements TxnService {
 	}
 
 	@Override
-	public List<Transaction> getAccountTransactions(int accountId) {
+	public List<Transaction> getTxnByAccount(int accountId) {
 		return td.getTransactionsByAccount(accountId);
+	}
+
+	@Override
+	public List<Transaction> getTxnByUser(int userId) {
+		return td.getTransactionsByUser(userId);
 	}
 	
 }

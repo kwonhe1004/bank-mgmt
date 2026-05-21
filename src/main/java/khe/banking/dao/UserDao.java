@@ -6,7 +6,7 @@ public interface UserDao extends Dao<User> {
 //	List<User> search(String s);
 	User login(String email, String password);
 
-	User findOne(String email);
+	User findByEmail(String email);
 
 	User updatePw(User o, String pw);
 

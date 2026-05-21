@@ -20,10 +20,8 @@ public class UserDaoImpl implements UserDao {
 
 		try (Connection conn = ConnectDB.getConnection();
 				PreparedStatement ps = conn.prepareStatement(sql)) {
-			ps.setString(1,
-					email);
-			ps.setString(2,
-					password);
+			ps.setString(1, email);
+			ps.setString(2, password);
 
 			ResultSet rs = ps.executeQuery();
 			while (rs.next()) {
@@ -69,7 +67,7 @@ public class UserDaoImpl implements UserDao {
 	}
 
 	@Override
-	public User findOne(String email) {
+	public User findByEmail(String email) {
 		User u = null;
 		String sql = "SELECT * FROM users WHERE email=?";
 

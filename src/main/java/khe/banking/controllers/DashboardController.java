@@ -28,8 +28,6 @@ public class DashboardController extends BaseController {
 	@FXML
 	private Button accounts;
 	@FXML
-	private Button transactions;
-	@FXML
 	private Button categories;
 	@FXML
 	private Button reports;
@@ -52,7 +50,7 @@ public class DashboardController extends BaseController {
 	@FXML
 	private Button logoutbtn;
 		
-	private UserServiceImpl us = new UserServiceImpl(new UserDaoImpl());
+	private final UserServiceImpl us = new UserServiceImpl(new UserDaoImpl());
 
 	/* =========================================
 	 * 	INITIALIZE
@@ -75,7 +73,7 @@ public class DashboardController extends BaseController {
 	 * 	ACTIVE SIDEBAR BUTTON STYLING
 	 * ========================================= */
 	private void setActiveButton(Button selected) {
-		List<Button> btns = List.of(home, users, transactions);
+		List<Button> btns = List.of(home, users);
 		
 		// removes active style from all buttons 
 		for(Button b : btns) {
@@ -111,12 +109,6 @@ public class DashboardController extends BaseController {
 	private void accountsView(ActionEvent e) {
 		setActiveButton(accounts);
 		navigate("/fxml/account/AccountsView.fxml");
-	}
-	
-	@FXML
-	private void transactionsView(ActionEvent e) {
-		setActiveButton(transactions);
-//		navigate("/fxml/txn/TransactionsView.fxml");
 	}
 	
 	@FXML

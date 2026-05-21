@@ -1,0 +1,50 @@
+.card{
+	-fx-background-color: -color-white;
+    -fx-background-radius: 5;
+    -fx-padding: 10;
+    -fx-spacing: 15;
+}
+
+.card .button{
+	-fx-background-color: transparent;
+    -fx-border-color: -color-black;
+    -fx-border-radius: 5;
+    -fx-border-width: 2;
+    -fx-font-size: 14px;
+    -fx-font-weight: bold;
+    -fx-padding: 5px;
+}
+
+.card .button:hover{
+	-fx-background-color: -color-black;
+	-fx-background-radius: 5;
+	-fx-text-fill: -color-white;
+	-fx-cursor: hand;
+}
+
+.card .label{
+	-fx-font-size: 16px;
+}
+
+.card-title {
+    -fx-font-size: 28px;
+    -fx-font-weight: bold;
+}
+
+.card-subtitle {
+	-fx-text-fill: -color-black-muted;
+    -fx-font-size: 20px;
+    -fx-font-style: italic;
+    -fx-font-weight: bold;
+}
+
+.card-heading{
+	-fx-font-weight: bold;
+}
+
+.account-card{
+	-fx-background-color: transparent;
+	-fx-border-color: -color-black-muted;
+    -fx-border-radius: 5;
+    -fx-border-width: 3;
+}

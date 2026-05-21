@@ -35,7 +35,7 @@
 .form-container .text-field,
 .form-container .choice-box,
 .form-container .date-picker {
-	-fx-pref-height:30;
+	-fx-pref-height: 30px;
 }
 
 

@@ -13,6 +13,7 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import khe.banking.dao.UserDaoImpl;
 import khe.banking.models.User;
 import khe.banking.models.enums.FormMode;
+import khe.banking.models.enums.UserRole;
 import khe.banking.services.UserServiceImpl;
 import khe.banking.utils.ModalManager;
 import khe.banking.utils.TableActionFactory;
@@ -31,17 +32,15 @@ public class UsersController {
 	@FXML
 	private TableColumn<User, Integer> idCol;
 	@FXML
-	private TableColumn<User, String> nameCol;
+	private TableColumn<User, String> lastCol;
+	@FXML
+	private TableColumn<User, String> firstCol;
 	@FXML
 	private TableColumn<User, String> emailCol;
 	@FXML
 	private TableColumn<User, LocalDate> dobCol;
 	@FXML
-	private TableColumn<User, Integer> ageCol;
-	@FXML
-	private TableColumn<User, String> pwCol; //roleCol
-	@FXML
-	private TableColumn<User, String> roleCol;
+	private TableColumn<User, UserRole> roleCol;
 	@FXML
 	private TableColumn<User, Void> actionCol;
 
@@ -67,11 +66,10 @@ public class UsersController {
 
 	private void setupColumns() {
 		idCol.setCellValueFactory(new PropertyValueFactory<>("id"));
-		nameCol.setCellValueFactory(new PropertyValueFactory<>("fullName"));
+		lastCol.setCellValueFactory(new PropertyValueFactory<>("last"));
+		firstCol.setCellValueFactory(new PropertyValueFactory<>("first"));
 		emailCol.setCellValueFactory(new PropertyValueFactory<>("email"));
 		dobCol.setCellValueFactory(new PropertyValueFactory<>("dob"));
-		ageCol.setCellValueFactory(new PropertyValueFactory<>("age"));
-		pwCol.setCellValueFactory(new PropertyValueFactory<>("password"));
         roleCol.setCellValueFactory(new PropertyValueFactory<>("role"));
 
 		TableActionFactory.addActions(actionCol, this::handleEdit, this::handleDelete);

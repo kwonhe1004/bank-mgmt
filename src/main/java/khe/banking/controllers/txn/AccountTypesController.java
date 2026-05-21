@@ -1,4 +1,4 @@
-package khe.banking.controllers.account;
+package khe.banking.controllers.txn;
 
 import java.math.BigDecimal;
 

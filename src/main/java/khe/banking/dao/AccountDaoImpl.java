@@ -1,5 +1,6 @@
 package khe.banking.dao;
 
+import java.math.BigDecimal;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -8,6 +9,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import khe.banking.models.Account;
+import khe.banking.models.AccountSummary;
 import khe.banking.models.AccountType;
 import khe.banking.models.User;
 import khe.banking.models.enums.AccountStatus;
@@ -19,10 +21,10 @@ public class AccountDaoImpl implements AccountDao {
 	public List<Account> findAll() {
 		List<Account> list = new ArrayList<>();
 		String sql = """
-				SELECT
-					a.*,
+				SELECT a.*,
 					u.id AS u_id, u.first, u.last, u.email,
-					at.id AS at_id, at.code, at.name AS at_name, at.interest_rate, at.monthly_fee, at.withdrawal_limit, at.minimum_balance
+					at.id AS at_id, at.code, at.name AS at_name, at.interest_rate, 
+						at.monthly_fee, at.withdrawal_limit, at.minimum_balance
 				FROM accounts a
 				JOIN users u ON a.user_id = u.id
 				JOIN account_types at ON a.account_type_id = at.id
@@ -67,7 +69,8 @@ public class AccountDaoImpl implements AccountDao {
 	@Override
 	public boolean add(Account o) {
 		String sql = """
-				INSERT INTO accounts (user_id, account_type_id, account_number, nickname, balance, status)
+				INSERT INTO accounts (
+					user_id, account_type_id, account_number, nickname, balance, status)
 				VALUES (?, ?, ?, ?, ?, ?)""";
 
 		try (Connection conn = ConnectDB.getConnection();
@@ -123,27 +126,13 @@ public class AccountDaoImpl implements AccountDao {
 	@Override
 	public Account findById(int id) {
 		String sql = """
-				SELECT
-				    a.*,
-
-				    u.id AS user_id,
-				    u.first,
-				    u.last,
-
-				    at.id AS type_id,
-				    at.name AS type_name,
-				    at.interest_rate,
-				    at.monthly_fee,
-				    at.minimum_balance
-
+				SELECT a.*,
+				    u.id AS user_id, u.first, u.last,
+				    at.id AS type_id, at.name AS type_name, at.interest_rate, 
+				    	at.monthly_fee, at.minimum_balance
 				FROM accounts a
-
-				JOIN users u
-				    ON a.user_id = u.id
-
-				JOIN account_types at
-				    ON a.account_type_id = at.id
-
+				JOIN users u ON a.user_id = u.id
+				JOIN account_types at ON a.account_type_id = at.id
 				WHERE a.id = ?""";
 
 		try (Connection conn = ConnectDB.getConnection();
@@ -183,34 +172,15 @@ public class AccountDaoImpl implements AccountDao {
 		List<Account> list = new ArrayList<>();
 
 		String sql = """
-				SELECT
-				    a.id,
-				    a.account_number,
-				    a.nickname,
-				    a.balance,
-				    a.status,
-
-				    u.id AS user_id,
-				    u.first,
-				    u.last,
-
-				    at.id AS type_id,
-				    at.name AS type_name,
-				    at.interest_rate,
-				    at.monthly_fee,
-				    at.minimum_balance
-
+				SELECT a*, 
+					u.id AS user_id, u.first, u.last,
+				    at.id AS type_id, at.name AS type_name, at.interest_rate, 
+				    	at.monthly_fee, at.minimum_balance
 				FROM accounts a
-
-				JOIN users u
-				    ON a.user_id = u.id
-
-				JOIN account_types at
-				    ON a.account_type_id = at.id
-
+				JOIN users u ON a.user_id = u.id
+				JOIN account_types at ON a.account_type_id = at.id
 				WHERE a.user_id = ?
-				ORDER BY a.id
-				""";
+				ORDER BY a.id""";
 
 		try (Connection c = ConnectDB.getConnection();
 				PreparedStatement ps = c.prepareStatement(sql)) {
@@ -254,7 +224,7 @@ public class AccountDaoImpl implements AccountDao {
 	public List<Account> getAccounts(int userId) {
 		List<Account> list = new ArrayList<>();
 		String sql = """
-				SELECT a.*, at.id AS type_id, at.name AS type_name
+				SELECT a.*, at.id AS type_id, at.code AS type_code, at.name AS type_name
 				FROM accounts a
 				JOIN account_types at ON a.account_type_id = at.id
 				WHERE a.user_id = ?""";
@@ -266,6 +236,7 @@ public class AccountDaoImpl implements AccountDao {
             while(rs.next()) {
             	AccountType type = new AccountType(
             			rs.getInt("type_id"),
+            			AccountTypeEnum.valueOf(rs.getString("type_code")),
             			rs.getString("type_name"));
             	
             	Account a = new Account();
@@ -279,6 +250,41 @@ public class AccountDaoImpl implements AccountDao {
             e.printStackTrace();
         }		
 		return list;
+	}
+	
+	@Override
+	public AccountSummary getAccountSummary(int accountId) {
+		String sql = """
+				SELECT a.balance AS total_balance,
+					SUM(CASE WHEN t.type = 'INCOME' THEN t.amount ELSE 0 END) AS income,
+					SUM(CASE WHEN t.type = 'EXPENSE' THEN t.amount ELSE 0 END) AS expense
+					FROM accounts a
+					LEFT JOIN transactions t ON a.id = t.account_id
+					WHERE a.id = ?
+					GROUP BY a.id, a.balance""";
+		
+		try (Connection c = ConnectDB.getConnection();
+	             PreparedStatement ps = c.prepareStatement(sql)) {
+			ps.setInt(1, accountId);
+			ResultSet rs = ps.executeQuery();
+			
+			if(rs.next()) {
+				BigDecimal balance = rs.getBigDecimal("total_balance");
+				BigDecimal income = rs.getBigDecimal("income");
+                BigDecimal expense = rs.getBigDecimal("expense");
+
+                balance = balance == null ? BigDecimal.ZERO : balance;
+                income = income == null ? BigDecimal.ZERO : income;
+                expense = expense == null ? BigDecimal.ZERO : expense;
+                
+                BigDecimal net = income.subtract(expense);
+                
+                return new AccountSummary(balance, income, expense, net);
+			}			
+		} catch(SQLException e) {
+			e.printStackTrace();
+		}		
+		return null;
 	}
 	
 }

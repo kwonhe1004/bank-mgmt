@@ -4,6 +4,7 @@ import java.util.List;
 
 import khe.banking.dao.AccountDao;
 import khe.banking.models.Account;
+import khe.banking.models.AccountSummary;
 
 public class AccountServiceImpl implements AccountService {
 
@@ -46,6 +47,11 @@ public class AccountServiceImpl implements AccountService {
 	@Override
 	public List<Account> getAccounts(int userId) {
 		return ad.getAccounts(userId);
+	}
+	
+	@Override
+	public AccountSummary getAccountSummary(int accountId) {
+		return ad.getAccountSummary(accountId);
 	}
 	
 }
