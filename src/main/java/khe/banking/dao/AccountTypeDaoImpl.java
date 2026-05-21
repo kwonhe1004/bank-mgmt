@@ -130,7 +130,7 @@ public class AccountTypeDaoImpl implements AccountTypeDao {
 				AccountTypeEnum.valueOf(rs.getString("code")),
 				rs.getString("name"),
 				rs.getBigDecimal("interest_rate"),
-				rs.getBigDecimal("monthy_fee"),
+				rs.getBigDecimal("monthly_fee"),
 				rs.getObject("withdrawal_limit", Integer.class),
 				rs.getBigDecimal("minimum_balance"));				
 	}

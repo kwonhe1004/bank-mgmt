@@ -22,7 +22,7 @@
          </BorderPane.margin></StackPane>
    </center>
    <left>
-      <VBox alignment="TOP_CENTER" prefWidth="300.0" spacing="25.0" styleClass="sidebar" BorderPane.alignment="CENTER">
+      <VBox alignment="TOP_CENTER" prefWidth="300.0" spacing="20.0" styleClass="sidebar" BorderPane.alignment="CENTER">
          <children>
             <VBox alignment="CENTER" spacing="10.0" VBox.vgrow="ALWAYS">
                <children>
@@ -40,7 +40,7 @@
                   <Insets left="10.0" right="10.0" top="20.0" />
                </padding>
             </VBox>
-            <VBox alignment="CENTER" spacing="20.0" VBox.vgrow="ALWAYS">
+            <VBox alignment="CENTER" spacing="15.0" VBox.vgrow="ALWAYS">
                <children>
                   <Button fx:id="home" graphicTextGap="10.0" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#homeView" text="Home" VBox.vgrow="ALWAYS">
                      <graphic>
@@ -158,7 +158,7 @@
             </MenuButton>
          </children>
          <padding>
-            <Insets bottom="10.0" left="10.0" right="10.0" top="20.0" />
+            <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
          </padding>
       </VBox>
    </left>

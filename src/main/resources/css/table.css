@@ -7,6 +7,7 @@
     -fx-background-color: transparent;
     -fx-border-color: -color-black-muted;
     -fx-border-radius: 8;
+    -fx-border-width: 2;
 }
 
 /* =====================================================
@@ -163,4 +164,20 @@
 /* Income text (green) */
 .txn-table .amount-income {
     -fx-text-fill: #2e7d32;
+}
+
+/* =====================================================
+   TAG TABLE
+===================================================== */
+.tag-table .table-cell{
+	-fx-padding: 10;
+	-fx-font-size: 14px;
+    -fx-font-weight: bold;	
+}
+
+.tag-table .table-row-cell:filled {
+	-fx-background-color: -color-white-muted;
+	-fx-background-radius: 5;
+	-fx-border-color: -color-black-muted;
+	-fx-border-width: 2;
 }

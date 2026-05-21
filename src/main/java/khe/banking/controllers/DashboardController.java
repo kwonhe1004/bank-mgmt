@@ -110,13 +110,13 @@ public class DashboardController extends BaseController {
 	@FXML
 	private void tagsView(ActionEvent e) {
 		setActiveButton(tags);
-//		navigate("");
+		navigate("/fxml/tag/TagsView.fxml");
 	}
 
 	@FXML
 	private void reportsView(ActionEvent e) {
 		setActiveButton(reports);
-//		navigate("/fxml/reports/ReportsView.fxml");
+		navigate("/fxml/report/ReportsView.fxml");
 	}
 	
 	@FXML

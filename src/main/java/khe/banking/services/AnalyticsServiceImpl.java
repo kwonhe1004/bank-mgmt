@@ -33,6 +33,6 @@ public class AnalyticsServiceImpl implements AnalyticsService {
 	public Map<String, Double> getCategoryIncome(User u) {
 		return ad.getCategoryBreakdown(u, TxnType.INCOME);
 	}
-	
+
 
 }

@@ -1,25 +1,57 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.geometry.Insets?>
-<?import javafx.scene.chart.BarChart?>
-<?import javafx.scene.chart.CategoryAxis?>
-<?import javafx.scene.chart.NumberAxis?>
-<?import javafx.scene.chart.PieChart?>
+<?import javafx.scene.control.Accordion?>
 <?import javafx.scene.control.Label?>
+<?import javafx.scene.control.Tab?>
+<?import javafx.scene.control.TabPane?>
+<?import javafx.scene.control.TitledPane?>
+<?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.layout.VBox?>
 
-<VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="780.0" prefWidth="880.0" spacing="25.0" xmlns="http://javafx.com/javafx/26" xmlns:fx="http://javafx.com/fxml/1" fx:controller="khe.banking.controllers.report.ReportsController">
+<VBox prefHeight="780.0" prefWidth="880.0" spacing="25.0" styleClass="analytics-section" xmlns="http://javafx.com/javafx/26" xmlns:fx="http://javafx.com/fxml/1" fx:controller="khe.banking.controllers.report.ReportsController">
    <children>
       <Label styleClass="view-title" text="VIEW" />
-      <PieChart fx:id="expenseChart" title="Expenses by Category" />
-      <BarChart fx:id="monthlyChart">
-        <xAxis>
-          <CategoryAxis side="BOTTOM" />
-        </xAxis>
-        <yAxis>
-          <NumberAxis side="LEFT" />
-        </yAxis>
-      </BarChart>
+      <Accordion styleClass="accounts-accordion" VBox.vgrow="ALWAYS">
+        <panes>
+          <TitledPane animated="false" text="Cash Flow: LineChart">
+               <content>
+                  <TabPane styleClass="analytics-tabs" tabClosingPolicy="UNAVAILABLE">
+                  	<tabs>
+                  		<Tab text="Weekly Cash Flow">
+                        	<content>
+                        		<StackPane fx:id="weeklyPane" styleClass="chart-card" />
+                        	</content>
+                        </Tab>
+                        <Tab text="Monthly Cash Flow">
+                        	<content>
+                        		<StackPane fx:id="monthlyPane" prefHeight="150.0" prefWidth="200.0" styleClass="chart-card" />
+                        	</content>
+                        </Tab>
+                       </tabs>
+                      </TabPane>
+               </content>
+            </TitledPane>
+          <TitledPane animated="false" text="Category: PieChart">
+               <content>
+                      <TabPane styleClass="analytics-tabs" tabClosingPolicy="UNAVAILABLE">
+                      	<tabs>
+                      		<Tab text="Expenses By Category">
+                      			<content>
+                      				<StackPane fx:id="expensePane" styleClass="chart-card" />
+                      			</content>
+                      		</Tab>
+                            <Tab text="Income By Category">
+                            	<content>
+                                    <StackPane fx:id="incomePane" prefHeight="150.0" prefWidth="200.0" styleClass="chart-card" />
+                                </content>
+                            </Tab>
+                         </tabs>
+                       </TabPane>
+               </content>
+            </TitledPane>
+        </panes>
+      </Accordion>
    </children>
    <padding>
       <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />

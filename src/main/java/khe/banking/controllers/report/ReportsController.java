@@ -1,54 +1,43 @@
 package khe.banking.controllers.report;
 
-import java.util.Arrays;
-
 import javafx.fxml.FXML;
-import javafx.scene.chart.BarChart;
-import javafx.scene.chart.PieChart;
-import javafx.scene.chart.XYChart;
-import khe.banking.dao.ReportDaoImpl;
-import khe.banking.models.CategoryReport;
-import khe.banking.models.MonthlyReport;
-import khe.banking.services.ReportService;
-import khe.banking.services.ReportServiceImpl;
+import javafx.scene.layout.StackPane;
+import khe.banking.controllers.components.ChartCardController;
+import khe.banking.models.User;
+import khe.banking.models.enums.AnalyticsType;
+import khe.banking.utils.SessionManager;
+import khe.banking.utils.ViewData;
+import khe.banking.utils.ViewLoader;
 
 public class ReportsController {
 
 	@FXML
-	private PieChart expenseChart;
-	
+    private StackPane weeklyPane;
 	@FXML
-	private BarChart<String, Number> monthlyChart;
+    private StackPane monthlyPane;
+	@FXML
+    private StackPane expensePane;
+	@FXML
+    private StackPane incomePane;
 	
-	private final ReportService rs = new ReportServiceImpl(new ReportDaoImpl());
+//	private final ReportService rs = new ReportServiceImpl(new ReportDaoImpl());
 	
 	public void initialize() {
-		loadExpenseChart();
-		loadMonthlyChart();
+		loadCharts(SessionManager.getCurrentUser());
 	}
 	
-	private void loadExpenseChart() {
-		expenseChart.getData().clear();
-		for(CategoryReport cr : rs.getExpenseByCategory()) {
-			expenseChart.getData().add(
-					new PieChart.Data(cr.getCategory().getName(), cr.getTotal().doubleValue()));
-		}		
-	}
-	
-	private void loadMonthlyChart() {
-		XYChart.Series<String, Number> income = new XYChart.Series<>();
-		income.setName("Income");
-		
-		XYChart.Series<String, Number> expense = new XYChart.Series<>();
-		expense.setName("Expense");
-		
-		for(MonthlyReport mr : rs.getMonthlyReports(2026)) {
-			income.getData().add(new XYChart.Data<>(mr.getMonth().name(), mr.getIncome()));
-			expense.getData().add(new XYChart.Data<>(mr.getMonth().name(), mr.getExpense()));
-		}
-		
-		monthlyChart.getData().clear();
-		monthlyChart.getData().addAll(Arrays.asList(income, expense));
-	}
+	public void loadCharts(User u) {
+    	addChartCard(weeklyPane, u, AnalyticsType.WEEKLY_CASHFLOW);
+    	addChartCard(monthlyPane, u, AnalyticsType.MONTHLY_CASHFLOW);
+    	addChartCard(expensePane, u, AnalyticsType.EXPENSE_BY_CATEGORY);
+    	addChartCard(incomePane, u, AnalyticsType.INCOME_BY_CATEGORY);
+    }
+    
+    private void addChartCard(StackPane pane, User u, AnalyticsType at) {
+    	ViewData<ChartCardController> data = ViewLoader.loadView("/fxml/components/ChartCard.fxml");
+    	ChartCardController controller = data.getController();
+    	controller.configure(u, at);
+    	pane.getChildren().setAll(data.getView());
+    }
 	
 }

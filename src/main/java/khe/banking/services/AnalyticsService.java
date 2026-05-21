@@ -9,5 +9,4 @@ public interface AnalyticsService {
 	Map<String, Double> getMonthlyCashflow(User u);
 	Map<String, Double> getCategoryExpenses(User u);
 	Map<String, Double> getCategoryIncome(User u);
-
 }
