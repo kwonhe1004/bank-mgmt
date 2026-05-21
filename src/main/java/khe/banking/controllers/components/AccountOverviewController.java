@@ -41,11 +41,12 @@ public class AccountOverviewController {
 	}
 	
 	private void loadSummary() {
-		AccountSummary summary = as.getAccountSummary(a.getId());
-		
+		AccountSummary summary = as.getAccountSummary(a.getId());		
 		if(summary == null) {
 			return;
 		}
+		
+		titleLabel.setText(a.getAccountNum());
 		
 		balanceLabel.setText(currency.format(summary.getTotalBalance()));
 		incomeLabel.setText(currency.format(summary.getTotalIncome()));

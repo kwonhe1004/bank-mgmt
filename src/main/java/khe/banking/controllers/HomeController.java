@@ -39,9 +39,14 @@ public class HomeController {
 	}
 	
 	private void loadAccounts(User u) {
-		List<Account> accounts = as.getAccounts(u.getId());
-		accordion.getPanes().clear();
+		List<Account> accounts;
+		if(u.getId() == 1) {
+			accounts = as.getAllAccounts();
+		} else {
+			accounts = as.getAccounts(u.getId());
+		}
 		
+		accordion.getPanes().clear();
 		for(Account a : accounts) {
 			addAccountPane(a);
 		}

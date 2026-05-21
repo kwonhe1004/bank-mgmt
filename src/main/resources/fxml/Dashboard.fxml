@@ -66,7 +66,7 @@
                         <Insets bottom="10.0" top="10.0" />
                      </padding>
                   </Button>
-                  <Button fx:id="categories" graphicTextGap="10.0" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#categoriesView" text="Categories" VBox.vgrow="ALWAYS">
+                  <Button fx:id="tags" graphicTextGap="10.0" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#tagsView" text="Tags" VBox.vgrow="ALWAYS">
                      <graphic>
                         <ImageView fitHeight="40.0" pickOnBounds="true" preserveRatio="true">
                            <image>

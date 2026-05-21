@@ -28,7 +28,7 @@ public class DashboardController extends BaseController {
 	@FXML
 	private Button accounts;
 	@FXML
-	private Button categories;
+	private Button tags;
 	@FXML
 	private Button reports;
 	@FXML
@@ -73,7 +73,7 @@ public class DashboardController extends BaseController {
 	 * 	ACTIVE SIDEBAR BUTTON STYLING
 	 * ========================================= */
 	private void setActiveButton(Button selected) {
-		List<Button> btns = List.of(home, users);
+		List<Button> btns = List.of(home, accounts, tags, reports, users);
 		
 		// removes active style from all buttons 
 		for(Button b : btns) {
@@ -112,8 +112,8 @@ public class DashboardController extends BaseController {
 	}
 	
 	@FXML
-	private void categoriesView(ActionEvent e) {
-		setActiveButton(categories);
+	private void tagsView(ActionEvent e) {
+		setActiveButton(tags);
 //		navigate("");
 	}
 

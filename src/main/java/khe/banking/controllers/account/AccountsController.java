@@ -18,7 +18,7 @@ import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.control.ToggleGroup;
 import javafx.scene.control.cell.PropertyValueFactory;
-import javafx.scene.layout.FlowPane;
+import javafx.scene.layout.TilePane;
 import khe.banking.controllers.components.AccountCardController;
 import khe.banking.controllers.txn.FormController;
 import khe.banking.dao.AccountDaoImpl;
@@ -44,7 +44,7 @@ import khe.banking.utils.ViewLoader;
 public class AccountsController {
 	
 	@FXML
-    private FlowPane accountsContainer;
+    private TilePane accountsContainer;
 	
 	@FXML
 	private MenuButton filterMenu;
@@ -92,9 +92,9 @@ public class AccountsController {
 
     private final User currentUser = SessionManager.getCurrentUser();
 	
-	public void initialize() {
+	public void initialize() {		
 		if(currentUser != null) {
-            loadAccounts(currentUser.getId());
+			loadAccounts(currentUser.getId());
         }
 		
 		setupColumns();
@@ -111,9 +111,14 @@ public class AccountsController {
 	// ACCOUNT CARD SETUP
 	// =========================
 	private void loadAccounts(int userId) {
-		List<Account> accounts = as.getAccounts(userId);
+		List<Account> accounts;
+		if(userId == 1) {
+			accounts = as.getAllAccounts();
+		} else {
+			accounts = as.getAccounts(userId);
+		}
+		
         accountsContainer.getChildren().clear();
-
         for(Account account : accounts) {
         	ViewData<AccountCardController> data = ViewLoader.loadView("/fxml/components/AccountCard.fxml");
         	AccountCardController controller = data.getController();
@@ -122,7 +127,7 @@ public class AccountsController {
         	controller.setOnViewTransactions(a -> {
                 showAccountDetails(a);
             });
-        	accountsContainer.getChildren().add(data.getView());        	
+        	accountsContainer.getChildren().add(data.getView());
         }
     }
 	
@@ -137,7 +142,11 @@ public class AccountsController {
 	// TABLE SETUP
 	// =========================
     private void loadData() {
-    	masterList.setAll(ts.getTxnByUser(currentUser.getId()));
+    	if(currentUser.getId() == 1) {
+    		masterList.setAll(ts.getAllTransactions());
+    	} else {
+    		masterList.setAll(ts.getTxnByUser(currentUser.getId()));
+    	}    	
     }
     
     private void setupColumns() {

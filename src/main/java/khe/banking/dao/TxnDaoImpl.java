@@ -22,9 +22,14 @@ public class TxnDaoImpl implements TxnDao {
 		List<Transaction> list = new ArrayList<>();
 
 		String sql = """
-				SELECT t.*, c.id AS c_id, c.name AS c_name, c.type AS c_type
+				SELECT t.*, 
+					c.id AS c_id, c.name AS c_name, c.type AS c_type,
+					a.id AS account_id, 
+					at.id AS at_id, at.code AS code
 				FROM transactions t				
 				LEFT JOIN categories c ON t.category_id = c.id
+				JOIN accounts a ON t.account_id = a.id
+				JOIN account_types at ON a.account_type_id = at.id
 				ORDER BY t.id""";
 
 		try(Connection conn = ConnectDB.getConnection();
@@ -32,26 +37,28 @@ public class TxnDaoImpl implements TxnDao {
 				ResultSet rs = ps.executeQuery()) {
 			
 			while(rs.next()) {
-				Category category = null;
-				int c_id = rs.getInt("c_id");
+				AccountType at = new AccountType();
+	        	at.setId(rs.getInt("at_id"));
+	        	
+	        	Account account = new Account();
+				account.setId(rs.getInt("account_id"));
+				account.setAccountType(at);
 				
-				if(! rs.wasNull()) {
-					category = new Category(
-							c_id,
-							rs.getString("c_name"),
-							CategoryType.valueOf(rs.getString("c_type")));
-				}
+				Category category = new Category(
+	        			rs.getInt("c_id"),
+	        			rs.getString("c_name"),
+	        			CategoryType.valueOf(rs.getString("c_type")));
 				
 				Transaction t = new Transaction(
 	                    rs.getInt("id"),
-	                    rs.getInt("account_id"),
+	                    account,
 	                    rs.getString("name"),
 	                    rs.getBigDecimal("amount"),
 	                    TxnType.valueOf(rs.getString("type")),
 	                    category,
 	                    rs.getDate("date").toLocalDate(),
 						rs.getString("note"));
-				
+				t.setCode(rs.getString("code"));				
 				list.add(t);
 			}
 			
