@@ -46,7 +46,6 @@
 ========================================================= */
 
 .accounts-accordion .titled-pane:expanded > .title {
-
     -fx-background-color: #f1f5f9;
 }
 
@@ -55,11 +54,8 @@
 ========================================================= */
 
 .accounts-accordion .titled-pane > .content {
-
     -fx-background-color: white;
-
     -fx-background-radius: 0 0 10 10;
-
     -fx-padding: 20;
 }
 
@@ -68,9 +64,7 @@
 ========================================================= */
 
 .accounts-accordion .titled-pane:focused {
-
     -fx-focus-color: transparent;
-
     -fx-faint-focus-color: transparent;
 }
 
@@ -79,7 +73,6 @@
 ========================================================= */
 
 .accounts-accordion .arrow-button {
-
     -fx-background-color: transparent;
 }
 
@@ -88,8 +81,6 @@
 ========================================================= */
 
 .accounts-accordion .arrow {
-
     -fx-background-color: #475569;
-
     -fx-padding: 5;
 }

@@ -11,7 +11,7 @@ public class Transaction {
     private int accountId; // references accounts(id)
     
     private Account account;
-
+    private String code;
     private String name;
     private BigDecimal amount;
 //    private String type; // enum: INCOME, EXPENSE, TRANSFER
@@ -22,14 +22,6 @@ public class Transaction {
     
     public Transaction() {
     }
-    
-//    public Transaction(int id, String name, BigDecimal amount, TxnType type, LocalDate date) {
-//        this.id = id;
-//        this.name = name;
-//        this.amount = amount;
-//        this.type = type; // TxnType.valueOf(type)
-//        this.date = date;
-//    }    
 
     public Transaction(int id, int accountId, String name, BigDecimal amount, TxnType type, Category category, LocalDate date, String note) {
     	this.id = id;
@@ -42,7 +34,7 @@ public class Transaction {
 		this.note = note;
 }
     
-    public Transaction(int id, Account account, String name, BigDecimal amount, TxnType type, Category category, LocalDate date) {
+    public Transaction(int id, Account account, String name, BigDecimal amount, TxnType type, Category category, LocalDate date, String note) {
     	this.id = id;
 		this.account = account;
 		this.name = name;
@@ -50,6 +42,7 @@ public class Transaction {
 		this.type = type;
 		this.category = category;
 		this.date = date;
+		this.note = note;
     }
 
 	public int getId() {
@@ -75,7 +68,15 @@ public class Transaction {
 	public void setAccount(Account account) {
 		this.account = account;
 	}
-
+		
+	public String getCode() {
+		return code;
+	}
+	
+	public void setCode(String code) {
+		this.code = code;
+	}
+	
 	public String getName() {
 		return name;
 	}

@@ -27,6 +27,15 @@ public class AccountType {
 		this.minimumBalance = minimumBalance;
 	}
 
+    public AccountType(int id, AccountTypeEnum code, String name, BigDecimal interestRate, BigDecimal monthlyFee, BigDecimal minimumBalance) {
+    	this.id = id;
+    	this.code = code;
+		this.name = name;
+		this.interestRate = interestRate;
+		this.monthlyFee = monthlyFee;
+		this.minimumBalance = minimumBalance;
+	}
+    
     public AccountType(int id, String name, BigDecimal interestRate, BigDecimal monthlyFee, BigDecimal minimumBalance) {
     	this.id = id;
 		this.name = name;

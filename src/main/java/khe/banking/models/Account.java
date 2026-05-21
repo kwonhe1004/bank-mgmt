@@ -51,7 +51,7 @@ public class Account {
 	public void setAccountType(AccountType accountType) {
 		this.accountType = accountType;
 	}
-
+	
 	public String getAccountNum() {
 		return accountNum;
 	}

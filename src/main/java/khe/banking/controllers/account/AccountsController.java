@@ -56,21 +56,20 @@ public class AccountsController {
 	private RadioMenuItem expenseItem;
 	@FXML
 	private ToggleGroup tg;
-
 	@FXML
 	private TextField searchField;
-
 	@FXML
 	private DatePicker startDate;
 	@FXML
-	private DatePicker endDate;
-	
+	private DatePicker endDate;	
 	@FXML
 	private TextField balance;
 
 	// TABLE
 	@FXML
 	private TableView<Transaction> txnTable;
+	@FXML
+    private TableColumn<Transaction, String> accountTypeCol;
 	@FXML
     private TableColumn<Transaction, String> nameCol;
 	@FXML
@@ -142,6 +141,7 @@ public class AccountsController {
     }
     
     private void setupColumns() {
+    	accountTypeCol.setCellValueFactory(new PropertyValueFactory<>("code"));
 		nameCol.setCellValueFactory(new PropertyValueFactory<>("name"));
 		amountCol.setCellValueFactory(new PropertyValueFactory<>("amount"));
 		typeCol.setCellValueFactory(new PropertyValueFactory<>("type"));
@@ -158,8 +158,7 @@ public class AccountsController {
 	
 	private void handleDelete(Transaction t) {
 		if(UIUtil.showConfirm("Delete this transaction?")) {
-			ts.deleteTransaction(t);
-			
+			ts.deleteTransaction(t);			
 			UIUtil.showInfo("Transaction deleted.");
 			loadData();
 		}

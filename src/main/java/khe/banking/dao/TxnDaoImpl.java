@@ -9,6 +9,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import khe.banking.models.Account;
+import khe.banking.models.AccountType;
 import khe.banking.models.Category;
 import khe.banking.models.Category.CategoryType;
 import khe.banking.models.Transaction;
@@ -20,15 +21,10 @@ public class TxnDaoImpl implements TxnDao {
 	public List<Transaction> findAll() {
 		List<Transaction> list = new ArrayList<>();
 
-//		String sql = "SELECT * FROM transactions ORDER BY date DESC";
 		String sql = """
-				SELECT t.id, t.account_id, t.name, t.amount, t.type, t.date, t.note,
-					c.id AS c_id, c.name AS c_name, c.type AS c_type
-				FROM transactions t
-				
-				LEFT JOIN categories c
-					ON t.category_id = c.id
-				
+				SELECT t.*, c.id AS c_id, c.name AS c_name, c.type AS c_type
+				FROM transactions t				
+				LEFT JOIN categories c ON t.category_id = c.id
 				ORDER BY t.id""";
 
 		try(Connection conn = ConnectDB.getConnection();
@@ -144,9 +140,9 @@ public class TxnDaoImpl implements TxnDao {
 		List<Transaction> list = new ArrayList<>();
 
 	    String sql = """
-	        SELECT t.id, t.name, t.amount, t.type, t.date,
-	            c.id AS category_id, c.name AS category_name,
-	            a.id AS account_id, a.account_number
+	        SELECT t.*,
+	    		  c.id AS category_id, c.name AS category_name, 
+	    		  a.id AS account_id, a.nickname
 	        FROM transactions t
 	        LEFT JOIN categories c ON t.category_id = c.id
 	        JOIN accounts a ON t.account_id = a.id
@@ -161,10 +157,9 @@ public class TxnDaoImpl implements TxnDao {
 	        ResultSet rs = ps.executeQuery();
 
 	        while(rs.next()) {
-
 	            Account account = new Account();
 				account.setId(rs.getInt("account_id"));
-				account.setAccountNum(rs.getString("account_number"));
+				account.setNickname(rs.getString("nickname"));
 
 				Category category = new Category();
 				category.setId(rs.getInt("category_id"));
@@ -177,7 +172,8 @@ public class TxnDaoImpl implements TxnDao {
 						rs.getBigDecimal("amount"),
 						TxnType.valueOf(rs.getString("type")),
 						category,
-						rs.getDate("date").toLocalDate());
+						rs.getDate("date").toLocalDate(),
+						rs.getString("note"));
 				list.add(txn);
 	        }
 
@@ -192,11 +188,14 @@ public class TxnDaoImpl implements TxnDao {
 	public List<Transaction> getTransactionsByUser(int userId) {
 		List<Transaction> list = new ArrayList<>();
 	    String sql = """
-	        SELECT t.id, t.account_id, t.name, t.amount, t.type, t.date, t.note,
-	    		c.id AS c_id, c.name AS c_name, c.type AS c_type
+	        SELECT t.*,
+	    		  c.id AS c_id, c.name AS c_name, c.type AS c_type, 
+	    		  a.id AS account_id, 
+	    		  at.id AS at_id, at.code AS code
 	        FROM transactions t
 	        LEFT JOIN categories c ON t.category_id = c.id
 	        JOIN accounts a ON t.account_id = a.id
+	        JOIN account_types at ON a.account_type_id = at.id
 	        WHERE a.user_id = ?
 	        ORDER BY t.date DESC""";
 	    
@@ -206,19 +205,28 @@ public class TxnDaoImpl implements TxnDao {
 	        ResultSet rs = ps.executeQuery();
 	        
 	        while(rs.next()) {
+	        	AccountType at = new AccountType();
+	        	at.setId(rs.getInt("at_id"));
+	        	
+	        	Account account = new Account();
+				account.setId(rs.getInt("account_id"));
+				account.setAccountType(at);
+				
 	        	Category category = new Category(
 	        			rs.getInt("c_id"),
 	        			rs.getString("c_name"),
 	        			CategoryType.valueOf(rs.getString("c_type")));
+	        	
 	        	Transaction t = new Transaction(
 	        			rs.getInt("id"),
-	                    rs.getInt("account_id"),
+	                    account,
 	                    rs.getString("name"),
 	                    rs.getBigDecimal("amount"),
 	                    TxnType.valueOf(rs.getString("type")),
 	                    category,
 	                    rs.getDate("date").toLocalDate(),
-						rs.getString("note"));				
+						rs.getString("note"));
+	        	t.setCode(rs.getString("code"));
 				list.add(t);
 	        }	    	
 	    } catch (SQLException e) {
@@ -226,5 +234,5 @@ public class TxnDaoImpl implements TxnDao {
 	    }
 	    return list;
 	}
-
+	
 }

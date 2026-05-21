@@ -166,16 +166,16 @@ public class AccountDaoImpl implements AccountDao {
 		}
 		return null;
 	}
-
+	
 	@Override
 	public List<Account> findByUser(int userId) {
 		List<Account> list = new ArrayList<>();
 
 		String sql = """
-				SELECT a*, 
+				SELECT a.*, 
 					u.id AS user_id, u.first, u.last,
-				    at.id AS type_id, at.name AS type_name, at.interest_rate, 
-				    	at.monthly_fee, at.minimum_balance
+				    at.id AS type_id, at.code AS type_code, at.name AS type_name, 
+				    	at.interest_rate, at.monthly_fee, at.minimum_balance
 				FROM accounts a
 				JOIN users u ON a.user_id = u.id
 				JOIN account_types at ON a.account_type_id = at.id
@@ -198,6 +198,7 @@ public class AccountDaoImpl implements AccountDao {
 
 				AccountType type = new AccountType(
 						rs.getInt("type_id"),
+						AccountTypeEnum.valueOf(rs.getString("type_code")),
 						rs.getString("type_name"),
 						rs.getBigDecimal("interest_rate"),
 						rs.getBigDecimal("monthly_fee"),
