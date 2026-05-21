@@ -1,5 +1,28 @@
-.login-container {
+.login {
 	-fx-background-color: -color-accent;
+}
+
+.login .text-field {
+	-fx-background-color: transparent;
+    -fx-border-color: -white-focused;
+    -fx-border-radius: 5;
+    -fx-border-width: 0 0 2 0;
+}
+
+.login .text-field:focused {	/* Focus state (active input field) */
+    -fx-border-color: -color-black-muted;
+}
+
+.login .button {
+	-fx-border-color: -white-focused;
+	-fx-border-width: 4;
+}
+
+.login .button:hover {
+	-fx-background-color: -white-focused;
+	-fx-background-radius: 5;
+	-fx-text-fill: black;
+	-fx-cursor: hand;
 }
 
 .hyperlink{

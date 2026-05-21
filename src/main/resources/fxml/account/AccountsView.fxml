@@ -29,7 +29,7 @@
         <panes>
           <TitledPane animated="false" text="My Accounts">
                      <content>
-                        <ScrollPane fitToHeight="true" pannable="true" prefViewportHeight="220.0" vbarPolicy="NEVER">
+                        <ScrollPane fitToHeight="true" pannable="true" prefViewportHeight="250.0" vbarPolicy="NEVER">
                            <content>
                               <TilePane fx:id="accountsContainer" hgap="20.0" prefRows="1">
                                  <padding>

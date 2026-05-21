@@ -1,6 +1,8 @@
 .card{
 	-fx-background-color: -color-white;
-    -fx-background-radius: 5;
+    -fx-border-color: -color-black-muted;
+    -fx-border-radius: 5;
+    -fx-border-width: 3;
     -fx-padding: 10;
     -fx-spacing: 15;
 }

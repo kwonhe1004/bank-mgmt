@@ -4,11 +4,9 @@ import java.util.List;
 
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.MenuButton;
-import javafx.scene.layout.HBox;
 import javafx.scene.layout.StackPane;
 import khe.banking.dao.UserDaoImpl;
 import khe.banking.models.User;
@@ -43,8 +41,6 @@ public class DashboardController extends BaseController {
 	
 	@FXML
 	private MenuButton menubtn;
-	@FXML
-	private HBox menu;
 	@FXML
 	private Button settingbtn;
 	@FXML
@@ -141,7 +137,7 @@ public class DashboardController extends BaseController {
 	private void logout(ActionEvent e) {
 		if(UIUtil.showConfirm("Confirm to logout.")) {
 			SessionManager.logout();
-			SceneManager.switchScene((Node) e.getSource(), "/fxml/login/Login.fxml", false);
+			SceneManager.switchScene(menubtn, "/fxml/login/Login.fxml", false);
 		}
 	}
 

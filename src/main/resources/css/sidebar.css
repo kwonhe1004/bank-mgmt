@@ -8,6 +8,8 @@
     -fx-background-color: -color-accent;
 }
 
+
+
 /* =====================================================
    SIDEBAR BUTTONS
    -----------------------------------------------------
@@ -40,6 +42,9 @@
     -fx-border-color: -white-focused;
     -fx-border-radius: 5;
     -fx-border-width: 3;
+    -fx-font-size: 14px;
+    -fx-font-weight: bold;
+    -fx-cursor: hand;
 }
 
 

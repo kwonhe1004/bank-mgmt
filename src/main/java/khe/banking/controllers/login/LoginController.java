@@ -75,7 +75,6 @@ public class LoginController {
 		}
 		
 		User u = us.checkLogin(username.getText(), pf.getText());
-
 		if (u != null) {
 			SessionManager.setCurrentUser(u);
 			SceneManager.switchScene((Node) e.getSource(), "/fxml/Dashboard.fxml", true);
