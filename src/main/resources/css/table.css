@@ -123,13 +123,14 @@
    ACTION BUTTONS
 ========================= */
 .action-btn {
-	-fx-background-color: transparent;
-	-fx-cursor: hand;
+	-fx-background-color: transparent;	
+	-fx-border-color: transparent;
+    -fx-border-radius: 5;
+    -fx-border-width: 2;
 }
 
 .action-btn:hover {
-	-fx-background-color: -color-white-muted;
-	-fx-background-radius: 5;
+	-fx-border-color: -color-black;
 	-fx-cursor: hand;
 }
 
@@ -148,6 +149,15 @@
 /* Income rows (light green background) */
 .txn-table .table-row-income {
     -fx-background-color: -color-green;
+}
+
+.txn-table .table-row-highlight{
+	-fx-background-color: -color-black-muted;
+}
+
+.txn-table .table-row-highlight .table-cell {
+    -fx-text-fill: white;
+    -fx-font-weight: bold;
 }
 
 /* =====================================================
@@ -181,3 +191,6 @@
 	-fx-border-color: -color-black-muted;
 	-fx-border-width: 2;
 }
+
+
+

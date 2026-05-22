@@ -54,15 +54,6 @@
                   </ImageView>
                </graphic>
             </Button>
-				<Button alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" onAction="#createNew" prefHeight="30.0" prefWidth="40.0">
-					<graphic>
-						<ImageView fitHeight="20.0" fitWidth="20.0" pickOnBounds="true" preserveRatio="true">
-							<image>
-								<Image url="@../../img/add.png" />
-							</image>
-						</ImageView>
-					</graphic>
-				</Button>
 				<MenuButton fx:id="filterMenu" alignment="CENTER" maxWidth="-Infinity" minWidth="-Infinity" mnemonicParsing="false" prefHeight="30.0" styleClass="table-menu-btn" text="Filter: All" HBox.hgrow="NEVER">
 					<items>
 						<RadioMenuItem fx:id="allItem" mnemonicParsing="false" selected="true" text="All">

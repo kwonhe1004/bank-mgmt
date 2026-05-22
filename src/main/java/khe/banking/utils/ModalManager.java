@@ -28,10 +28,14 @@ public class ModalManager {
 	        if (controllerInitializer != null) {
 	            controllerInitializer.accept(controller);
 	        }
+	        
+	        Scene scene = new Scene(root);
+	        scene.getStylesheets().add(ModalManager.class
+	        		.getResource("/css/main.css").toExternalForm());
 
 	        Stage stage = new Stage();
 	        stage.setTitle(title);
-	        stage.setScene(new Scene(root));
+	        stage.setScene(scene);
 	        stage.initModality(Modality.APPLICATION_MODAL);
 	        stage.setResizable(false);
 	        stage.centerOnScreen();

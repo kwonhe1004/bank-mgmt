@@ -15,7 +15,7 @@
 
 <VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="780.0" prefWidth="880.0" spacing="25.0" xmlns="http://javafx.com/javafx/26" xmlns:fx="http://javafx.com/fxml/1" fx:controller="khe.banking.controllers.tag.TagsController">
    <children>
-      <Label styleClass="view-title" text="VIEW" />
+      <Label styleClass="view-title" text="TAGS VIEW" />
       <Accordion styleClass="accounts-accordion">
         <panes>
           <TitledPane animated="false" text="Categories">

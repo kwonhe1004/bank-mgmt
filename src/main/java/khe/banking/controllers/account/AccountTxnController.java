@@ -74,12 +74,13 @@ public class AccountTxnController {
     private TableColumn<Transaction, LocalDate> dateCol;
 	@FXML
     private TableColumn<Transaction, Void> actionCol;
-	
+		
 	private final ObservableList<Transaction> masterList = FXCollections.observableArrayList();
 	private FilteredList<Transaction> filteredList;
 
 	private TxnService ts = new TxnServiceImpl(new TxnDaoImpl());
 	private Account account;
+	private Transaction highlight;
 	
 	public void initialize() {
 		setupColumns();
@@ -98,11 +99,30 @@ public class AccountTxnController {
 		loadData();
 	}
 	
+	public void setHighlight(Transaction t) {
+		this.highlight = t;
+		highlightT();
+	}
+	
+	private void highlightT() {
+		if(highlight == null) {
+			return;
+		}
+		
+		for(Transaction t : txnTable.getItems()) {
+			if(t.getId() == highlight.getId()) {
+				txnTable.getSelectionModel().select(t);
+				txnTable.scrollTo(t);
+				setupRowStyling();
+				break;
+			}
+		}
+	}
+	
 	private void loadData() {
 		if(account == null) {
-			System.out.println("AccountTxnController.loadData(): account == null");
 			return;
-		}				
+		} 
 		masterList.setAll(ts.getTxnByAccount(account.getId()));
 	}
 
@@ -111,17 +131,6 @@ public class AccountTxnController {
 		amountCol.setCellValueFactory(new PropertyValueFactory<>("amount"));
 		typeCol.setCellValueFactory(new PropertyValueFactory<>("type"));
 		categoryCol.setCellValueFactory(new PropertyValueFactory<>("category"));
-//		categoryCol.setCellFactory(col -> new javafx.scene.control.TableCell<>() {
-//            @Override
-//            protected void updateItem(Category cat, boolean empty) {
-//                super.updateItem(cat, empty);
-//                if(empty || cat == null) {
-//                    setText(null);
-//                } else {
-//                    setText(cat.getName());
-//                }
-//            }
-//        });
 		dateCol.setCellValueFactory(new PropertyValueFactory<>("date"));
 		TableActionFactory.addActions(actionCol, this::handleEdit, this::handleDelete);
 	}
@@ -167,6 +176,7 @@ public class AccountTxnController {
 	private void goBack() {
 		NavigationManager.switchView(ViewLoader.load("/fxml/account/AccountsView.fxml"));   
 	}
+	
 	
 	// =========================
 		// FILTER LOGIC
@@ -240,13 +250,15 @@ public class AccountTxnController {
 			@Override
 			protected void updateItem(Transaction tr, boolean empty) {
 				super.updateItem(tr, empty);
-				getStyleClass().removeAll("table-row-expense", "table-row-income");
+				getStyleClass().removeAll("table-row-expense", "table-row-income", "table-row-highlight");
 				
 				if (empty || tr == null) {
 					return;
-				}				
+				}
 				
-				if(tr.getType() == TxnType.EXPENSE) {
+				if(highlight != null && tr.getId() == highlight.getId()) {
+					getStyleClass().add("table-row-highlight");
+				} else if(tr.getType() == TxnType.EXPENSE) {
 					getStyleClass().add("table-row-expense");
 				} else if(tr.getType() == TxnType.INCOME) {
 					getStyleClass().add("table-row-income");

@@ -8,6 +8,8 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.collections.transformation.FilteredList;
 import javafx.fxml.FXML;
+import javafx.geometry.Pos;
+import javafx.scene.control.Button;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.MenuButton;
 import javafx.scene.control.RadioMenuItem;
@@ -18,26 +20,24 @@ import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.control.ToggleGroup;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
+import javafx.scene.layout.HBox;
 import javafx.scene.layout.TilePane;
 import khe.banking.controllers.components.AccountCardController;
-import khe.banking.controllers.txn.FormController;
 import khe.banking.dao.AccountDaoImpl;
 import khe.banking.dao.TxnDaoImpl;
 import khe.banking.models.Account;
 import khe.banking.models.Category;
 import khe.banking.models.Transaction;
 import khe.banking.models.User;
-import khe.banking.models.enums.FormMode;
 import khe.banking.models.enums.TxnType;
 import khe.banking.services.AccountService;
 import khe.banking.services.AccountServiceImpl;
 import khe.banking.services.TxnService;
 import khe.banking.services.TxnServiceImpl;
-import khe.banking.utils.ModalManager;
 import khe.banking.utils.NavigationManager;
 import khe.banking.utils.SessionManager;
-import khe.banking.utils.TableActionFactory;
-import khe.banking.utils.UIUtil;
 import khe.banking.utils.ViewData;
 import khe.banking.utils.ViewLoader;
 
@@ -123,7 +123,6 @@ public class AccountsController {
         	ViewData<AccountCardController> data = ViewLoader.loadView("/fxml/components/AccountCard.fxml");
         	AccountCardController controller = data.getController();
         	controller.setAccount(account);
-//        	controller.setOnViewTransactions(this::showAccountDetails);
         	controller.setOnViewTransactions(a -> {
                 showAccountDetails(a);
             });
@@ -156,7 +155,7 @@ public class AccountsController {
 		typeCol.setCellValueFactory(new PropertyValueFactory<>("type"));
 		categoryCol.setCellValueFactory(new PropertyValueFactory<>("category"));
 		dateCol.setCellValueFactory(new PropertyValueFactory<>("date"));
-		TableActionFactory.addActions(actionCol, this::handleEdit, this::handleDelete);
+		setupActionColumn();
 	}
     
     private void setupTable() {
@@ -164,37 +163,47 @@ public class AccountsController {
 		setupAmountStyling();
 	}
 	
+    private void setupActionColumn() {
+    	actionCol.setCellFactory(param -> new TableCell<>() {
+    		private final Button detailsBtn = new Button();
+    		private final HBox container = new HBox(10, detailsBtn);
+    		{
+    			container.setAlignment(Pos.CENTER);
+    			
+    			Image detailsImg = new Image(getClass().getResource("/img/more.png").toExternalForm());
+    			ImageView detailsIcon = new ImageView(detailsImg);
+    			detailsIcon.setFitHeight(20);
+    			detailsIcon.setFitWidth(20);
+    			
+    			detailsBtn.setGraphic(detailsIcon);
+    			detailsBtn.getStyleClass().add("action-btn");
+    			detailsBtn.setOnAction(e -> {
+    				Transaction t = getTableView().getItems().get(getIndex());
+    				System.out.println(t);
+    				handleDetails(t);
+    			});
+    		}
+    		
+    		@Override
+    		public void updateItem(Void item, boolean empty) {
+    			super.updateItem(item, empty);
+    			setGraphic(empty ? null : container);
+    		}    		
+    	});
+    }	
 	
-	private void handleDelete(Transaction t) {
-		if(UIUtil.showConfirm("Delete this transaction?")) {
-			ts.deleteTransaction(t);			
-			UIUtil.showInfo("Transaction deleted.");
-			loadData();
-		}
-	}
-	
-	private void handleEdit(Transaction t) {
-		Boolean saved = ModalManager.showModal("/fxml/account/FormView.fxml", "Edit Transaction", (FormController c) -> {
-			c.setMode(FormMode.EDIT);
-			c.setTransaction(t);
-		}, FormController::isSaved);
-
-		if (Boolean.TRUE.equals(saved)) {
-			loadData(); // only reload if saved
-		}
-	}
-	
-	@FXML
-	private void createNew() {
-		Boolean saved = ModalManager.showModal("/fxml/txn/FormView.fxml", "Add Transaction", (FormController c) -> {
-			c.setMode(FormMode.ADD);
-		}, FormController::isSaved);
-
-		if (Boolean.TRUE.equals(saved)) {
-			loadData();
-		}
-	}
-	
+    public void handleDetails(Transaction t) {
+    	Account a = t.getAccount();
+    	if(a.getNickname() == null) {
+    		a = as.getAccountById(a.getId());
+    	}
+    	ViewData<AccountTxnController> data = ViewLoader.loadView("/fxml/account/AccountTxnView.fxml");
+        AccountTxnController controller = data.getController();
+        controller.setAccount(a);
+        controller.setHighlight(t);
+        NavigationManager.switchView(data.getView());
+    }
+    
 	// =========================
 		// FILTER LOGIC
 		// =========================

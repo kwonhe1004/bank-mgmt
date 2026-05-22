@@ -9,9 +9,9 @@
 <?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.layout.VBox?>
 
-<VBox prefHeight="780.0" prefWidth="880.0" spacing="25.0" styleClass="analytics-section" xmlns="http://javafx.com/javafx/26" xmlns:fx="http://javafx.com/fxml/1" fx:controller="khe.banking.controllers.report.ReportsController">
+<VBox prefHeight="780.0" prefWidth="880.0" spacing="25.0" xmlns="http://javafx.com/javafx/26" xmlns:fx="http://javafx.com/fxml/1" fx:controller="khe.banking.controllers.report.ReportsController">
    <children>
-      <Label styleClass="view-title" text="VIEW" />
+      <Label styleClass="view-title" text="REPORTS VIEW" />
       <Accordion styleClass="accounts-accordion" VBox.vgrow="ALWAYS">
         <panes>
           <TitledPane animated="false" text="Cash Flow: LineChart">

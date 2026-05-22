@@ -47,6 +47,7 @@ public class DashboardController extends BaseController {
 	private Button logoutbtn;
 		
 	private final UserServiceImpl us = new UserServiceImpl(new UserDaoImpl());
+	private User u;
 
 	/* =========================================
 	 * 	INITIALIZE
@@ -54,15 +55,16 @@ public class DashboardController extends BaseController {
 	public void initialize() {
 		if(SessionManager.getCurrentUser() == null) {
 			SessionManager.setCurrentUser(us.getOne("admin@admin.com"));
+//			SessionManager.setCurrentUser(us.getOne("johnsmith@gmail.com"));
+			u = SessionManager.getCurrentUser();
 		}
 		
 		NavigationManager.setContentArea(pane);
-		
+				
 		// DEFAULT VIEW
         setActiveButton(home);
 		navigate("/fxml/HomeView.fxml");
-		setMenuButtons();
-		setLabels(SessionManager.getCurrentUser());		
+		setSidebar(u);	
 	}
 	
 	/* =========================================
@@ -79,14 +81,18 @@ public class DashboardController extends BaseController {
 		selected.getStyleClass().add("active");
 	}
 	
-	private void setMenuButtons() {
+	private void setSidebar(User u) {
 		settingbtn.prefWidthProperty().bind(menubtn.widthProperty().subtract(10));
 		settingbtn.prefHeightProperty().bind(menubtn.heightProperty().subtract(10));
 		logoutbtn.prefWidthProperty().bind(menubtn.widthProperty().subtract(10));
 		logoutbtn.prefHeightProperty().bind(menubtn.heightProperty().subtract(10));
-	}
-	
-	private void setLabels(User u) {
+		
+		if(u.getId() == 1) {
+			users.setVisible(true);
+		} else {
+			users.setVisible(false);
+		}
+		
 		initials.setText(u.getInitials());
 		profileName.setText(u.getFullName());
 		profileRole.setText(u.getRole().name());

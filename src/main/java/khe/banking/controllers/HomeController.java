@@ -33,7 +33,7 @@ public class HomeController {
 	
 	public void initialize() {
 		User u = SessionManager.getCurrentUser();
-		welcomeLabel.setText("Welcome " + u.getFirst());
+		welcomeLabel.setText("WELCOME, " + u.getFirst().toUpperCase());
 		loadAccounts(u);
 		loadAnalytics(u);
 	}
