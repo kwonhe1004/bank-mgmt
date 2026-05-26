@@ -3,12 +3,14 @@
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.DatePicker?>
+<?import javafx.scene.control.Hyperlink?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.MenuButton?>
 <?import javafx.scene.control.RadioMenuItem?>
 <?import javafx.scene.control.TableColumn?>
 <?import javafx.scene.control.TableView?>
 <?import javafx.scene.control.TextField?>
+<?import javafx.scene.control.ToggleButton?>
 <?import javafx.scene.control.ToggleGroup?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
@@ -18,10 +20,47 @@
 
 <VBox prefHeight="780.0" prefWidth="880.0" spacing="20.0" xmlns="http://javafx.com/javafx/26" xmlns:fx="http://javafx.com/fxml/1" fx:controller="khe.banking.controllers.account.AccountTxnController">
    <children>
-      <HBox alignment="CENTER_LEFT" spacing="15.0">
+      <HBox alignment="CENTER_LEFT" spacing="20.0">
          <children>
             <Button mnemonicParsing="false" onAction="#goBack" text="← Back" />
             <Label fx:id="titleLabel" styleClass="view-title" text="Account Nickname" HBox.hgrow="ALWAYS" />
+            <ToggleButton mnemonicParsing="false" onAction="#detailsBtn" style="-fx-background-color: transparent;">
+               <graphic>
+                  <ImageView fitHeight="20.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../../img/more.png" />
+                     </image>
+                  </ImageView>
+               </graphic>
+            </ToggleButton>
+         </children>
+      </HBox>
+      <HBox fx:id="detailsBox" alignment="CENTER_LEFT" spacing="20.0" visible="false">
+         <children>
+            <VBox alignment="CENTER" styleClass="card">
+               <children>
+                  <Label styleClass="card-heading" text="Account Number:" />
+                  <Label fx:id="numLabel" text="Label" />
+               </children>
+            </VBox>
+            <VBox alignment="CENTER" styleClass="card">
+               <children>
+                  <Label styleClass="card-heading" text="Balance:" />
+                  <Label fx:id="balanceLabel" text="Label" />
+               </children>
+            </VBox>
+            <VBox alignment="CENTER" styleClass="card">
+               <children>
+                  <Label styleClass="card-heading" text="Status:" />
+                  <Label fx:id="statusLabel" text="Label" />
+               </children>
+            </VBox>
+            <VBox alignment="CENTER" styleClass="card">
+               <children>
+                  <Label styleClass="card-heading" text="Account Type:" />
+                  <Hyperlink fx:id="typeLabel" onAction="#typeLink" text="Hyperlink" />
+               </children>
+            </VBox>
          </children>
       </HBox>
       <HBox alignment="CENTER" spacing="10.0">
@@ -69,6 +108,7 @@
           <TableColumn fx:id="typeCol" prefWidth="75.0" text="Type" />
             <TableColumn fx:id="categoryCol" prefWidth="75.0" text="Category" />
             <TableColumn fx:id="dateCol" prefWidth="75.0" text="Date" />
+            <TableColumn fx:id="notesCol" prefWidth="75.0" text="Notes" />
             <TableColumn fx:id="actionCol" prefWidth="75.0" text="Actions" />
             
         </columns>

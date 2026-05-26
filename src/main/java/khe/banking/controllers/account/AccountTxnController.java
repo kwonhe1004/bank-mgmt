@@ -8,6 +8,7 @@ import javafx.collections.ObservableList;
 import javafx.collections.transformation.FilteredList;
 import javafx.fxml.FXML;
 import javafx.scene.control.DatePicker;
+import javafx.scene.control.Hyperlink;
 import javafx.scene.control.Label;
 import javafx.scene.control.MenuButton;
 import javafx.scene.control.RadioMenuItem;
@@ -18,6 +19,8 @@ import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.control.ToggleGroup;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.layout.HBox;
+import khe.banking.controllers.tag.TagsController;
 import khe.banking.controllers.txn.FormController;
 import khe.banking.dao.TxnDaoImpl;
 import khe.banking.models.Account;
@@ -29,14 +32,25 @@ import khe.banking.services.TxnService;
 import khe.banking.services.TxnServiceImpl;
 import khe.banking.utils.ModalManager;
 import khe.banking.utils.NavigationManager;
-import khe.banking.utils.TableActionFactory;
+import khe.banking.utils.TableFactory;
 import khe.banking.utils.UIUtil;
+import khe.banking.utils.ViewData;
 import khe.banking.utils.ViewLoader;
 
 public class AccountTxnController {
 	
 	@FXML
     private Label titleLabel;
+	@FXML
+    private HBox detailsBox;
+	@FXML
+    private Label numLabel;
+	@FXML
+    private Label balanceLabel;
+	@FXML
+    private Label statusLabel;
+	@FXML
+    private Hyperlink typeLabel;
     
     @FXML
 	private MenuButton filterMenu;
@@ -73,6 +87,8 @@ public class AccountTxnController {
 	@FXML
     private TableColumn<Transaction, LocalDate> dateCol;
 	@FXML
+	private TableColumn<Transaction, String> notesCol;
+	@FXML
     private TableColumn<Transaction, Void> actionCol;
 		
 	private final ObservableList<Transaction> masterList = FXCollections.observableArrayList();
@@ -83,6 +99,7 @@ public class AccountTxnController {
 	private Transaction highlight;
 	
 	public void initialize() {
+		detailsBox.managedProperty().bind(detailsBox.visibleProperty());
 		setupColumns();
 		setupStyling();
 		
@@ -95,8 +112,23 @@ public class AccountTxnController {
 
 	public void setAccount(Account account) {
 		this.account = account;
-		titleLabel.setText(account.getNickname() + " Transactions");
+		loadAccount();
 		loadData();
+	}
+	
+	private void loadData() {
+		if(account == null) {
+			return;
+		} 
+		masterList.setAll(ts.getTxnByAccount(account.getId()));
+	}
+	
+	private void loadAccount() {
+		titleLabel.setText(account.getNickname() + " Transactions");
+		numLabel.setText(account.getAccountNum());
+		balanceLabel.setText(account.getBalance().toString());
+		statusLabel.setText(account.getStatus().name());
+		typeLabel.setText(account.getAccountType().getName());		
 	}
 	
 	public void setHighlight(Transaction t) {
@@ -113,26 +145,20 @@ public class AccountTxnController {
 			if(t.getId() == highlight.getId()) {
 				txnTable.getSelectionModel().select(t);
 				txnTable.scrollTo(t);
-				setupRowStyling();
 				break;
 			}
 		}
 	}
 	
-	private void loadData() {
-		if(account == null) {
-			return;
-		} 
-		masterList.setAll(ts.getTxnByAccount(account.getId()));
-	}
-
 	private void setupColumns() {
 		nameCol.setCellValueFactory(new PropertyValueFactory<>("name"));
 		amountCol.setCellValueFactory(new PropertyValueFactory<>("amount"));
 		typeCol.setCellValueFactory(new PropertyValueFactory<>("type"));
 		categoryCol.setCellValueFactory(new PropertyValueFactory<>("category"));
 		dateCol.setCellValueFactory(new PropertyValueFactory<>("date"));
-		TableActionFactory.addActions(actionCol, this::handleEdit, this::handleDelete);
+		notesCol.setCellValueFactory(new PropertyValueFactory<>("note"));
+		TableFactory.addActions(actionCol, this::handleEdit, this::handleDelete);
+		TableFactory.enableWrapping(notesCol);
 	}
 	
 	private void setupStyling() {
@@ -140,6 +166,18 @@ public class AccountTxnController {
 		setupAmountStyling();
 	}
 	
+	@FXML
+	private void detailsBtn() {
+		detailsBox.setVisible(!detailsBox.isVisible());
+	}
+	
+	@FXML
+	private void typeLink() {
+		ViewData<TagsController> data = ViewLoader.loadView("/fxml/tag/TagsView.fxml");
+		TagsController controller = data.getController();
+		controller.setHighlight(account.getAccountType());
+		NavigationManager.switchView(data.getView(), "TAGS");
+	}
 	
 	private void handleDelete(Transaction t) {
 		if(UIUtil.showConfirm("Delete this transaction?")) {
@@ -174,7 +212,7 @@ public class AccountTxnController {
 	
 	@FXML
 	private void goBack() {
-		NavigationManager.switchView(ViewLoader.load("/fxml/account/AccountsView.fxml"));   
+		NavigationManager.switchView(ViewLoader.load("/fxml/account/AccountsView.fxml"), "ACCOUNTS");   
 	}
 	
 	
@@ -250,15 +288,15 @@ public class AccountTxnController {
 			@Override
 			protected void updateItem(Transaction tr, boolean empty) {
 				super.updateItem(tr, empty);
-				getStyleClass().removeAll("table-row-expense", "table-row-income", "table-row-highlight");
+				getStyleClass().removeAll("table-row-expense", "table-row-income");
 				
 				if (empty || tr == null) {
 					return;
 				}
 				
-				if(highlight != null && tr.getId() == highlight.getId()) {
-					getStyleClass().add("table-row-highlight");
-				} else if(tr.getType() == TxnType.EXPENSE) {
+//				if(highlight != null && tr.getId() == highlight.getId()) {
+//					getStyleClass().add("table-row-highlight");
+				if(tr.getType() == TxnType.EXPENSE) {
 					getStyleClass().add("table-row-expense");
 				} else if(tr.getType() == TxnType.INCOME) {
 					getStyleClass().add("table-row-income");
@@ -298,7 +336,6 @@ public class AccountTxnController {
 			}				
 		});
 	}
-	
 	
 	
 	

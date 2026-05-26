@@ -5,35 +5,38 @@ import java.math.BigDecimal;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
+import javafx.scene.control.Accordion;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
+import javafx.scene.control.TitledPane;
 import javafx.scene.control.cell.PropertyValueFactory;
 import khe.banking.dao.AccountTypeDaoImpl;
 import khe.banking.dao.CategoryDaoImpl;
 import khe.banking.models.AccountType;
 import khe.banking.models.Category;
 import khe.banking.models.Category.CategoryType;
+import khe.banking.models.enums.AccountTypeEnum;
 import khe.banking.services.AccountTypeService;
 import khe.banking.services.AccountTypeServiceImpl;
 import khe.banking.services.CategoryService;
 import khe.banking.services.CategoryServiceImpl;
+import khe.banking.utils.TableFactory;
 
 public class TagsController {
-	
+		
 	@FXML
-	private TableView<Category> categoryTable;
-	
-	@FXML 
-	private TableColumn<Category, Integer> c_idCol;
-	@FXML 
-	private TableColumn<Category, String> c_nameCol;
-	@FXML 
-	private TableColumn<Category, CategoryType> c_typeCol;
+	private Accordion accordion;
+	@FXML
+	private TitledPane atPane;
+	@FXML
+	private TitledPane cPane;
 	
 	@FXML
 	private TableView<AccountType> typeTable;	
 	@FXML 
 	private TableColumn<AccountType, Integer> at_idCol;
+	@FXML 
+	private TableColumn<AccountType, AccountTypeEnum> codeCol;	
 	@FXML 
 	private TableColumn<AccountType, String> at_nameCol;
 	@FXML 
@@ -45,13 +48,26 @@ public class TagsController {
 	@FXML 
 	private TableColumn<AccountType, BigDecimal> minCol;
 	
+	@FXML
+	private TableView<Category> categoryTable;
+	
+	@FXML 
+	private TableColumn<Category, Integer> c_idCol;
+	@FXML 
+	private TableColumn<Category, String> c_nameCol;
+	@FXML 
+	private TableColumn<Category, CategoryType> c_typeCol;
+	
 	private final ObservableList<Category> cList = FXCollections.observableArrayList();
 	private final ObservableList<AccountType> atList = FXCollections.observableArrayList();
 	
 	private final CategoryService cs = new CategoryServiceImpl(new CategoryDaoImpl());
 	private final AccountTypeService ats = new AccountTypeServiceImpl(new AccountTypeDaoImpl());
 	
+	private AccountType highlight;
+	
 	public void initialize() {
+		accordion.setExpandedPane(atPane);
 		setupTable();
 		loadData();
 	}
@@ -64,16 +80,40 @@ public class TagsController {
 		
 		typeTable.setItems(atList);
 		at_idCol.setCellValueFactory(new PropertyValueFactory<>("id"));
+		codeCol.setCellValueFactory(new PropertyValueFactory<>("code"));
 		at_nameCol.setCellValueFactory(new PropertyValueFactory<>("name"));
 		interestCol.setCellValueFactory(new PropertyValueFactory<>("interestRate"));
 		feeCol.setCellValueFactory(new PropertyValueFactory<>("monthlyFee"));
 		limitCol.setCellValueFactory(new PropertyValueFactory<>("withdrawalLimit"));
 		minCol.setCellValueFactory(new PropertyValueFactory<>("minimumBalance"));
+		
+		TableFactory.enableWrapping(interestCol);
+		TableFactory.enableWrapping(feeCol);
+		TableFactory.enableWrapping(limitCol);
+		TableFactory.enableWrapping(minCol);		
 	}
 	
 	private void loadData() {
 		cList.setAll(cs.getAllCategories());
 		atList.setAll(ats.getAllAccountTypes());
+	}
+	
+	public void setHighlight(AccountType at) {
+		this.highlight = at;
+		highlightRow();
+	}
+	
+	private void highlightRow() {
+		if(highlight == null) {
+			return;
+		}
+		for(AccountType at : typeTable.getItems()) {
+			if(at.getId() == highlight.getId()) {
+				typeTable.getSelectionModel().select(at);
+				typeTable.scrollTo(at);
+				break;
+			}
+		}
 	}
 	
 	@FXML

@@ -10,6 +10,10 @@
     -fx-border-width: 2;
 }
 
+.table-view .filler {
+	-fx-background-color: transparent;
+}
+
 /* =====================================================
    TABLE HEADER
    -----------------------------------------------------
@@ -17,18 +21,24 @@
 ===================================================== */
 .table-view .column-header-background {		/* Header background strip */
     -fx-background-color: -color-black-muted;
-    -fx-background-radius: 8 8 0 0; /* Top-Left, Top-Right, Bottom-Right, Bottom-Left. */
+    -fx-background-radius: 8 8 0 0; /* TL, TR, BR, BL */
+    -fx-padding: 10;
 }
 
 .table-view .column-header {	/* Individual column header */
     -fx-background-color: transparent;
-    -fx-border-color: transparent transparent -color-black-muted transparent;
-    -fx-padding: 10px;
 }
 
 .table-view .column-header .label {		/* Header text */
+    -fx-alignment: CENTER;
     -fx-text-fill: -color-white;
-    -fx-font-weight: bold;
+    -fx-font: 14px "Arial Black";
+    -fx-wrap-text: true; 
+}
+
+.wrapped-header {
+    -fx-fill: -color-white;
+    -fx-font: 14px "Arial Black";
 }
 
 /* =====================================================
@@ -38,7 +48,12 @@
 ===================================================== */
 .table-cell {
 	-fx-border-color: transparent;
-    -fx-text-fill: -color-black;
+	-fx-border-width: 2;
+	-fx-padding: 5;
+	-fx-alignment: CENTER;
+    -fx-font-weight: bold;
+    -fx-text-fill: -color-black; 
+    -fx-wrap-text: true;   
 }
 
 /* =====================================================
@@ -46,58 +61,110 @@
    -----------------------------------------------------
    Applies alternating row colors for readability.
 ===================================================== */
-.table-row-cell:filled {
-	-fx-background-color: -color-white-muted;
-	-fx-background-radius: 5;
-	-fx-border-color: -color-white-muted;
-	-fx-border-width: 2;
-}
-
 .table-row-cell:empty {
 	-fx-background-color: transparent;
-	-fx-border-width: 0px;
+	-fx-border-width: 0;
 }
 
-/*
+.table-row-cell:filled {
+	-fx-background-radius: 5;
+	-fx-border-color: -color-black-muted;
+	-fx-border-width: 2;
+	-fx-padding: 5;
+}
+
 .table-row-cell:filled:even {
     -fx-background-color: #adb5bd;
 }
 
 .table-row-cell:filled:odd {
     -fx-background-color: #ced4da;
-}
- 
- */
+} 
 
 /* =====================================================
    ROW INTERACTIONS
    -----------------------------------------------------
    Hover and selection states for rows.
 ===================================================== */
-/* Hover effect */
-.table-row-cell:filled:hover {
-    -fx-background-color: white-focused;
+.table-row-cell:empty:hover {
+    -fx-background-color: transparent;
+    -fx-cursor: default;
+}
+
+.table-row-cell:filled:even:hover,
+.table-row-cell:filled:odd:hover {
+	-fx-background-color: derive(-color-black-muted, 50%);
 	-fx-background-radius: 5;
+	-fx-cursor: hand;
+} 
+
+.table-row-cell:selected,
+.table-row-cell:filled:even:selected,
+.table-row-cell:filled:odd:selected {
+	-fx-background-color: -color-black-muted;
+	-fx-border-color: -color-white-muted;
+	-fx-border-width: 2;
 	-fx-cursor: hand;
 }
 
-.table-row-cell:empty:hover {
-    -fx-background-color: transparent;
-}
- 
-.table-row-cell:filled:selected {
-	-fx-border-color: -color-black-muted; 
-	-fx-cursor: hand;
+.table-row-cell:selected .table-cell, 
+.table-row-cell:filled:even:selected .table-cell,
+.table-row-cell:filled:odd:selected .table-cell {
+	-fx-text-fill: white;
+    -fx-font-weight: bold;
 }
 
 /* =====================================================
-   FOCUS FIX
+   TRANSACTION TABLE OVERRIDES
    -----------------------------------------------------
-   Removes default JavaFX focus border (cleaner UI).
+   Applies ONLY to tables with styleClass="txn-table"
+   Used for income/expense row highlighting.
 ===================================================== */
-.table-view:focused {
-    -fx-background-insets: 0;
+
+.txn-table{
+    -color-red: #f6dada;	
+	-color-green: #dbe7d0;
 }
+
+/* Expense rows */
+.txn-table .table-row-expense {
+    -fx-background-color: -color-red;
+}
+.table-row-cell.table-row-expense:hover {
+    -fx-background-color: #e79c9c;
+}
+.table-row-cell.table-row-expense:selected {
+    -fx-background-color: -color-black-muted;
+}
+
+/* Income rows */
+.txn-table .table-row-income {
+    -fx-background-color: -color-green;
+}
+.table-row-cell.table-row-income:hover {
+    -fx-background-color: #b4cd9d;
+}
+.table-row-cell.table-row-income:selected {
+    -fx-background-color: -color-black-muted;
+}
+
+/* =====================================================
+   AMOUNT COLUMN STYLING
+   -----------------------------------------------------
+   Colors amount text based on transaction type.
+===================================================== */
+
+/* Expense text (red) */
+.txn-table .amount-expense {
+    -fx-text-fill: red;
+}
+
+/* Income text (green) */
+.txn-table .amount-income {
+    -fx-text-fill: green;
+}
+
+
 
 /* =========================
    MENU BUTTON
@@ -135,61 +202,12 @@
 }
 
 /* =====================================================
-   TRANSACTION TABLE OVERRIDES
+   FOCUS FIX
    -----------------------------------------------------
-   Applies ONLY to tables with styleClass="txn-table"
-   Used for income/expense row highlighting.
+   Removes default JavaFX focus border (cleaner UI).
 ===================================================== */
-
-/* Expense rows (light red background) */
-.txn-table .table-row-expense {
-    -fx-background-color: -color-red;
-}
-
-/* Income rows (light green background) */
-.txn-table .table-row-income {
-    -fx-background-color: -color-green;
-}
-
-.txn-table .table-row-highlight{
-	-fx-background-color: -color-black-muted;
-}
-
-.txn-table .table-row-highlight .table-cell {
-    -fx-text-fill: white;
-    -fx-font-weight: bold;
-}
-
-/* =====================================================
-   AMOUNT COLUMN STYLING
-   -----------------------------------------------------
-   Colors amount text based on transaction type.
-===================================================== */
-
-/* Expense text (red) */
-.txn-table .amount-expense {
-    -fx-text-fill: #d32f2f;
-}
-
-/* Income text (green) */
-.txn-table .amount-income {
-    -fx-text-fill: #2e7d32;
-}
-
-/* =====================================================
-   TAG TABLE
-===================================================== */
-.tag-table .table-cell{
-	-fx-padding: 10;
-	-fx-font-size: 14px;
-    -fx-font-weight: bold;	
-}
-
-.tag-table .table-row-cell:filled {
-	-fx-background-color: -color-white-muted;
-	-fx-background-radius: 5;
-	-fx-border-color: -color-black-muted;
-	-fx-border-width: 2;
+.table-view:focused {
+    -fx-background-insets: 0;
 }
 
 

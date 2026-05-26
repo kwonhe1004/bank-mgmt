@@ -63,7 +63,7 @@ public class AccountOverviewController {
 		ViewData<AccountTxnController> data = ViewLoader.loadView("/fxml/account/AccountTxnView.fxml");
         AccountTxnController controller = data.getController();
         controller.setAccount(a);
-        NavigationManager.switchView(data.getView());
+        NavigationManager.switchView(data.getView(), "ACCOUNTS");
 	}
 	
 	

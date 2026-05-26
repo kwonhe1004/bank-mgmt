@@ -16,25 +16,25 @@
             </HBox>
             <HBox spacing="20.0" VBox.vgrow="ALWAYS">
                <children>
-                  <VBox alignment="CENTER" spacing="10.0" styleClass="account-card" HBox.hgrow="ALWAYS">
+                  <VBox alignment="CENTER" styleClass="account-card" HBox.hgrow="ALWAYS">
                   	<children>
                   		<Label styleClass="card-heading" text="Total Balance" />
                   		<Label fx:id="balanceLabel" text="\$0.00" />
                   	</children>
                   </VBox>
-                  <VBox alignment="CENTER" spacing="10.0" styleClass="account-card" HBox.hgrow="ALWAYS">
+                  <VBox alignment="CENTER" styleClass="account-card" HBox.hgrow="ALWAYS">
                   	<children>
                   		<Label styleClass="card-heading" text="Monthly Income" />
                   		<Label fx:id="incomeLabel" text="\$0.00" />
                   	</children>
                   </VBox>
-                  <VBox alignment="CENTER" spacing="10.0" styleClass="account-card" HBox.hgrow="ALWAYS">
+                  <VBox alignment="CENTER" styleClass="account-card" HBox.hgrow="ALWAYS">
                   	<children>
                   		<Label styleClass="card-heading" text="Monthly Expense" />
                   		<Label fx:id="expenseLabel" text="\$0.00" />
                   	</children>
                   </VBox>
-                  <VBox alignment="CENTER" spacing="10.0" styleClass="account-card" HBox.hgrow="ALWAYS">
+                  <VBox alignment="CENTER" styleClass="account-card" HBox.hgrow="ALWAYS">
                   	<children>
                   		<Label styleClass="card-heading" text="Net Savings" />
                   		<Label fx:id="netLabel" text="\$0.00" />

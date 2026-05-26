@@ -16,7 +16,7 @@ import khe.banking.models.enums.FormMode;
 import khe.banking.models.enums.UserRole;
 import khe.banking.services.UserServiceImpl;
 import khe.banking.utils.ModalManager;
-import khe.banking.utils.TableActionFactory;
+import khe.banking.utils.TableFactory;
 import khe.banking.utils.UIUtil;
 
 public class UsersController {
@@ -72,7 +72,7 @@ public class UsersController {
 		dobCol.setCellValueFactory(new PropertyValueFactory<>("dob"));
         roleCol.setCellValueFactory(new PropertyValueFactory<>("role"));
 
-		TableActionFactory.addActions(actionCol, this::handleEdit, this::handleDelete);
+		TableFactory.addActions(actionCol, this::handleEdit, this::handleDelete);
 	}
 
 	private void handleDelete(User u) {

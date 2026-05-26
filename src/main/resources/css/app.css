@@ -20,10 +20,6 @@
     -color-black: #495057;
     -color-black-muted: #6b7280;
     -color-accent: #adbfce; /* #4f6170 */
-    
-    /* Transaction highlight backgrounds & Semantic colors */
-    -color-green: #dbe7d0;
-    -color-red: #f6dada;
 }
 
 /* =====================================================
@@ -61,14 +57,16 @@
    -----------------------------------------------------
    Default button styling and variants.
 ===================================================== */
-.button {
+.button,
+.toggle-button {
 	-fx-background-color: transparent;
     -fx-border-color: -color-white-muted;
     -fx-border-radius: 5;
     -fx-border-width: 2;
 }
 
-.button:hover {
+.button:hover,
+.toggle-button:hover {
 	-fx-border-color: -color-black-muted;
 	-fx-cursor: hand;
 }

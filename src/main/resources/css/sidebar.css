@@ -1,19 +1,28 @@
-
+.dashboard{
+	-fx-background-color: -color-accent;
+}
 /* =====================================================
    SIDEBAR CONTAINER (NAVIGATOR)
    -----------------------------------------------------
    Background and base layout for sidebar navigation.
 ===================================================== */
-.sidebar {
-    -fx-background-color: -color-accent;
+.logo-pane,
+.sidebar{
+	-fx-background-color: -color-accent;
+	-fx-border-color: -color-black-muted;
+    -fx-border-radius: 5;
+    -fx-border-width: 3;
 }
+
 
 /* =====================================================
    SIDEBAR BUTTONS
    -----------------------------------------------------
    Navigation buttons inside sidebar.
 ===================================================== */
-.sidebar .button {
+.sidebar .button,
+.sidebar .toggle-button,
+.sidebar .menu-button {
     -fx-background-color: transparent;
     -fx-border-color: -white-focused;
     -fx-border-radius: 5;
@@ -23,7 +32,9 @@
 }
 
 /* Hover effect for navigation items */
-.sidebar .button:hover {
+.sidebar .button:hover,
+.sidebar .toggle-button:hover,
+.sidebar .menu-button:hover {
     -fx-background-color: -white-focused;
     -fx-background-radius: 5;
 	-fx-cursor: hand;
@@ -32,17 +43,8 @@
 .sidebar .button.active {
     -fx-background-color: -white-focused;
     -fx-background-radius: 5;
-  	-fx-cursor: hand;
-}
-
-.sidebar .menu-button{
-	-fx-background-color: transparent;
     -fx-border-color: -white-focused;
-    -fx-border-radius: 5;
-    -fx-border-width: 3;
-    -fx-font-size: 14px;
-    -fx-font-weight: bold;
-    -fx-cursor: hand;
+  	-fx-cursor: hand;
 }
 
 

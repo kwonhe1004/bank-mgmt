@@ -8,9 +8,9 @@ import khe.banking.utils.ViewLoader;
 // Access to navigation system
 
 public abstract class BaseController {
-	protected void navigate(String fxmlPath) {
+	protected void navigate(String fxmlPath, String viewId) {
         Parent view = ViewLoader.load(fxmlPath);
-        NavigationManager.switchView(view);
+        NavigationManager.switchView(view, viewId);
     }
 
 }

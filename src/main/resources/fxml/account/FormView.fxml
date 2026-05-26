@@ -14,9 +14,9 @@
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="800.0" styleClass="form-container" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" fx:controller="khe.banking.controllers.account.FormController">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="800.0" styleClass="form-container" xmlns="http://javafx.com/javafx/26" xmlns:fx="http://javafx.com/fxml/1" fx:controller="khe.banking.controllers.account.FormController">
    <children>
-      <Label fx:id="titleLabel" styleClass="form-title" text="Transaction form" AnchorPane.leftAnchor="50.0" AnchorPane.topAnchor="30.0"/>
+      <Label fx:id="titleLabel" styleClass="form-title" text="Transaction form" AnchorPane.leftAnchor="50.0" AnchorPane.topAnchor="30.0" />
       <GridPane hgap="75.0" layoutX="10.0" layoutY="10.0" maxWidth="550.0" vgap="40.0" AnchorPane.leftAnchor="50.0" AnchorPane.topAnchor="100.0">
          <columnConstraints>
             <ColumnConstraints halignment="LEFT" hgrow="SOMETIMES" maxWidth="260.33331298828125" minWidth="10.0" prefWidth="145.66668701171875" />
@@ -64,8 +64,8 @@
             <TextArea fx:id="noteField" maxWidth="350.0" prefHeight="30.0" GridPane.columnIndex="1" GridPane.rowIndex="4" GridPane.rowSpan="2" />
             <HBox alignment="CENTER_RIGHT" spacing="30.0" GridPane.columnIndex="1" GridPane.rowIndex="6">
                <children>
-                  <Button mnemonicParsing="false" onAction="#handleCancel" prefHeight="30.0" prefWidth="75.0" text="Cancel" />
-                  <Button defaultButton="true" mnemonicParsing="false" onAction="#handleSave" prefHeight="30.0" prefWidth="75.0" text="Save" />
+                  <Button cancelButton="true" mnemonicParsing="false" onAction="#handleCancel" prefHeight="30.0" prefWidth="75.0" text="Cancel" />
+                  <Button mnemonicParsing="false" onAction="#handleSave" prefHeight="30.0" prefWidth="75.0" text="Save" />
                </children>
             </HBox>
          </children>

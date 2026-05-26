@@ -24,7 +24,7 @@ import khe.banking.models.enums.TxnType;
 import khe.banking.services.TxnService;
 import khe.banking.services.TxnServiceImpl;
 import khe.banking.utils.ModalManager;
-import khe.banking.utils.TableActionFactory;
+import khe.banking.utils.TableFactory;
 import khe.banking.utils.UIUtil;
 
 public class TransactionsController {
@@ -120,7 +120,7 @@ public class TransactionsController {
 		dateCol.setCellValueFactory(new PropertyValueFactory<>("date"));
 		noteCol.setCellValueFactory(new PropertyValueFactory<>("note"));
 
-		TableActionFactory.addActions(actionCol, this::handleEdit, this::handleDelete);
+		TableFactory.addActions(actionCol, this::handleEdit, this::handleDelete);
 	}
 
 	private void setupTable() {

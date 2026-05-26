@@ -7,7 +7,7 @@
 <?import javafx.scene.control.TitledPane?>
 <?import javafx.scene.layout.VBox?>
 
-<ScrollPane fitToWidth="true" hbarPolicy="NEVER" prefHeight="780.0" prefWidth="880.0" xmlns="http://javafx.com/javafx/26" xmlns:fx="http://javafx.com/fxml/1" fx:controller="khe.banking.controllers.HomeController">
+<ScrollPane fitToHeight="true" fitToWidth="true" hbarPolicy="NEVER" xmlns="http://javafx.com/javafx/26" xmlns:fx="http://javafx.com/fxml/1" fx:controller="khe.banking.controllers.HomeController">
    <content>
       <VBox spacing="25.0">
          <children>
@@ -15,7 +15,7 @@
       <VBox spacing="15.0">
          <children>
             <Label styleClass="view-heading" text="Accounts Overview" VBox.vgrow="ALWAYS" />
-            <Accordion fx:id="accordion" styleClass="accounts-accordion" VBox.vgrow="ALWAYS">
+            <Accordion fx:id="accordion" VBox.vgrow="ALWAYS">
               <panes>
                 <TitledPane animated="false" text="untitled 1" />
                 <TitledPane animated="false" text="untitled 2" />

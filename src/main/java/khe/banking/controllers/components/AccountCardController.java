@@ -16,6 +16,8 @@ public class AccountCardController {
     @FXML
     private Label typeLabel;
     @FXML
+    private Label numLabel;
+    @FXML
     private Label balanceLabel;
     @FXML
     private Label statusLabel;
@@ -32,6 +34,7 @@ public class AccountCardController {
     private void loadAccountCard() {
     	nicknameLabel.setText(account.getNickname());
         typeLabel.setText(account.getAccountType().getCodeName());
+        numLabel.setText("(" + account.getAccountNum() + ")");
         balanceLabel.setText("$" + account.getBalance());
         statusLabel.setText(account.getStatus().name());
     }

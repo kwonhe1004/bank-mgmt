@@ -5,6 +5,7 @@
 <?import javafx.scene.control.CustomMenuItem?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.MenuButton?>
+<?import javafx.scene.control.ToggleButton?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.BorderPane?>
@@ -14,33 +15,49 @@
 <?import javafx.scene.shape.Circle?>
 <?import javafx.scene.text.Font?>
 
-<BorderPane prefHeight="800.0" prefWidth="1200.0" xmlns="http://javafx.com/javafx/26" xmlns:fx="http://javafx.com/fxml/1" fx:controller="khe.banking.controllers.DashboardController">
+<BorderPane fx:id="bp" prefHeight="800.0" prefWidth="1200.0" xmlns="http://javafx.com/javafx/26" xmlns:fx="http://javafx.com/fxml/1" fx:controller="khe.banking.controllers.DashboardController">
    <center>
       <StackPane fx:id="pane" styleClass="container-border" BorderPane.alignment="CENTER">
          <BorderPane.margin>
             <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
          </BorderPane.margin></StackPane>
    </center>
-   <left>
-      <VBox alignment="TOP_CENTER" prefWidth="300.0" spacing="20.0" styleClass="sidebar" BorderPane.alignment="CENTER">
+   <top>
+      <HBox fx:id="logoPane" alignment="CENTER_LEFT" spacing="10.0" styleClass="logo-pane" BorderPane.alignment="CENTER">
          <children>
-            <VBox alignment="CENTER" spacing="10.0" VBox.vgrow="ALWAYS">
+            <ImageView fitHeight="75.0" pickOnBounds="true" preserveRatio="true" HBox.hgrow="ALWAYS">
+               <image>
+                  <Image url="@../img/logo.png" />
+               </image>
+            </ImageView>
+            <Label text="BANK MANAGEMENT SYSTEM" textAlignment="CENTER" wrapText="true" HBox.hgrow="ALWAYS">
+               <font>
+                  <Font name="Arial Black" size="36.0" />
+               </font>
+            </Label>
+         </children>
+         <BorderPane.margin>
+            <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+         </BorderPane.margin>
+      </HBox>
+   </top>
+   <left>
+      <VBox fx:id="sidebar" prefWidth="300.0" spacing="10.0" styleClass="sidebar" BorderPane.alignment="CENTER">
+         <children>
+            <HBox alignment="CENTER_RIGHT">
                <children>
-                  <ImageView fitHeight="100.0" fitWidth="100.0" pickOnBounds="true" preserveRatio="true">
-                     <image>
-                        <Image url="@../img/logo.png" />
-                     </image>
-                  </ImageView>
-                  <Label maxWidth="1.7976931348623157E308" text="BANK MANAGEMENT SYSTEM" textAlignment="CENTER" wrapText="true" VBox.vgrow="ALWAYS">
-                     <font>
-                        <Font name="Arial Black" size="24.0" />
-                     </font></Label>
+                  <ToggleButton fx:id="toggle" mnemonicParsing="false" onAction="#toggleSidebar" HBox.hgrow="ALWAYS">
+                     <graphic>
+                        <ImageView fitHeight="40.0" pickOnBounds="true" preserveRatio="true">
+                           <image>
+                              <Image url="@../img/menu.png" />
+                           </image>
+                        </ImageView>
+                     </graphic>
+                  </ToggleButton>
                </children>
-               <padding>
-                  <Insets left="10.0" right="10.0" top="20.0" />
-               </padding>
-            </VBox>
-            <VBox alignment="CENTER" spacing="15.0" VBox.vgrow="ALWAYS">
+            </HBox>
+            <VBox alignment="TOP_CENTER" spacing="15.0" VBox.vgrow="ALWAYS">
                <children>
                   <Button fx:id="home" graphicTextGap="10.0" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#homeView" text="Home" VBox.vgrow="ALWAYS">
                      <graphic>
@@ -115,7 +132,8 @@
                                     <Image url="@../img/settings.png" />
                                  </image>
                               </ImageView>
-                           </graphic></Button>
+                           </graphic>
+                        </Button>
                      </content>
                   </CustomMenuItem>
                   <CustomMenuItem mnemonicParsing="false">
@@ -127,7 +145,8 @@
                                     <Image url="@../img/logout.png" />
                                  </image>
                               </ImageView>
-                           </graphic></Button>
+                           </graphic>
+                        </Button>
                      </content>
                   </CustomMenuItem>
               </items>
@@ -160,6 +179,9 @@
          <padding>
             <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
          </padding>
+         <BorderPane.margin>
+            <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+         </BorderPane.margin>
       </VBox>
    </left>
 </BorderPane>
