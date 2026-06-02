@@ -1,7 +1,5 @@
 package khe.banking.controllers.user;
 
-import java.time.LocalDate;
-
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.collections.transformation.FilteredList;
@@ -15,11 +13,13 @@ import khe.banking.models.User;
 import khe.banking.models.enums.FormMode;
 import khe.banking.models.enums.UserRole;
 import khe.banking.services.UserServiceImpl;
+import khe.banking.utils.HeaderManager;
 import khe.banking.utils.ModalManager;
+import khe.banking.utils.Refreshable;
 import khe.banking.utils.TableFactory;
 import khe.banking.utils.UIUtil;
 
-public class UsersController {
+public class UsersController implements Refreshable {
 
 	// FILTER CONTROLS
 	@FXML
@@ -38,7 +38,7 @@ public class UsersController {
 	@FXML
 	private TableColumn<User, String> emailCol;
 	@FXML
-	private TableColumn<User, LocalDate> dobCol;
+	private TableColumn<User, String> dobCol;
 	@FXML
 	private TableColumn<User, UserRole> roleCol;
 	@FXML
@@ -51,6 +51,7 @@ public class UsersController {
 	private UserServiceImpl us = new UserServiceImpl(new UserDaoImpl());
 
 	public void initialize() {
+		HeaderManager.setTitle("USERS VIEW");
 		setupColumns();
 
 		filteredList = new FilteredList<>(masterList, t -> true);
@@ -69,10 +70,12 @@ public class UsersController {
 		lastCol.setCellValueFactory(new PropertyValueFactory<>("last"));
 		firstCol.setCellValueFactory(new PropertyValueFactory<>("first"));
 		emailCol.setCellValueFactory(new PropertyValueFactory<>("email"));
-		dobCol.setCellValueFactory(new PropertyValueFactory<>("dob"));
         roleCol.setCellValueFactory(new PropertyValueFactory<>("role"));
-
-		TableFactory.addActions(actionCol, this::handleEdit, this::handleDelete);
+        
+        dobCol.setCellValueFactory(cellData -> 
+        	UIUtil.formatDate(cellData.getValue().getDob()));
+        
+		TableFactory.setupActionCol(actionCol, this::handleEdit, this::handleDelete);
 	}
 
 	private void handleDelete(User u) {
@@ -117,6 +120,11 @@ public class UsersController {
 			boolean matchesSearch = search.isEmpty() || ur.getFullName().toLowerCase().contains(search);
 			return matchesSearch;
 		});
+	}
+	
+	@Override
+	public void refresh() {
+		loadData();
 	}
 
 }

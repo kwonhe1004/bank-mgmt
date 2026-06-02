@@ -1,7 +1,15 @@
 package khe.banking.utils;
 
+import java.math.BigDecimal;
+import java.math.RoundingMode;
+import java.text.NumberFormat;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.Optional;
 
+import javafx.beans.property.SimpleStringProperty;
+import javafx.beans.value.ObservableValue;
 import javafx.scene.control.Alert;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.ChoiceBox;
@@ -9,11 +17,11 @@ import javafx.scene.control.ComboBox;
 import javafx.scene.control.Control;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.TextInputControl;
+import khe.banking.models.Account;
 
 public class UIUtil {
 
-	/**
-	 * returns true if any of the provided text input controls are null or contain
+	/* returns true if any of the provided text input controls are null or contain
 	 * only empty/blank text
 	 */
 
@@ -83,4 +91,60 @@ public class UIUtil {
 		createAlert(Alert.AlertType.WARNING, "Warning", msg).showAndWait();
 	}
 
+	// =========================
+	// FORMATTERS
+	// =========================
+	private static final NumberFormat CURRENCY_FORMAT = NumberFormat.getCurrencyInstance();
+	public static String formatCurrency(BigDecimal value) {
+		if(value == null) return "$0.00";	
+		try {
+			return CURRENCY_FORMAT.format(value.setScale(2, RoundingMode.HALF_UP));
+		} catch(ArithmeticException e) {
+//			System.out.println("UIUtil.formatCurrency: " + e);
+			e.printStackTrace();
+			return "$0.00";
+		}
+	}
+	
+	private static DateTimeFormatter shortFormatter = 
+			DateTimeFormatter.ofPattern("yyyy.MM.dd");
+	private static DateTimeFormatter longFormatter = 
+			DateTimeFormatter.ofPattern("MMM dd, yyyy");
+	public static String formatDateTime(LocalDateTime date) {
+		return longFormatter.format(date);
+	}
+	
+	public static ObservableValue<String> formatDate (LocalDate date) {
+		if(date == null) {
+			return new SimpleStringProperty("N/A");
+		}
+		
+		return new SimpleStringProperty(shortFormatter.format(date));
+//		return new SimpleStringProperty(formatDT(date, format));
+	}
+	
+	public static ObservableValue<String> accountFormat (Account a) { // "CHK •001"
+		if(a == null) {
+			return new SimpleStringProperty("N/A");			
+		}	
+	
+		String number = a.getAccountNum();
+	
+		String last3 = number != null && number.length() >= 3 
+				? number.substring(number.length() - 3)
+						: "???";
+	
+		String prefix = switch(a.getAccountType().getCode()) {
+		case CHECKING -> "CHK";
+		case SAVINGS -> "SAV";
+		case BUSINESS -> "BUS";
+		default -> "ACC";
+		};
+	
+		return new SimpleStringProperty(prefix + " •" + last3);
+	}
+	
+
+	
+	
 }

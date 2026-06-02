@@ -7,32 +7,18 @@ import khe.banking.models.enums.TxnType;
 
 public class Transaction {
 
-    private int id;
-    private int accountId; // references accounts(id)
-    
+    private int id;  
     private Account account;
     private String code;
     private String name;
     private BigDecimal amount;
-//    private String type; // enum: INCOME, EXPENSE, TRANSFER
-    private TxnType type;    
+    private TxnType type; 	// enum: INCOME, EXPENSE, TRANSFER
     private Category category;
     private LocalDate date;
     private String note;
     
     public Transaction() {
     }
-
-    public Transaction(int id, int accountId, String name, BigDecimal amount, TxnType type, Category category, LocalDate date, String note) {
-    	this.id = id;
-		this.accountId = accountId;
-		this.name = name;
-		this.amount = amount;
-		this.type = type;
-		this.category = category;
-		this.date = date;
-		this.note = note;
-}
     
     public Transaction(int id, Account account, String name, BigDecimal amount, TxnType type, Category category, LocalDate date, String note) {
     	this.id = id;
@@ -51,14 +37,6 @@ public class Transaction {
 
 	public void setId(int id) {
 		this.id = id;
-	}
-
-	public int getAccountId() {
-		return accountId;
-	}
-
-	public void setAccountId(int accountId) {
-		this.accountId = accountId;
 	}
 	
 	public Account getAccount() {

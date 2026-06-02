@@ -70,7 +70,6 @@
 	-fx-background-radius: 5;
 	-fx-border-color: -color-black-muted;
 	-fx-border-width: 2;
-	-fx-padding: 5;
 }
 
 .table-row-cell:filled:even {
@@ -109,10 +108,41 @@
 
 .table-row-cell:selected .table-cell, 
 .table-row-cell:filled:even:selected .table-cell,
-.table-row-cell:filled:odd:selected .table-cell {
+.table-row-cell:filled:odd:selected .table-cell,
+.table-row-cell:selected .table-link-label {
+	-fx-padding: 5;
 	-fx-text-fill: white;
     -fx-font-weight: bold;
 }
+
+
+/* =========================================================
+   CLICKABLE TABLE LABEL
+========================================================= */
+.table-link-label {
+    /* match table-cell styling */
+    -fx-text-fill: -color-black;
+    -fx-font-weight: bold;
+    -fx-font-size: 13px;
+
+    /* differentiate as clickable */
+    -fx-underline: true;
+    -fx-cursor: hand;
+    
+    /* preserve row visuals */
+    -fx-background-color: transparent;
+    -fx-padding: 0;
+}
+
+/* HOVER */
+.table-link-label:hover {
+    /* subtle interaction */
+    -fx-text-fill: derive(-color-black, -20%);
+
+    /* optional */
+    -fx-opacity: 0.85;
+}
+
 
 /* =====================================================
    TRANSACTION TABLE OVERRIDES
@@ -120,7 +150,6 @@
    Applies ONLY to tables with styleClass="txn-table"
    Used for income/expense row highlighting.
 ===================================================== */
-
 .txn-table{
     -color-red: #f6dada;	
 	-color-green: #dbe7d0;
@@ -163,8 +192,6 @@
 .txn-table .amount-income {
     -fx-text-fill: green;
 }
-
-
 
 /* =========================
    MENU BUTTON

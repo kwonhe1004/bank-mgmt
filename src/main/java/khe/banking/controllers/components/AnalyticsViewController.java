@@ -1,8 +1,8 @@
 package khe.banking.controllers.components;
 
 import javafx.fxml.FXML;
-import javafx.scene.layout.HBox;
 import javafx.scene.layout.StackPane;
+import javafx.scene.layout.VBox;
 import khe.banking.models.User;
 import khe.banking.models.enums.AnalyticsType;
 import khe.banking.utils.ViewData;
@@ -11,7 +11,7 @@ import khe.banking.utils.ViewLoader;
 public class AnalyticsViewController {
 	
 	@FXML
-    private HBox root;
+    private VBox root;
 	@FXML
     private StackPane weeklyPane;
 	@FXML

@@ -184,13 +184,9 @@ public class AccountDaoImpl implements AccountDao {
 
 		try (Connection c = ConnectDB.getConnection();
 				PreparedStatement ps = c.prepareStatement(sql)) {
-
 			ps.setInt(1, userId);
-
 			ResultSet rs = ps.executeQuery();
-
 			while (rs.next()) {
-
 				User user = new User();
 				user.setId(rs.getInt("user_id"));
 				user.setFirst(rs.getString("first"));
@@ -259,10 +255,10 @@ public class AccountDaoImpl implements AccountDao {
 				SELECT a.balance AS total_balance,
 					SUM(CASE WHEN t.type = 'INCOME' THEN t.amount ELSE 0 END) AS income,
 					SUM(CASE WHEN t.type = 'EXPENSE' THEN t.amount ELSE 0 END) AS expense
-					FROM accounts a
-					LEFT JOIN transactions t ON a.id = t.account_id
-					WHERE a.id = ?
-					GROUP BY a.id, a.balance""";
+				FROM accounts a
+				LEFT JOIN transactions t ON a.id = t.account_id
+				WHERE a.id = ?
+				GROUP BY a.id, a.balance""";
 		
 		try (Connection c = ConnectDB.getConnection();
 	             PreparedStatement ps = c.prepareStatement(sql)) {
@@ -286,6 +282,41 @@ public class AccountDaoImpl implements AccountDao {
 			e.printStackTrace();
 		}		
 		return null;
+	}
+	
+	@Override
+	public int countUserAccounts(int userId) {
+		int num = 0;
+		String sql = "SELECT COUNT(*) FROM accounts WHERE user_id = ?";
+		
+		try (Connection conn = ConnectDB.getConnection();
+				PreparedStatement ps = conn.prepareStatement(sql)) {
+			ps.setInt(1, userId);
+			ResultSet rs = ps.executeQuery();
+			while (rs.next()) {
+				num = rs.getInt(1);
+			}			
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return num;
+	}
+
+	@Override
+	public int countAccounts() {
+		int num = 0;
+		String sql = "SELECT COUNT(*) FROM accounts";
+		
+		try (Connection conn = ConnectDB.getConnection();
+				PreparedStatement ps = conn.prepareStatement(sql);
+				ResultSet rs = ps.executeQuery()) {
+			while (rs.next()) {
+				num = rs.getInt(1);
+			}			
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return num;
 	}
 	
 }

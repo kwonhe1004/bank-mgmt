@@ -7,12 +7,12 @@
 
 <VBox alignment="CENTER" spacing="10.0" styleClass="card" xmlns="http://javafx.com/javafx/26" xmlns:fx="http://javafx.com/fxml/1" fx:controller="khe.banking.controllers.components.AccountCardController">
    <padding>
-      <Insets bottom="15.0" left="15.0" right="15.0" top="15.0" />
+      <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
    </padding>
    <children>
       <VBox alignment="CENTER">
          <children>
-            <Label fx:id="nicknameLabel" styleClass="card-title" text="Nickname" />
+            <Label fx:id="nicknameLabel" styleClass="card-title" text="Nickname" wrapText="true" />
             <Label fx:id="numLabel" styleClass="card-heading" text="Number" />
             <Label fx:id="typeLabel" styleClass="card-subtitle" text="Type" />
          </children>

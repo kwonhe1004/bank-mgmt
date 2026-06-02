@@ -120,7 +120,7 @@ public class TransactionsController {
 		dateCol.setCellValueFactory(new PropertyValueFactory<>("date"));
 		noteCol.setCellValueFactory(new PropertyValueFactory<>("note"));
 
-		TableFactory.addActions(actionCol, this::handleEdit, this::handleDelete);
+		TableFactory.setupActionCol(actionCol, this::handleEdit, this::handleDelete);
 	}
 
 	private void setupTable() {

@@ -8,11 +8,10 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.collections.transformation.FilteredList;
 import javafx.fxml.FXML;
-import javafx.geometry.Pos;
-import javafx.scene.control.Button;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.MenuButton;
 import javafx.scene.control.RadioMenuItem;
+import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TableCell;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableRow;
@@ -20,9 +19,6 @@ import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.control.ToggleGroup;
 import javafx.scene.control.cell.PropertyValueFactory;
-import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
-import javafx.scene.layout.HBox;
 import javafx.scene.layout.TilePane;
 import khe.banking.controllers.components.AccountCardController;
 import khe.banking.dao.AccountDaoImpl;
@@ -36,17 +32,23 @@ import khe.banking.services.AccountService;
 import khe.banking.services.AccountServiceImpl;
 import khe.banking.services.TxnService;
 import khe.banking.services.TxnServiceImpl;
+import khe.banking.utils.HeaderManager;
 import khe.banking.utils.NavigationManager;
+import khe.banking.utils.Refreshable;
 import khe.banking.utils.SessionManager;
 import khe.banking.utils.TableFactory;
+import khe.banking.utils.UIUtil;
 import khe.banking.utils.ViewData;
 import khe.banking.utils.ViewLoader;
+import khe.banking.utils.ViewType;
 
-public class AccountsController {
+public class AccountsController implements Refreshable {
 
 	@FXML
+	private ScrollPane accountsScrollPane;
+	@FXML
 	private TilePane accountsContainer;
-
+	
 	@FXML
 	private MenuButton filterMenu;
 	@FXML
@@ -70,7 +72,7 @@ public class AccountsController {
 	@FXML
 	private TableView<Transaction> txnTable;
 	@FXML
-	private TableColumn<Transaction, String> accountTypeCol;
+	private TableColumn<Transaction, String> accountCol;
 	@FXML
 	private TableColumn<Transaction, String> nameCol;
 	@FXML
@@ -83,8 +85,6 @@ public class AccountsController {
 	private TableColumn<Transaction, LocalDate> dateCol;
 	@FXML
 	private TableColumn<Transaction, String> notesCol;
-	@FXML
-	private TableColumn<Transaction, Void> actionCol;
 
 	// OTHER VARIABLES
 	private final ObservableList<Transaction> masterList = FXCollections.observableArrayList();
@@ -95,13 +95,15 @@ public class AccountsController {
 
 	private final User currentUser = SessionManager.getCurrentUser();
 
-	public void initialize() {		
+	public void initialize() {	
+		HeaderManager.setTitle("Accounts Overview");
+		
 		if(currentUser != null) {
 			loadAccounts(currentUser.getId());
 		}
-
+		
 		setupColumns();
-		setupTable();
+		setupStyling();
 
 		filteredList = new FilteredList<>(masterList, t -> true);
 		txnTable.setItems(filteredList);
@@ -109,35 +111,43 @@ public class AccountsController {
 		setupFilters();
 		loadData();
 	}
-
+	
 	// =========================
-	// ACCOUNT CARD SETUP
-	// =========================
+	// ACCOUNT SETUP
+	// =========================	
 	private void loadAccounts(int userId) {
 		List<Account> accounts;
+		int num;
 		if(userId == 1) {
 			accounts = as.getAllAccounts();
+			num = as.countAllAccount();
 		} else {
 			accounts = as.getAccounts(userId);
+			num = as.countUserAccount(userId);
 		}
 
 		accountsContainer.getChildren().clear();
 		for(Account account : accounts) {
-			ViewData<AccountCardController> data = ViewLoader.loadView("/fxml/components/AccountCard.fxml");
+			ViewData<AccountCardController> data = 
+					ViewLoader.loadView("/fxml/components/AccountCard.fxml");
 			AccountCardController controller = data.getController();
 			controller.setAccount(account);
 			controller.setOnViewTransactions(a -> {
 				showAccountDetails(a);
 			});
 			accountsContainer.getChildren().add(data.getView());
-		}
+		}		
+		accountsContainer.setPrefColumns(num);
 	}
 
 	public void showAccountDetails(Account account) {
-		ViewData<AccountTxnController> data = ViewLoader.loadView("/fxml/account/AccountTxnView.fxml");
-		AccountTxnController controller = data.getController();
-		controller.setAccount(account);
-		NavigationManager.switchView(data.getView(), "ACCOUNTS");
+		refresh();
+		ViewData<AccountTxnController> data = 
+				ViewLoader.loadView("/fxml/account/AccountTxnView.fxml");
+//		AccountTxnController controller = data.getController();
+//		controller.setAccount(account);
+		data.getController().setAccount(account);
+		NavigationManager.switchView(data, ViewType.TRANSACTIONS);
 	}
 
 	// =========================
@@ -150,67 +160,42 @@ public class AccountsController {
 			masterList.setAll(ts.getTxnByUser(currentUser.getId()));
 		}    	
 	}
+	
+	private void setupStyling() {
+		setupRowStyling();
+		setupAmountStyling();
+	}
 
-	private void setupColumns() {
-		accountTypeCol.setCellValueFactory(new PropertyValueFactory<>("code"));
+	private void setupColumns() {		    
+	    accountCol.setCellValueFactory(cellData ->
+	        UIUtil.accountFormat(cellData.getValue().getAccount()));
+
+	    TableFactory.setupInteractiveCol(
+	    		accountCol, TableFactory::tooltipAccount, this::handleDetails);
+				
 		nameCol.setCellValueFactory(new PropertyValueFactory<>("name"));
 		amountCol.setCellValueFactory(new PropertyValueFactory<>("amount"));
 		typeCol.setCellValueFactory(new PropertyValueFactory<>("type"));
 		categoryCol.setCellValueFactory(new PropertyValueFactory<>("category"));
 		dateCol.setCellValueFactory(new PropertyValueFactory<>("date"));
 		notesCol.setCellValueFactory(new PropertyValueFactory<>("note"));
-		setupActionColumn();
-		
+						
 		TableFactory.enableWrapping(nameCol);
-		TableFactory.enableWrapping(accountTypeCol);
 		TableFactory.enableWrapping(notesCol);
 	}
-
-	private void setupTable() {
-		setupRowStyling();
-		setupAmountStyling();
-	}
-
-	private void setupActionColumn() {
-		actionCol.setCellFactory(param -> new TableCell<>() {
-			private final Button detailsBtn = new Button();
-			private final HBox container = new HBox(10, detailsBtn);
-			{
-				container.setAlignment(Pos.CENTER);
-
-				Image detailsImg = new Image(getClass().getResource("/img/more.png").toExternalForm());
-				ImageView detailsIcon = new ImageView(detailsImg);
-				detailsIcon.setFitHeight(20);
-				detailsIcon.setFitWidth(20);
-
-				detailsBtn.setGraphic(detailsIcon);
-				detailsBtn.getStyleClass().add("action-btn");
-				detailsBtn.setOnAction(e -> {
-					Transaction t = getTableView().getItems().get(getIndex());
-					handleDetails(t);
-				});
-			}
-
-			@Override
-			public void updateItem(Void item, boolean empty) {
-				super.updateItem(item, empty);
-				setGraphic(empty ? null : container);
-			}    		
-		});
-	}	
-
+		
 	public void handleDetails(Transaction t) {
-		Account a = t.getAccount();
-		if(a.getNickname() == null) {
-			a = as.getAccountById(a.getId());
-		}
-		ViewData<AccountTxnController> data = ViewLoader.loadView("/fxml/account/AccountTxnView.fxml");
+		refresh();
+		Account a = as.getAccountById(t.getAccount().getId());		
+		ViewData<AccountTxnController> data = 
+				ViewLoader.loadView("/fxml/account/AccountTxnView.fxml");
 		AccountTxnController controller = data.getController();
 		controller.setAccount(a);
 		controller.setHighlight(t);
-		NavigationManager.switchView(data.getView(), "ACCOUNTS");
+//		NavigationManager.switchView(data.getView(), "ACCOUNTS", data.getFxmlPath());
+		NavigationManager.switchView(data, ViewType.TRANSACTIONS);
 	}
-
+		
 	// =========================
 	// FILTER LOGIC
 	// =========================
@@ -231,8 +216,7 @@ public class AccountsController {
 
 		filteredList.setPredicate(tr -> {
 
-			//				String type = tr.getType().name();
-
+			//String type = tr.getType().name();
 			boolean matchesSearch = true;
 
 			if(search.startsWith("S")) {
@@ -330,6 +314,11 @@ public class AccountsController {
 		});
 	}
 
+	@Override 
+	public void refresh() {
+		loadAccounts(currentUser.getId());
+		loadData();
+	}
 
 
 }

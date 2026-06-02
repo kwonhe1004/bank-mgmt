@@ -2,17 +2,18 @@
 
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Accordion?>
-<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ScrollPane?>
 <?import javafx.scene.control.Tab?>
 <?import javafx.scene.control.TabPane?>
 <?import javafx.scene.control.TitledPane?>
 <?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.layout.VBox?>
 
-<VBox prefHeight="780.0" prefWidth="880.0" spacing="25.0" xmlns="http://javafx.com/javafx/26" xmlns:fx="http://javafx.com/fxml/1" fx:controller="khe.banking.controllers.report.ReportsController">
-   <children>
-      <Label styleClass="view-title" text="REPORTS VIEW" />
-      <Accordion VBox.vgrow="ALWAYS">
+<ScrollPane fitToWidth="true" hbarPolicy="NEVER" xmlns="http://javafx.com/javafx/26" xmlns:fx="http://javafx.com/fxml/1" fx:controller="khe.banking.controllers.report.ReportsController">
+   <content>
+      <VBox spacing="20.0">
+         <children>
+            <Accordion VBox.vgrow="ALWAYS">
         <panes>
           <TitledPane animated="false" text="Cash Flow: LineChart">
                <content>
@@ -52,8 +53,11 @@
             </TitledPane>
         </panes>
       </Accordion>
-   </children>
-   <padding>
+            
+         </children>
+         <padding>
       <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
    </padding>
-</VBox>
+      </VBox>
+   </content>
+</ScrollPane>

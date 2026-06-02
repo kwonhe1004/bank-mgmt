@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Hyperlink?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+
+<VBox xmlns="http://javafx.com/javafx/26" xmlns:fx="http://javafx.com/fxml/1" fx:controller="khe.banking.controllers.components.AccountDetailsController">
+   <children>
+      <HBox fx:id="detailsBox" alignment="CENTER_LEFT" spacing="20.0">
+         <children>
+            <VBox alignment="CENTER" styleClass="card" HBox.hgrow="ALWAYS">
+               <children>
+                  <Label styleClass="card-heading" text="Account Number:" />
+                  <Label fx:id="numLabel" text="Label" />
+               </children>
+            </VBox>
+            <VBox alignment="CENTER" styleClass="card" HBox.hgrow="ALWAYS">
+               <children>
+                  <Label styleClass="card-heading" text="Balance:" />
+                  <Label fx:id="balanceLabel" text="Label" />
+               </children>
+            </VBox>
+            <VBox alignment="CENTER" styleClass="card" HBox.hgrow="ALWAYS">
+               <children>
+                  <Label styleClass="card-heading" text="Status:" />
+                  <Label fx:id="statusLabel" text="Label" />
+               </children>
+            </VBox>
+            <VBox alignment="CENTER" styleClass="card" HBox.hgrow="ALWAYS">
+               <children>
+                  <Label styleClass="card-heading" text="Account Type:" />
+                  <Hyperlink fx:id="typeLabel" onAction="#typeLink" text="Hyperlink" />
+               </children>
+            </VBox>
+         </children>
+      </HBox>
+   </children>
+</VBox>

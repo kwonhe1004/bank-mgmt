@@ -77,6 +77,7 @@ public class LoginController {
 		User u = us.checkLogin(username.getText(), pf.getText());
 		if (u != null) {
 			SessionManager.setCurrentUser(u);
+			SessionManager.createSession(u);
 			SceneManager.switchScene((Node) e.getSource(), "/fxml/Dashboard.fxml", true);
 		} else {
 			UIUtil.showWarning("Incorrect email or password.");
@@ -85,10 +86,7 @@ public class LoginController {
 
 	@FXML
 	private void newUser() {
-		Boolean saved = ModalManager.showModal("/fxml/login/Register.fxml", "Create New Account",
-				(RegisterController controller) -> {
-					// optional setup
-				}, RegisterController::isSaved);
+		Boolean saved = ModalManager.showModal("/fxml/login/Register.fxml", "Create New Account", null, RegisterController::isSaved);
 
 		if (Boolean.TRUE.equals(saved)) {
 			UIUtil.showInfo("Account created successfully!");
@@ -97,10 +95,7 @@ public class LoginController {
 
 	@FXML
 	private void forgotPw() {
-		Boolean saved = ModalManager.showModal("/fxml/login/ForgotPassword.fxml", "Reset Password", null, // no setup
-																											// needed
-				null // no return value needed
-		);
+		Boolean saved = ModalManager.showModal("/fxml/login/ForgotPassword.fxml", "Reset Password", null, ForgotPasswordController::isSaved);
 
 		if (Boolean.TRUE.equals(saved)) {
 			UIUtil.showInfo("Password change successful.");

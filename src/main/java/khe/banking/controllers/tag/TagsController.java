@@ -20,6 +20,7 @@ import khe.banking.services.AccountTypeService;
 import khe.banking.services.AccountTypeServiceImpl;
 import khe.banking.services.CategoryService;
 import khe.banking.services.CategoryServiceImpl;
+import khe.banking.utils.HeaderManager;
 import khe.banking.utils.TableFactory;
 
 public class TagsController {
@@ -28,8 +29,6 @@ public class TagsController {
 	private Accordion accordion;
 	@FXML
 	private TitledPane atPane;
-	@FXML
-	private TitledPane cPane;
 	
 	@FXML
 	private TableView<AccountType> typeTable;	
@@ -49,8 +48,9 @@ public class TagsController {
 	private TableColumn<AccountType, BigDecimal> minCol;
 	
 	@FXML
-	private TableView<Category> categoryTable;
-	
+	private TitledPane cPane;
+	@FXML
+	private TableView<Category> categoryTable;	
 	@FXML 
 	private TableColumn<Category, Integer> c_idCol;
 	@FXML 
@@ -67,7 +67,7 @@ public class TagsController {
 	private AccountType highlight;
 	
 	public void initialize() {
-		accordion.setExpandedPane(atPane);
+		HeaderManager.setTitle("TAGS VIEW");
 		setupTable();
 		loadData();
 	}
@@ -106,7 +106,10 @@ public class TagsController {
 	private void highlightRow() {
 		if(highlight == null) {
 			return;
-		}
+		}		
+		
+		accordion.setExpandedPane(atPane);
+		
 		for(AccountType at : typeTable.getItems()) {
 			if(at.getId() == highlight.getId()) {
 				typeTable.getSelectionModel().select(at);

@@ -4,8 +4,8 @@ import java.util.List;
 
 import javafx.fxml.FXML;
 import javafx.scene.control.Accordion;
-import javafx.scene.control.Label;
 import javafx.scene.control.TitledPane;
+import javafx.scene.layout.Region;
 import javafx.scene.layout.VBox;
 import khe.banking.controllers.components.AccountOverviewController;
 import khe.banking.controllers.components.AnalyticsViewController;
@@ -14,26 +14,25 @@ import khe.banking.models.Account;
 import khe.banking.models.User;
 import khe.banking.services.AccountService;
 import khe.banking.services.AccountServiceImpl;
+import khe.banking.utils.HeaderManager;
 import khe.banking.utils.SessionManager;
 import khe.banking.utils.ViewData;
 import khe.banking.utils.ViewLoader;
 
 public class HomeController {
-	
-	@FXML
-	private Label welcomeLabel;
-	
+		
 	@FXML 
 	private Accordion accordion;
 	
 	@FXML
 	private VBox analytics;
-	
+		
 	private final AccountService as = new AccountServiceImpl(new AccountDaoImpl());
 	
 	public void initialize() {
 		User u = SessionManager.getCurrentUser();
-		welcomeLabel.setText("WELCOME, " + u.getFirst().toUpperCase());
+		HeaderManager.setTitle("WELCOME, " + u.getFirst());
+		
 		loadAccounts(u);
 		loadAnalytics(u);
 	}
@@ -70,7 +69,9 @@ public class HomeController {
 		ViewData<AnalyticsViewController> data = ViewLoader.loadView("/fxml/components/AnalyticsView.fxml");
 		AnalyticsViewController controller = data.getController();
 		controller.loadCharts(u);	
-		analytics.getChildren().add(data.getView());
+		analytics.getChildren().setAll(data.getView());
+		analytics.setMinHeight(Region.USE_PREF_SIZE);
+//		analytics.setPrefHeight(Region.USE_COMPUTED_SIZE);
 	}
 
 }

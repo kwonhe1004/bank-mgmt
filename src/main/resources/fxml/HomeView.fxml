@@ -7,12 +7,11 @@
 <?import javafx.scene.control.TitledPane?>
 <?import javafx.scene.layout.VBox?>
 
-<ScrollPane fitToHeight="true" fitToWidth="true" hbarPolicy="NEVER" xmlns="http://javafx.com/javafx/26" xmlns:fx="http://javafx.com/fxml/1" fx:controller="khe.banking.controllers.HomeController">
+<ScrollPane fitToHeight="true" fitToWidth="true" hbarPolicy="NEVER" vbarPolicy="ALWAYS" xmlns="http://javafx.com/javafx/26" xmlns:fx="http://javafx.com/fxml/1" fx:controller="khe.banking.controllers.HomeController">
    <content>
       <VBox spacing="25.0">
          <children>
-         	<Label fx:id="welcomeLabel" styleClass="view-title" text="WELCOME" VBox.vgrow="ALWAYS" />
-      <VBox spacing="15.0">
+      <VBox spacing="15.0" VBox.vgrow="ALWAYS">
          <children>
             <Label styleClass="view-heading" text="Accounts Overview" VBox.vgrow="ALWAYS" />
             <Accordion fx:id="accordion" VBox.vgrow="ALWAYS">

@@ -25,10 +25,7 @@
 	-fx-cursor: hand;
 }
 
-.hyperlink{
-	-fx-text-fill: -color-black;
-	-fx-cursor: hand;	
-}
+
 
 /*
 .hyperlink:visited {

@@ -32,9 +32,7 @@ public class AnalyticsDaoImpl implements AnalyticsDao {
 			ResultSet rs = ps.executeQuery();
 			
 			while(rs.next()) {
-				weekly.put(
-						rs.getString("day_name"), 
-						rs.getDouble("total"));
+				weekly.put(rs.getString("day_name"), rs.getDouble("total"));
 			}					
 		} catch (SQLException e) {
 			e.printStackTrace();

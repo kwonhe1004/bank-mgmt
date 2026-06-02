@@ -5,6 +5,7 @@ import javafx.scene.layout.StackPane;
 import khe.banking.controllers.components.ChartCardController;
 import khe.banking.models.User;
 import khe.banking.models.enums.AnalyticsType;
+import khe.banking.utils.HeaderManager;
 import khe.banking.utils.SessionManager;
 import khe.banking.utils.ViewData;
 import khe.banking.utils.ViewLoader;
@@ -19,10 +20,9 @@ public class ReportsController {
     private StackPane expensePane;
 	@FXML
     private StackPane incomePane;
-	
-//	private final ReportService rs = new ReportServiceImpl(new ReportDaoImpl());
-	
+		
 	public void initialize() {
+		HeaderManager.setTitle("REPORTS VIEW");
 		loadCharts(SessionManager.getCurrentUser());
 	}
 	

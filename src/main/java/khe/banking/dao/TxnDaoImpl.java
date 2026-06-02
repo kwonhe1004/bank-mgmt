@@ -13,6 +13,7 @@ import khe.banking.models.AccountType;
 import khe.banking.models.Category;
 import khe.banking.models.Category.CategoryType;
 import khe.banking.models.Transaction;
+import khe.banking.models.enums.AccountTypeEnum;
 import khe.banking.models.enums.TxnType;
 
 public class TxnDaoImpl implements TxnDao {
@@ -24,30 +25,33 @@ public class TxnDaoImpl implements TxnDao {
 		String sql = """
 				SELECT t.*, 
 					c.id AS c_id, c.name AS c_name, c.type AS c_type,
-					a.id AS account_id, 
+					a.id AS a_id, a.account_number AS a_num, a.nickname AS nickname,
 					at.id AS at_id, at.code AS code
 				FROM transactions t				
 				LEFT JOIN categories c ON t.category_id = c.id
 				JOIN accounts a ON t.account_id = a.id
 				JOIN account_types at ON a.account_type_id = at.id
-				ORDER BY t.id""";
+				ORDER BY t.date DESC""";
 
 		try(Connection conn = ConnectDB.getConnection();
 				PreparedStatement ps = conn.prepareStatement(sql);
 				ResultSet rs = ps.executeQuery()) {
 			
 			while(rs.next()) {
-				AccountType at = new AccountType();
-	        	at.setId(rs.getInt("at_id"));
-	        	
-	        	Account account = new Account();
-				account.setId(rs.getInt("account_id"));
-				account.setAccountType(at);
-				
 				Category category = new Category(
 	        			rs.getInt("c_id"),
 	        			rs.getString("c_name"),
 	        			CategoryType.valueOf(rs.getString("c_type")));
+				
+				AccountType at = new AccountType();
+	        	at.setId(rs.getInt("at_id"));
+	        	at.setCode(AccountTypeEnum.valueOf(rs.getString("code")));
+	        	
+	        	Account account = new Account();
+				account.setId(rs.getInt("a_id"));
+				account.setAccountType(at);
+				account.setAccountNum(rs.getString("a_num"));
+				account.setNickname(rs.getString("nickname"));				
 				
 				Transaction t = new Transaction(
 	                    rs.getInt("id"),
@@ -58,7 +62,7 @@ public class TxnDaoImpl implements TxnDao {
 	                    category,
 	                    rs.getDate("date").toLocalDate(),
 						rs.getString("note"));
-				t.setCode(rs.getString("code"));				
+//				t.setCode(rs.getString("code"));				
 				list.add(t);
 			}
 			
@@ -158,11 +162,8 @@ public class TxnDaoImpl implements TxnDao {
 
 	    try(Connection conn = ConnectDB.getConnection();
 	        PreparedStatement ps = conn.prepareStatement(sql)) {
-
 	        ps.setInt(1, accountId);
-
 	        ResultSet rs = ps.executeQuery();
-
 	        while(rs.next()) {
 	            Account account = new Account();
 				account.setId(rs.getInt("account_id"));
@@ -197,7 +198,7 @@ public class TxnDaoImpl implements TxnDao {
 	    String sql = """
 	        SELECT t.*,
 	    		  c.id AS c_id, c.name AS c_name, c.type AS c_type, 
-	    		  a.id AS account_id, 
+	    		  a.id AS a_id, a.account_number AS a_num, a.nickname AS nickname,
 	    		  at.id AS at_id, at.code AS code
 	        FROM transactions t
 	        LEFT JOIN categories c ON t.category_id = c.id
@@ -212,28 +213,31 @@ public class TxnDaoImpl implements TxnDao {
 	        ResultSet rs = ps.executeQuery();
 	        
 	        while(rs.next()) {
-	        	AccountType at = new AccountType();
-	        	at.setId(rs.getInt("at_id"));
-	        	
-	        	Account account = new Account();
-				account.setId(rs.getInt("account_id"));
-				account.setAccountType(at);
-				
 	        	Category category = new Category(
 	        			rs.getInt("c_id"),
 	        			rs.getString("c_name"),
 	        			CategoryType.valueOf(rs.getString("c_type")));
 	        	
+	        	AccountType at = new AccountType();
+	        	at.setId(rs.getInt("at_id"));
+	        	at.setCode(AccountTypeEnum.valueOf(rs.getString("code")));
+	        	
+	        	Account a = new Account();
+				a.setId(rs.getInt("a_id"));
+				a.setAccountType(at);
+				a.setAccountNum(rs.getString("a_num"));
+				a.setNickname(rs.getString("nickname"));
+					        	
 	        	Transaction t = new Transaction(
 	        			rs.getInt("id"),
-	                    account,
+	                    a,
 	                    rs.getString("name"),
 	                    rs.getBigDecimal("amount"),
 	                    TxnType.valueOf(rs.getString("type")),
 	                    category,
 	                    rs.getDate("date").toLocalDate(),
 						rs.getString("note"));
-	        	t.setCode(rs.getString("code"));
+//	        	t.setCode(rs.getString("code"));
 				list.add(t);
 	        }	    	
 	    } catch (SQLException e) {

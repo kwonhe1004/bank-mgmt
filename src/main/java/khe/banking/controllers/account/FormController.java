@@ -22,21 +22,21 @@ public class FormController extends BaseFormController<Transaction> {
 	@FXML
 	private Label titleLabel;
 	@FXML
-	private TextField nameField;
+	private TextField name;
 	@FXML
-	private TextField amountField;
+	private TextField amount;
 	@FXML
-	private DatePicker datePicker;
+	private DatePicker date;
 	@FXML
-	private ChoiceBox<TxnType> typeChoice;
+	private ChoiceBox<TxnType> type;
 	@FXML
-	private TextArea noteField;
+	private TextArea notes;
 
 	private final TxnService ts = new TxnServiceImpl(new TxnDaoImpl());
 	
 	@FXML
 	public void initialize() {
-		typeChoice.getItems().setAll(TxnType.values());
+		type.getItems().setAll(TxnType.values());
 	}
 
 	@Override
@@ -53,23 +53,23 @@ public class FormController extends BaseFormController<Transaction> {
 		this.entity = t;
 
 		// populate fields
-		nameField.setText(t.getName());
-		amountField.setText(t.getAmount().toString());
-		datePicker.setValue(t.getDate());
-		typeChoice.setValue(t.getType());
-		noteField.setText(t.getNote());
+		name.setText(t.getName());
+		amount.setText(t.getAmount().toString());
+		date.setValue(t.getDate());
+		type.setValue(t.getType());
+		notes.setText(t.getNote());
 	}
 
 	@FXML
 	private void handleSave() {
-		if(validate(nameField, amountField, datePicker, typeChoice, noteField)) {
+		if(validate(name, amount, date, type, notes)) {
 			UIUtil.emptyAlert();
 			return; // stops method if invalid
 		}
 
 		save(); // delegate to abstract logic
 		saved = true;
-		closeWindow(nameField);
+		closeWindow(name);
 	}
 
 	@Override
@@ -85,16 +85,16 @@ public class FormController extends BaseFormController<Transaction> {
 	}
 
 	private void setFieldVariables(Transaction t) {
-		t.setName(nameField.getText());
-    	t.setAmount(new BigDecimal(amountField.getText()));
-    	t.setDate(datePicker.getValue());
-    	t.setType(typeChoice.getValue());
-    	t.setNote(noteField.getText());
+		t.setName(name.getText());
+    	t.setAmount(new BigDecimal(amount.getText()));
+    	t.setDate(date.getValue());
+    	t.setType(type.getValue());
+    	t.setNote(notes.getText());
 	}
 
 	@FXML
 	private void handleCancel() {
 		System.out.println("Transaction canceled");
-		closeWindow(nameField);
+		closeWindow(name);
 	}
 }

@@ -1,16 +1,17 @@
 package khe.banking.controllers;
 
-import javafx.scene.Parent;
 import khe.banking.utils.NavigationManager;
+import khe.banking.utils.ViewData;
 import khe.banking.utils.ViewLoader;
+import khe.banking.utils.ViewType;
 
-// Shared functionality for all controllers
-// Access to navigation system
+// Shared functionality for all controllers & access to navigation system
 
 public abstract class BaseController {
-	protected void navigate(String fxmlPath, String viewId) {
-        Parent view = ViewLoader.load(fxmlPath);
-        NavigationManager.switchView(view, viewId);
-    }
-
+	
+	protected void navigate(ViewType view) {
+		ViewData<?> data = ViewLoader.loadView(view.getFxmlPath());
+		NavigationManager.switchView(data, view);
+	}
+	
 }

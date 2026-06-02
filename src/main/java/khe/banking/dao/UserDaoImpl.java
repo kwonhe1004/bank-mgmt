@@ -96,7 +96,7 @@ public class UserDaoImpl implements UserDao {
 	public boolean add(User o) {
 		String sql = """
 				INSERT INTO users (last, first, email, dob, password)
-				         VALUES (?, ?, ?, ?, ?)""";
+				VALUES (?, ?, ?, ?, ?)""";
 
 		try (Connection conn = ConnectDB.getConnection();
 				PreparedStatement ps = conn.prepareStatement(sql)) {

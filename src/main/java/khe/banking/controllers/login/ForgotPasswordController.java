@@ -1,6 +1,7 @@
 package khe.banking.controllers.login;
 
 import javafx.fxml.FXML;
+import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.GridPane;
@@ -17,9 +18,7 @@ public class ForgotPasswordController {
 
 	@FXML
 	private Label label;
-	@FXML
-	private Label label1;
-
+	
 	@FXML
 	private TextField codeField;
 
@@ -32,8 +31,12 @@ public class ForgotPasswordController {
 	@FXML
 	private TextField confirmPw;
 
+	@FXML
+	private Button saveBtn;
+	
 	String code = null;
 	User u = null;
+	private boolean saved = false;
 
 	private final UserServiceImpl us = new UserServiceImpl(new UserDaoImpl());
 
@@ -46,13 +49,18 @@ public class ForgotPasswordController {
 			UIUtil.emptyAlert();
 			return;
 		}
-
+			
 		u = us.getOne(emailField.getText());
 
 		if (u != null) {
-			code = "code";
+			code = "0000";
 			label.setVisible(true);
-			label1.setText("Code: " + code);
+//			boolean sent = EmailService.sendEmail(emailField.getText(), "Reset Password", "CODE: 0000");
+//			if(sent) {
+//				label.setVisible(true);
+//			} else {
+//				System.out.println("Issue sending email.");
+//			}			
 		} else {
 			UIUtil.showWarning("No user found.");
 		}
@@ -67,6 +75,7 @@ public class ForgotPasswordController {
 
 		if(codeField.getText().equals(code)) {
 			pwPane.setVisible(true);
+			saveBtn.setVisible(true);
 		} else {
 			UIUtil.showWarning("Incorrect Code");
 		}
@@ -83,6 +92,7 @@ public class ForgotPasswordController {
 			System.out.println(u);
 			System.out.println("\nUPDATE\n" + us.updatePw(u, newPw.getText()));
 			
+			saved = true;			
 //			UIUtil.showInfo("New Password Saved");
 			closeWindow();
 		} else {
@@ -99,5 +109,9 @@ public class ForgotPasswordController {
 		Stage stage = (Stage) emailField.getScene().getWindow();
 		stage.close();
 	}
+	
+	public boolean isSaved() {
+        return saved;
+    }
 
 }

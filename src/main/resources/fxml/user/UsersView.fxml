@@ -2,7 +2,6 @@
 
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
-<?import javafx.scene.control.Label?>
 <?import javafx.scene.control.TableColumn?>
 <?import javafx.scene.control.TableView?>
 <?import javafx.scene.control.TextField?>
@@ -15,7 +14,6 @@
 <VBox prefHeight="780.0" prefWidth="880.0" spacing="25.0" xmlns="http://javafx.com/javafx/26" xmlns:fx="http://javafx.com/fxml/1" fx:controller="khe.banking.controllers.user.UsersController">
 
 	<children>
-      <Label styleClass="view-title" text="USERS VIEW" />
 		<HBox alignment="CENTER" spacing="15.0">
 			<children>
             <Button mnemonicParsing="false" prefHeight="30.0" prefWidth="40.0" HBox.hgrow="ALWAYS">

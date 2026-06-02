@@ -1,5 +1,8 @@
 package khe.banking.utils;
 
+import java.util.function.Consumer;
+import java.util.function.Function;
+
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
@@ -13,8 +16,8 @@ public class ModalManager {
 	public static <T, R> R showModal(
 	        String fxmlPath,
 	        String title,
-	        java.util.function.Consumer<T> controllerInitializer,
-	        java.util.function.Function<T, R> resultExtractor
+	        Consumer<T> controllerInitializer,
+	        Function<T, R> resultExtractor
 	) {
 	    try {
 	        FXMLLoader loader = new FXMLLoader(

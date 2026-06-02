@@ -10,4 +10,6 @@ public interface AccountDao extends Dao<Account> {
 	List<Account> findByUser(int userId);
 	List<Account> getAccounts(int userId);
 	AccountSummary getAccountSummary(int accountId);
+	int countUserAccounts(int userId);	
+	int countAccounts();
 }

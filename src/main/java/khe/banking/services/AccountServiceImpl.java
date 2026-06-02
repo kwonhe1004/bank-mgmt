@@ -30,7 +30,7 @@ public class AccountServiceImpl implements AccountService {
 	}
 
 	@Override
-	public boolean addAccout(Account a) {
+	public boolean addAccount(Account a) {
 		return ad.add(a);
 	}
 
@@ -52,6 +52,16 @@ public class AccountServiceImpl implements AccountService {
 	@Override
 	public AccountSummary getAccountSummary(int accountId) {
 		return ad.getAccountSummary(accountId);
+	}
+
+	@Override
+	public int countUserAccount(int userId) {
+		return ad.countUserAccounts(userId);
+	}
+
+	@Override
+	public int countAllAccount() {
+		return ad.countAccounts();
 	}
 	
 }

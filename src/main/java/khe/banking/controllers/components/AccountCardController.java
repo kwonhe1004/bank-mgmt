@@ -6,6 +6,7 @@ import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 import javafx.scene.layout.VBox;
 import khe.banking.models.Account;
+import khe.banking.utils.UIUtil;
 
 public class AccountCardController {
 	
@@ -35,7 +36,7 @@ public class AccountCardController {
     	nicknameLabel.setText(account.getNickname());
         typeLabel.setText(account.getAccountType().getCodeName());
         numLabel.setText("(" + account.getAccountNum() + ")");
-        balanceLabel.setText("$" + account.getBalance());
+        balanceLabel.setText(UIUtil.formatCurrency(account.getBalance()));
         statusLabel.setText(account.getStatus().name());
     }
 
