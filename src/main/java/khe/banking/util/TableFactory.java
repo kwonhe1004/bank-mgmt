@@ -97,7 +97,7 @@ public class TableFactory {
 	// =========================
 	// MULTISELECT COLUMN
 	// =========================	
-	public static <T> TableSelection<T> setupSelect(TableView<T> table, TableColumn<T, Void> selectCol, Function<T, Integer> idMapper, Consumer<Set<Integer>> onChanged) {
+	public static <T> TableSelection<T> setupSelectCol(TableView<T> table, TableColumn<T, Void> selectCol, Function<T, Integer> idMapper, Consumer<Set<Integer>> onChanged) {
 		Set<Integer> selectedIds = new HashSet<>();
 
 		selectCol.setText(null);
@@ -199,120 +199,6 @@ public class TableFactory {
 			notifySelectionChange(selectedIds, onChanged);
 		});
 
-		return new TableSelection<>(selectCol, selectedIds, selectAll.selectedProperty());
-	}
-	
-	public static <T> TableSelection<T> setupSelectCol(TableView<T> table, 
-			Function<T, Integer> idMapper, Consumer<Set<Integer>> onChanged) {		
-		Set<Integer> selectedIds = new HashSet<>();
-		
-		TableColumn<T, Boolean> selectCol = new TableColumn<>();		
-		selectCol.setText(null);
-		selectCol.setSortable(false);
-		selectCol.setReorderable(false);
-		selectCol.setResizable(false);
-		selectCol.setPrefWidth(50);
-		selectCol.setMaxWidth(50);
-		
-		CheckBox selectAll = new CheckBox();
-		selectAll.getStyleClass().add("header-checkbox");
-		selectAll.setFocusTraversable(false);
-
-		StackPane headerBox = new StackPane(selectAll);
-		headerBox.setAlignment(Pos.CENTER);
-		headerBox.getStyleClass().add("select-column-header");
-
-		selectCol.setGraphic(headerBox);
-		
-		selectCol.setCellFactory(col -> new TableCell<>() {
-			private final CheckBox checkItem = new CheckBox();
-			{
-				getStyleClass().add("select-column-cell");
-		        setAlignment(Pos.CENTER);
-		        setContentDisplay(ContentDisplay.GRAPHIC_ONLY);
-
-		        checkItem.getStyleClass().add("row-checkbox");
-		        checkItem.setAlignment(Pos.CENTER);
-		        checkItem.setFocusTraversable(false);
-			}
-			
-			@Override
-			protected void updateItem(Boolean ignored, boolean empty) {
-				super.updateItem(ignored, empty);
-				
-				if(empty || getTableRow() == null || getTableRow().getItem() == null) {
-					setGraphic(null);
-					return;
-				}
-				
-				T rowItem = getTableRow().getItem();
-				Integer id = idMapper.apply(rowItem);
-				
-				checkItem.setOnAction(null);
-				checkItem.setSelected(selectedIds.contains(id));
-				
-				checkItem.setOnAction(e -> {
-					if(checkItem.isSelected()) {
-						selectedIds.add(id);
-					} else {
-						selectedIds.remove(id);
-					}
-					
-					syncHeaderCheckBox(table, selectedIds, idMapper, selectAll);
-					notifySelectionChange(selectedIds, onChanged);
-				});
-				
-				setGraphic(checkItem);
-			}
-		});
-		
-		selectAll.setOnAction(e -> {			
-	        ObservableList<T> items = table.getItems();
-
-	        if (items == null) {
-	            selectedIds.clear();
-	        } else if (selectAll.isSelected()) {
-	            items.stream()
-	                    .map(idMapper)
-	                    .filter(Objects::nonNull)
-	                    .forEach(selectedIds::add);
-	        } else {
-	            items.stream()
-	                    .map(idMapper)
-	                    .filter(Objects::nonNull)
-	                    .forEach(selectedIds::remove);
-	        }
-
-	        table.refresh();
-	        notifySelectionChange(selectedIds, onChanged);
-	    });
-
-	    ListChangeListener<T> listListener = change -> {
-	        pruneSelectedIds(table, selectedIds, idMapper);
-	        syncHeaderCheckBox(table, selectedIds, idMapper, selectAll);
-	        notifySelectionChange(selectedIds, onChanged);
-	    };
-
-	    if (table.getItems() != null) {
-	        table.getItems().addListener(listListener);
-	    }
-
-	    table.itemsProperty().addListener((obs, oldItems, newItems) -> {
-	        if (oldItems != null) {
-	            oldItems.removeListener(listListener);
-	        }
-
-	        if (newItems != null) {
-	            newItems.addListener(listListener);
-	        }
-
-	        pruneSelectedIds(table, selectedIds, idMapper);
-	        syncHeaderCheckBox(table, selectedIds, idMapper, selectAll);
-	        notifySelectionChange(selectedIds, onChanged);
-	    });
-
-	    table.getColumns().add(0, selectCol);
-		
 		return new TableSelection<>(selectCol, selectedIds, selectAll.selectedProperty());
 	}
 	

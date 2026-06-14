@@ -31,7 +31,7 @@
 .table-view .column-header-background {		/* Header background strip */
     -fx-background-color: -color-black-muted;
     -fx-background-radius: 8 8 0 0; /* TL, TR, BR, BL */
-    -fx-padding: 10 10 5 10;
+    -fx-padding: 10;
 }
 
 .table-view .column-header {	/* Individual column header */
@@ -69,7 +69,6 @@
     -fx-wrap-text: true;   
 }
 
-
 /* =====================================================
    DEFAULT ROW STRIPING
    -----------------------------------------------------
@@ -84,6 +83,7 @@
 	-fx-background-radius: 5;
 	-fx-border-color: -color-black-muted;
 	-fx-border-width: 2;
+	-fx-padding: 5;
 }
 
 .table-row-cell:filled:even {
@@ -115,8 +115,6 @@
 .table-row-cell:filled:even:selected,
 .table-row-cell:filled:odd:selected {
 	-fx-background-color: -color-black-muted;
-	-fx-border-color: -color-white-muted;
-	-fx-border-width: 2;
 	-fx-cursor: hand;
 }
 
@@ -124,7 +122,6 @@
 .table-row-cell:filled:even:selected .table-cell,
 .table-row-cell:filled:odd:selected .table-cell,
 .table-row-cell:filled:selected .table-link-label {
-	-fx-padding: 5;
 	-fx-text-fill: white;
     -fx-font-weight: bold;
 }

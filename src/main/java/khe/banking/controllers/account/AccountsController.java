@@ -128,7 +128,7 @@ public class AccountsController implements Refreshable {
 		dateCol.setCellValueFactory(new PropertyValueFactory<>("date"));
 		notesCol.setCellValueFactory(new PropertyValueFactory<>("note"));
 		
-		tableSelection = TableFactory.setupSelect(txnTable, selectCol, Transaction::getId, this::handleSelectionChange);
+		tableSelection = TableFactory.setupSelectCol(txnTable, selectCol, Transaction::getId, this::handleSelectionChange);
 				
 		accountCol.setCellValueFactory(cellData -> 
 			FormatUtil.accountFormat(cellData.getValue().getAccount()));

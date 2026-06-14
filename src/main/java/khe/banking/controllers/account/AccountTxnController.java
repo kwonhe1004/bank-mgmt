@@ -12,6 +12,7 @@ import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
+import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
@@ -51,6 +52,10 @@ public class AccountTxnController implements Refreshable {
 	@FXML
 	private Button deleteBtn;
 	@FXML
+	private Button printBtn;
+	@FXML
+	private Label selectedLabel;
+	@FXML
 	private TextField searchField;
 
 	@FXML
@@ -62,6 +67,8 @@ public class AccountTxnController implements Refreshable {
 
 	@FXML
 	private TableView<Transaction> txnTable;
+	@FXML
+	private TableColumn<Transaction, Void> selectCol;
 	@FXML
 	private TableColumn<Transaction, String> nameCol;
 	@FXML
@@ -97,6 +104,8 @@ public class AccountTxnController implements Refreshable {
 		tableDataView = TableFactory.setupFilteredSortedTable(txnTable, masterList);
 		
 		setupColumns();
+		updateSelectedLabel(Set.of());
+		
 		setupFilterComponent();
 		
 		UIUtil.onTextChanged(searchField, this::applyFilters);		
@@ -114,16 +123,28 @@ public class AccountTxnController implements Refreshable {
 		dateCol.setCellValueFactory(new PropertyValueFactory<>("date"));
 		notesCol.setCellValueFactory(new PropertyValueFactory<>("note"));
 		
+		tableSelection = TableFactory.setupSelectCol(txnTable, selectCol, Transaction::getId, this::handleSelectionChange);
+		
 		TableFactory.setupActionCol(actionCol, this::handleEdit, this::handleDelete);
 		actionCol.setSortable(false);
 
 		TableFactory.enableWrapping(nameCol);
-		TableFactory.enableWrapping(notesCol);
-		
-		tableSelection = TableFactory.setupSelectCol(txnTable, Transaction::getId, this::handleSelectionChange);	
+		TableFactory.enableWrapping(notesCol);		
+			
 		selectedTypes = FilterFactory.setupTypeFilter(typeCol, this::applyFilters);
 	}
+	
+	private void handleSelectionChange(Set<Integer> selectedIds) {
+	    updateSelectedLabel(selectedIds);
+	}
 
+	private void updateSelectedLabel(Set<Integer> selectedIds) {
+	    int count = selectedIds == null ? 0 : selectedIds.size();
+	    selectedLabel.setText(count + " selected");
+	    
+	    UIUtil.setVisibleAndManaged(selectedLabel, count > 0);
+	}
+	
 	private void setupFilterComponent() {
 		filtersController.addSortOptions(List.of("Amount High-Low", "Amount Low-High"));
 		filtersController.showAmountFilter(true);
@@ -265,13 +286,13 @@ public class AccountTxnController implements Refreshable {
 	// =========================
 	// HANDLE EVENTS
 	// =========================
-	private void handleSelectionChange(Set<Integer> selectedIds) {
-		boolean hasSelection = selectedIds != null && !selectedIds.isEmpty();
-		
-		if(deleteBtn != null) {
-			deleteBtn.setDisable(!hasSelection);
-		}
-	}
+//	private void handleSelectionChange(Set<Integer> selectedIds) {
+//		boolean hasSelection = selectedIds != null && !selectedIds.isEmpty();
+//		
+//		if(deleteBtn != null) {
+//			deleteBtn.setDisable(!hasSelection);
+//		}
+//	}
 	
 	@FXML
 	private void delete(ActionEvent e) {
@@ -325,6 +346,16 @@ public class AccountTxnController implements Refreshable {
 				FormController::isSaved);
 
 		if (Boolean.TRUE.equals(saved)) refresh();
+	}
+	
+	@FXML
+	private void print() {
+	    if (tableSelection == null) {
+	        System.out.println(Set.of());
+	        return;
+	    }
+
+	    System.out.println(Set.copyOf(tableSelection.selectedIds()));
 	}
 
 	@FXML
