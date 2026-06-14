@@ -8,7 +8,7 @@
 @import "app.css";
 
 /* 2. COMPONENTS (reusable UI pieces) */
-@import "sidebar.css";
+@import "navigation.css";
 @import "card.css";
 @import "accordion.css";
 @import "chart.css";

@@ -5,11 +5,13 @@ import java.util.List;
 import khe.banking.models.Transaction;
 
 public interface TxnService {
-	List<Transaction> getAllTransactions();
-    boolean addTransaction(Transaction t);
+	boolean addTransaction(Transaction t);
     boolean updateTransaction(Transaction t);
-    boolean deleteTransaction(Transaction t);
-    int countTransactions();
+    boolean deleteTransaction(int id);
+    
+	List<Transaction> getAllTransactions();    
 	List<Transaction> getTxnByAccount(int accountId);
 	List<Transaction> getTxnByUser(int userId);
+    int countTransactions();
+
 }

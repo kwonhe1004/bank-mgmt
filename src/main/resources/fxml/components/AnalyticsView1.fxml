@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.ChoiceBox?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.Tab?>
+<?import javafx.scene.control.TabPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.StackPane?>
+<?import javafx.scene.layout.VBox?>
+
+<VBox alignment="CENTER" styleClass="analytics-section" xmlns="http://javafx.com/javafx/26" xmlns:fx="http://javafx.com/fxml/1" fx:controller="khe.banking.controllers.components.AnalyticsController">
+   <children>
+      <HBox spacing="20.0" VBox.vgrow="ALWAYS">
+         <children>
+            <TabPane styleClass="analytics-tabs" tabClosingPolicy="UNAVAILABLE" HBox.hgrow="ALWAYS">
+                    <tabs>
+                      <Tab text="Weekly Cash Flow">
+                                 <content>
+                                    <VBox alignment="CENTER" styleClass="chart-card">
+                                       <children>
+                                          <Label styleClass="chart-card-title" text="Weekly Spending" textAlignment="CENTER" wrapText="true" />
+                                          <ChoiceBox fx:id="monthBox" />
+                              		<StackPane fx:id="weeklyPane" />
+                                       </children>
+                                    </VBox>
+                                 </content>
+                        </Tab>
+                        <Tab text="Monthly Cash Flow">
+                                 <content>
+                                    <VBox alignment="CENTER" styleClass="chart-card">
+                                       <children>
+                                          <Label styleClass="chart-card-title" text="Monthly Spending" textAlignment="CENTER" wrapText="true" />
+                                          <ChoiceBox fx:id="inExBox" />
+                                          <StackPane fx:id="monthlyPane" />
+            
+                                       </children>
+                                    </VBox>
+                                 </content>
+                        </Tab>
+                              <Tab text="Yearly Cash Flow">
+                                 <content>
+                                    <VBox alignment="CENTER" styleClass="chart-card">
+                                       <children>
+                                          <Label styleClass="chart-card-title" text="Yearly Spending" textAlignment="CENTER" wrapText="true" />
+                                          <ChoiceBox fx:id="yearBox" />
+                                          <StackPane fx:id="yearlyPane" />
+                                       </children>
+                                    </VBox>
+                                 </content>
+                              </Tab>
+                    </tabs>
+                  </TabPane>
+                  <TabPane styleClass="analytics-tabs" tabClosingPolicy="UNAVAILABLE" HBox.hgrow="ALWAYS">
+                     <tabs>
+                        <Tab text="Expenses By Category">
+                           <content>
+                              <StackPane fx:id="expensePane" styleClass="chart-card" />
+                           </content>
+                        </Tab>
+                        <Tab text="Income By Category">
+                           <content>
+                              <StackPane fx:id="incomePane" styleClass="chart-card" />
+                           </content>
+                        </Tab>
+                     </tabs>
+                  </TabPane>
+         </children>
+      </HBox>
+   </children>
+</VBox>

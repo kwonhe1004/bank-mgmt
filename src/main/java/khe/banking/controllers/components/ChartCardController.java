@@ -1,5 +1,7 @@
 package khe.banking.controllers.components;
 
+import java.time.LocalDate;
+import java.time.Month;
 import java.util.Map;
 
 import javafx.fxml.FXML;
@@ -19,20 +21,38 @@ import khe.banking.services.AnalyticsServiceImpl;
 public class ChartCardController {
 
 	@FXML
-    private Label titleLabel;
-
-    @FXML
     private Label subtitleLabel;
-
     @FXML
     private StackPane chartContainer;
     
     private final AnalyticsService as = new AnalyticsServiceImpl(new AnalyticsDaoImpl());
     
+    private int month = LocalDate.now().getMonthValue() - 1;
+    private Month monthName;
+    private int year = LocalDate.now().getYear();
+    private String inEx = null;
+    
+    public void setDT(int month, int year, String inEx) {
+        if (month > 0) {
+            this.month = month;
+            monthName = Month.of(month);
+        } else if(month == 0) {
+        	this.month = month;
+        	monthName = null;
+        }
+
+        if (year > 0) {
+            this.year = year;
+        }
+
+        this.inEx = inEx;
+    }
+    
     public void configure(User u, AnalyticsType at) {
     	switch(at) {
     		case WEEKLY_CASHFLOW,
-    			MONTHLY_CASHFLOW -> loadLineChart(u, at);
+    			MONTHLY_CASHFLOW,
+    			YEARLY_CASHFLOW -> loadLineChart(u, at);
     		case EXPENSE_BY_CATEGORY,
     			INCOME_BY_CATEGORY -> loadPieChart(u, at);
     	}
@@ -47,21 +67,32 @@ public class ChartCardController {
     	
     	switch(at) {
 	    	case WEEKLY_CASHFLOW -> {
-	    		titleLabel.setText("Weekly Cash Flow");
-                subtitleLabel.setText("Last 7 Days");
+	    		subtitleLabel.setText(monthName + ", " + year);
                 
-                Map<String, Double> data = as.getWeeklyCashflow(u);
-                data.forEach((day, amount) ->
-                	series.getData().add(new XYChart.Data<>(day, amount)));	    		
+                Map<String, Double> data = as.getWeeklyCashflowByMonth(u, year, month);
+                addLineData(series, data);
+//                data.forEach((day, amount) ->
+//                	series.getData().add(new XYChart.Data<>(day, amount)));	    		
 	    	}
 	    	
 	    	case MONTHLY_CASHFLOW -> {
-	    		titleLabel.setText("Monthly Cash Flow");
-                subtitleLabel.setText("Last 30 Days");
+	    		subtitleLabel.setText(String.valueOf(year));
+	    		Map<String, Double> data;
+
+                if ("INCOME".equals(inEx)) {
+                    data = as.getMonthlyIncome(u, year);
+                } else {
+                    data = as.getMonthlyExpense(u, year);
+                }
+
+                addLineData(series, data); 		
+	    	}
+	    	
+	    	case YEARLY_CASHFLOW -> {
+	    		subtitleLabel.setText(String.valueOf(year));
                 
-                Map<String, Double> data = as.getMonthlyCashflow(u);
-                data.forEach((day, amount) ->
-                	series.getData().add(new XYChart.Data<>(day, amount)));	    		
+                Map<String, Double> data = as.getYearlyCashflow(u, year);
+                addLineData(series, data);
 	    	}
     	}
     	
@@ -69,30 +100,37 @@ public class ChartCardController {
 	    chartContainer.getChildren().setAll(lineChart);    		
     }
     
+    private void addLineData(XYChart.Series<String, Number> series, Map<String, Double> data) {
+        data.forEach((label, amount) ->
+                series.getData().add(new XYChart.Data<>(label, amount)));
+    }
+    
     private void loadPieChart(User u, AnalyticsType at) {
     	PieChart pieChart = new PieChart();
-
+    	if(month > 0 ) {
+    		subtitleLabel.setText(monthName + ", " + year);
+    	} else if(month == 0) {
+    		subtitleLabel.setText(String.valueOf(year));
+    	}    	
+    	
         switch (at) {
 	        case EXPENSE_BY_CATEGORY -> {	
-	            titleLabel.setText("Expenses By Category");	
-	            subtitleLabel.setText("Current Month");
-	
-	            Map<String, Double> data = as.getCategoryExpenses(u);
-	            data.forEach((category, amount) ->
-	                pieChart.getData().add(new PieChart.Data(category, amount)));
+	            Map<String, Double> data = as.getCategoryExpenses(u, year, month);
+	            addPieData(pieChart, data);
 	        }
 	        
 	        case INCOME_BY_CATEGORY -> {	
-	            titleLabel.setText("Income By Category");	
-	            subtitleLabel.setText("Current Month");
-	
-	            Map<String, Double> data = as.getCategoryIncome(u);
-	            data.forEach((category, amount) ->
-	                pieChart.getData().add(new PieChart.Data(category, amount)));
+	        	Map<String, Double> data = as.getCategoryIncome(u, year, month);
+	            addPieData(pieChart, data);
 	        }
         }
         
 	    chartContainer.getChildren().setAll(pieChart);    	
+    }
+    
+    private void addPieData(PieChart pieChart, Map<String, Double> data) {
+        data.forEach((label, amount) ->
+                pieChart.getData().add(new PieChart.Data(label, amount)));
     }
  
 

@@ -6,10 +6,10 @@ import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.GridPane;
 import javafx.stage.Stage;
-import khe.banking.dao.UserDaoImpl;
 import khe.banking.models.User;
-import khe.banking.services.UserServiceImpl;
-import khe.banking.utils.UIUtil;
+import khe.banking.services.ServiceFactory;
+import khe.banking.services.UserService;
+import khe.banking.util.DialogUtil;
 
 public class ForgotPasswordController {
 
@@ -38,15 +38,15 @@ public class ForgotPasswordController {
 	User u = null;
 	private boolean saved = false;
 
-	private final UserServiceImpl us = new UserServiceImpl(new UserDaoImpl());
+	private final UserService us = ServiceFactory.USER_SERVICE;
 
 	public void initialize() {
 	}
 
 	@FXML
 	private void sendEmail() {
-		if (UIUtil.hasEmptyFields(emailField)) {
-			UIUtil.emptyAlert();
+		if (DialogUtil.hasEmptyFields(emailField)) {
+			DialogUtil.emptyAlert();
 			return;
 		}
 			
@@ -62,14 +62,14 @@ public class ForgotPasswordController {
 //				System.out.println("Issue sending email.");
 //			}			
 		} else {
-			UIUtil.showWarning("No user found.");
+			DialogUtil.showWarning("No user found.");
 		}
 	}
 
 	@FXML
 	private void confirmCode() {
-		if (UIUtil.hasEmptyFields(codeField)) {
-			UIUtil.emptyAlert();
+		if (DialogUtil.hasEmptyFields(codeField)) {
+			DialogUtil.emptyAlert();
 			return;
 		}
 
@@ -77,14 +77,14 @@ public class ForgotPasswordController {
 			pwPane.setVisible(true);
 			saveBtn.setVisible(true);
 		} else {
-			UIUtil.showWarning("Incorrect Code");
+			DialogUtil.showWarning("Incorrect Code");
 		}
 	}
 
 	@FXML
 	private void handleSave() {
-		if (UIUtil.hasEmptyFields(newPw, confirmPw)) {
-			UIUtil.emptyAlert();
+		if (DialogUtil.hasEmptyFields(newPw, confirmPw)) {
+			DialogUtil.emptyAlert();
 			return;
 		}
 
@@ -96,7 +96,7 @@ public class ForgotPasswordController {
 //			UIUtil.showInfo("New Password Saved");
 			closeWindow();
 		} else {
-			UIUtil.showWarning("Passwords do not match.");
+			DialogUtil.showWarning("Passwords do not match.");
 		}
 	}
 

@@ -1,0 +1,124 @@
+.dashboard{
+	-fx-background-color: -color-accent;
+}
+/* =====================================================
+   SIDEBAR CONTAINER (NAVIGATOR)
+   -----------------------------------------------------
+   Background and base layout for sidebar navigation.
+===================================================== */
+.logo-pane,
+.sidebar{
+	-fx-background-color: -color-accent;
+	-fx-border-color: -color-black-muted;
+    -fx-border-radius: 5;
+    -fx-border-width: 3;
+}
+
+
+/* =====================================================
+   SIDEBAR BUTTONS
+   -----------------------------------------------------
+   Navigation buttons inside sidebar.
+===================================================== */
+.sidebar .button,
+.sidebar .toggle-button,
+.sidebar .menu-button {
+    -fx-background-color: transparent;
+    -fx-border-color: -white-focused;
+    -fx-border-radius: 5;
+    -fx-border-width: 3;
+    -fx-text-fill: -color-black;
+    -fx-font-size: 14px;
+    -fx-font-weight: bold;
+}
+
+/* Hover effect for navigation items */
+.sidebar .button:hover,
+.sidebar .toggle-button:hover,
+.sidebar .menu-button:hover {
+    -fx-background-color: -white-focused;
+    -fx-background-radius: 5;
+	-fx-cursor: hand;
+}
+
+.sidebar .button.active {
+    -fx-background-color: -white-focused;
+    -fx-background-radius: 5;
+    -fx-border-color: -white-focused;
+  	-fx-cursor: hand;
+}
+
+/* =========================
+   NAVIGATION BUTTONS
+========================= */
+.nav-btn {
+	-fx-background-color: transparent;
+	-fx-border-color: -color-white-muted;
+	-fx-border-radius: 5;
+	-fx-border-width: 2;
+}
+
+.nav-btn:hover {
+	-fx-border-color: -color-black-muted;
+	-fx-cursor: hand;	
+}
+
+
+/* =====================================================
+   SCROLLPANE STYLES
+===================================================== */
+.scroll-pane {
+    -fx-background-color: transparent;
+}
+
+.scroll-pane > .viewport {
+    -fx-background-color: transparent;
+}
+
+/* =========================================================
+   SCROLLBAR STYLE
+========================================================= */
+.scroll-bar:horizontal {
+    -fx-pref-height: 8px;
+    -fx-background-color: transparent;
+}
+
+.scroll-bar:vertical {
+    -fx-pref-width: 8px;
+    -fx-background-color: transparent;
+}
+
+/* TRACK */
+.scroll-bar .track {
+    -fx-background-color: #cfd5dd;
+    -fx-background-radius: 100px;
+}
+
+/* THUMB */
+.scroll-bar .thumb {
+    -fx-background-color: #97a4b2;
+    -fx-background-radius: 100px;
+}
+
+/* HOVER */
+.scroll-bar .thumb:hover {
+    -fx-background-color: #7f8c99;
+}
+
+/* PRESSED */
+.scroll-bar .thumb:pressed {
+    -fx-background-color: #5f6d7c;
+}
+
+/* REMOVE BUTTONS */
+.scroll-bar .increment-button,
+.scroll-bar .decrement-button {
+    -fx-opacity: 0;
+    -fx-padding: 0;
+}
+
+.scroll-bar .increment-arrow,
+.scroll-bar .decrement-arrow {
+    -fx-shape: "";
+    -fx-padding: 0;
+}

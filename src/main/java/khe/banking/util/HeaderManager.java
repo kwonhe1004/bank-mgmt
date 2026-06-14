@@ -1,4 +1,4 @@
-package khe.banking.utils;
+package khe.banking.util;
 
 import java.util.function.Consumer;
 
@@ -6,6 +6,7 @@ import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
 import javafx.scene.Node;
 
+// Helper Class for setting each view's heading/title (& actions)
 public final class HeaderManager {
 	private static final StringProperty title = new SimpleStringProperty("");
 	private static Consumer<Node> actionSetter;

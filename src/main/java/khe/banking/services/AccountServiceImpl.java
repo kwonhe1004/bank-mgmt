@@ -5,15 +5,72 @@ import java.util.List;
 import khe.banking.dao.AccountDao;
 import khe.banking.models.Account;
 import khe.banking.models.AccountSummary;
+import khe.banking.models.enums.EntityType;
+import khe.banking.models.records.AuditContext;
 
 public class AccountServiceImpl implements AccountService {
 
 	private final AccountDao ad;
+    private final AuditLogService ls;
 	
-	public AccountServiceImpl(AccountDao ad) {
+	public AccountServiceImpl(AccountDao ad, AuditLogService ls) {
 		this.ad = ad;
+		this.ls = ls;
 	}
 
+	@Override
+	public boolean addAccount(Account a) {
+		return addAccount(a, null);
+	}
+	
+	public boolean addAccount(Account a, String description) {
+		boolean success = ad.add(a);
+
+	    if(success) {
+	    	AuditContext ctx = new AuditContext(EntityType.ACCOUNT, a.getId(), description);	
+	    	ls.logInsert(ctx, a);
+	    }
+	    return success;		
+	}
+
+	@Override
+	public boolean updateAccount(Account a) {
+		return updateAccount(a, null);
+	}
+	
+	public boolean updateAccount(Account a, String description) {
+		Account old = ad.findById(a.getId());
+		if(old == null) {
+			return false;
+		}
+		
+		boolean success = ad.update(a);		
+		if(success) {
+			AuditContext ctx = new AuditContext(EntityType.ACCOUNT, a.getId(), description);
+			ls.logUpdate(ctx, old, a);
+		}			
+		return success;
+	}
+
+	@Override
+	public boolean deleteAccount(Account a) {
+		return deleteAccount(a, null);
+	}
+	
+	public boolean deleteAccount(Account a, String description) {
+		Account old = ad.findById(a.getId());
+		if(old == null) {
+			return false;
+		}
+		
+	    boolean success = ad.delete(a);
+	    if(success) {
+	    	AuditContext ctx = new AuditContext(EntityType.ACCOUNT, a.getId(), description);
+	    	ls.logDelete(ctx, old);
+	    }
+	    return success;
+	}
+	
 	@Override
 	public List<Account> getAllAccounts() {
 		return ad.findAll();
@@ -28,21 +85,6 @@ public class AccountServiceImpl implements AccountService {
 	public Account getAccountById(int id) {
 		return ad.findById(id);
 	}
-
-	@Override
-	public boolean addAccount(Account a) {
-		return ad.add(a);
-	}
-
-	@Override
-	public boolean updateAccount(Account a) {
-		return ad.update(a);
-	}
-
-	@Override
-	public boolean deleteAccount(Account a) {
-		return ad.delete(a);
-	}
 	
 	@Override
 	public List<Account> getAccounts(int userId) {
@@ -52,16 +94,6 @@ public class AccountServiceImpl implements AccountService {
 	@Override
 	public AccountSummary getAccountSummary(int accountId) {
 		return ad.getAccountSummary(accountId);
-	}
-
-	@Override
-	public int countUserAccount(int userId) {
-		return ad.countUserAccounts(userId);
-	}
-
-	@Override
-	public int countAllAccount() {
-		return ad.countAccounts();
 	}
 	
 }

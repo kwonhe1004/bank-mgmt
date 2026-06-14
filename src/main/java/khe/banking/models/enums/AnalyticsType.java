@@ -4,6 +4,7 @@ public enum AnalyticsType {
 	
 	WEEKLY_CASHFLOW("weekly"),
 	MONTHLY_CASHFLOW("monthly"),
+	YEARLY_CASHFLOW("yearly"),
 
 	EXPENSE_BY_CATEGORY("expense"),
 	INCOME_BY_CATEGORY("income");

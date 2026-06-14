@@ -67,6 +67,22 @@
     -fx-padding: 15;
 }
 
+.chart-card-title {
+	-fx-alignment: center;
+    -fx-text-alignment: center;
+    -fx-font: 28px "Arial Black";
+    -fx-wrap-text: true;
+}
+
+.chart-card-subtitle {
+	-fx-alignment: center;
+    -fx-text-alignment: center;
+	-fx-text-fill: -color-black-muted;
+    -fx-font-size: 20px;
+    -fx-font-style: italic;
+    -fx-font-weight: bold;
+}
+
 /* =========================================================
    CHART BACKGROUND
 ========================================================= */
@@ -144,3 +160,49 @@
 .chart-legend {
     -fx-background-color: transparent;
 }
+
+/* =========================================================
+   CHOICE BOX FILTERS
+========================================================= */
+
+.choice-box > .label {
+	-fx-text-fill: -color-black-muted;
+	-fx-font-size: 12px;
+	-fx-font-weight: bold;
+	
+}
+
+.choice-box:focused > .label {
+	-fx-text-fill: -color-black;
+}
+
+.choice-box .context-menu {
+    -fx-background-color: white;
+    -fx-background-radius: 5;
+    -fx-border-color: -color-black;
+    -fx-border-radius: 5;
+    -fx-border-width: 2;
+}
+
+/* 5. Dropdown Rows (Menu Items) */
+.choice-box .menu-item {
+	-fx-background-color: transparent;
+    -fx-padding: 5;
+}
+
+.choice-box .menu-item .label {
+    -fx-text-fill: black;
+    -fx-font-size: 12px;
+}
+
+/* Hovering over a row */
+.choice-box .menu-item:focused,
+.choice-box .menu-item:hover {
+    -fx-background-color: -color-black;
+}
+
+.choice-box .menu-item:focused .label,
+.choice-box .menu-item:hover .label {
+    -fx-text-fill: white;
+}
+

@@ -9,13 +9,12 @@ import javafx.scene.control.Label;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import khe.banking.controllers.BaseFormController;
-import khe.banking.dao.TxnDaoImpl;
 import khe.banking.models.Transaction;
 import khe.banking.models.enums.FormMode;
 import khe.banking.models.enums.TxnType;
+import khe.banking.services.ServiceFactory;
 import khe.banking.services.TxnService;
-import khe.banking.services.TxnServiceImpl;
-import khe.banking.utils.UIUtil;
+import khe.banking.util.DialogUtil;
 
 public class FormController extends BaseFormController<Transaction> {
 
@@ -32,7 +31,7 @@ public class FormController extends BaseFormController<Transaction> {
 	@FXML
 	private TextArea noteField;
 
-	private final TxnService ts = new TxnServiceImpl(new TxnDaoImpl());
+	private final TxnService ts = ServiceFactory.TXN_SERVICE;
 
 	@FXML
 	public void initialize() {
@@ -72,7 +71,7 @@ public class FormController extends BaseFormController<Transaction> {
 	@FXML
 	private void handleSave() {
 		if(validate(nameField, amountField, datePicker, typeChoice, noteField)) {
-			UIUtil.emptyAlert();
+			DialogUtil.emptyAlert();
 			return; // stops method if invalid
 		}
 

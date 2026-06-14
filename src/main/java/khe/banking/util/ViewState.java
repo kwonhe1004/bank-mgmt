@@ -1,4 +1,4 @@
-package khe.banking.utils;
+package khe.banking.util;
 
 // Represents a view stored in navigation history.
 

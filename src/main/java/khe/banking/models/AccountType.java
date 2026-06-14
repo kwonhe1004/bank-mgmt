@@ -112,7 +112,7 @@ public class AccountType {
 
 	@Override
     public String toString() {
-        return name;
+		return getClass().getSimpleName() + "(" + id + ", " + code + ")";
     }
 
 }

@@ -1,4 +1,4 @@
-package khe.banking.utils;
+package khe.banking.util;
 
 import khe.banking.dao.SessionDaoImpl;
 import khe.banking.models.Session;

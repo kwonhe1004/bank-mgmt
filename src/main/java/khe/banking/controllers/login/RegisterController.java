@@ -5,10 +5,10 @@ import javafx.scene.control.DatePicker;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
-import khe.banking.dao.UserDaoImpl;
 import khe.banking.models.User;
-import khe.banking.services.UserServiceImpl;
-import khe.banking.utils.UIUtil;
+import khe.banking.services.ServiceFactory;
+import khe.banking.services.UserService;
+import khe.banking.util.DialogUtil;
 
 public class RegisterController {
 
@@ -27,15 +27,15 @@ public class RegisterController {
 
 	private boolean saved = false;
 
-	private final UserServiceImpl us = new UserServiceImpl(new UserDaoImpl());
+	private final UserService us = ServiceFactory.USER_SERVICE;
 
 	public void initialize() {
 	}
 
 	@FXML
 	private void handleSave() {
-		if (UIUtil.hasEmptyFields(first, last, email, dob, pw)) {
-			UIUtil.emptyAlert();
+		if (DialogUtil.hasEmptyFields(first, last, email, dob, pw)) {
+			DialogUtil.emptyAlert();
 			return;
 		}
 

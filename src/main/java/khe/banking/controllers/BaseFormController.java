@@ -4,7 +4,7 @@ import javafx.scene.Node;
 import javafx.scene.control.Control;
 import javafx.stage.Stage;
 import khe.banking.models.enums.FormMode;
-import khe.banking.utils.UIUtil;
+import khe.banking.util.DialogUtil;
 
 public abstract class BaseFormController<T> {
 
@@ -38,7 +38,7 @@ public abstract class BaseFormController<T> {
     // VALIDATION HELPER
     // =========================
     protected boolean validate(Control... fields) {
-        return UIUtil.hasEmptyFields(fields);
+        return DialogUtil.hasEmptyFields(fields);
     }
 
     // =========================

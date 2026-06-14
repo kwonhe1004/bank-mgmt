@@ -11,14 +11,13 @@ import javafx.scene.control.ToggleButton;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.BorderPane;
-import khe.banking.dao.UserDaoImpl;
 import khe.banking.models.User;
+import khe.banking.services.ServiceFactory;
 import khe.banking.services.UserService;
-import khe.banking.services.UserServiceImpl;
-import khe.banking.utils.ModalManager;
-import khe.banking.utils.SceneManager;
-import khe.banking.utils.SessionManager;
-import khe.banking.utils.UIUtil;
+import khe.banking.util.DialogUtil;
+import khe.banking.util.ModalManager;
+import khe.banking.util.SceneManager;
+import khe.banking.util.SessionManager;
 
 public class LoginController {
 
@@ -43,7 +42,7 @@ public class LoginController {
 	private Image show;
 	private Image hide;
 
-	private final UserService us = new UserServiceImpl(new UserDaoImpl());
+	private final UserService us = ServiceFactory.USER_SERVICE;
 
 	public void initialize() {
 		tf.textProperty().bindBidirectional(pf.textProperty());
@@ -69,8 +68,8 @@ public class LoginController {
 
 	@FXML
 	private void login(ActionEvent e) throws IOException {
-		if (UIUtil.hasEmptyFields(username, pf)) {
-			UIUtil.emptyAlert();
+		if (DialogUtil.hasEmptyFields(username, pf)) {
+			DialogUtil.emptyAlert();
 			return;
 		}
 		
@@ -80,7 +79,7 @@ public class LoginController {
 			SessionManager.createSession(u);
 			SceneManager.switchScene((Node) e.getSource(), "/fxml/Dashboard.fxml", true);
 		} else {
-			UIUtil.showWarning("Incorrect email or password.");
+			DialogUtil.showWarning("Incorrect email or password.");
 		}
 	}
 
@@ -89,7 +88,7 @@ public class LoginController {
 		Boolean saved = ModalManager.showModal("/fxml/login/Register.fxml", "Create New Account", null, RegisterController::isSaved);
 
 		if (Boolean.TRUE.equals(saved)) {
-			UIUtil.showInfo("Account created successfully!");
+			DialogUtil.showInfo("Account created successfully!");
 		}
 	}
 
@@ -98,7 +97,7 @@ public class LoginController {
 		Boolean saved = ModalManager.showModal("/fxml/login/ForgotPassword.fxml", "Reset Password", null, ForgotPasswordController::isSaved);
 
 		if (Boolean.TRUE.equals(saved)) {
-			UIUtil.showInfo("Password change successful.");
+			DialogUtil.showInfo("Password change successful.");
 		}
 	}
 

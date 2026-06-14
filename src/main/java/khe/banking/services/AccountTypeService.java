@@ -5,10 +5,11 @@ import java.util.List;
 import khe.banking.models.AccountType;
 
 public interface AccountTypeService {
-	List<AccountType> getAllAccountTypes();
-	AccountType getAccountTypeById(int id);
 	boolean addAccountType(AccountType at);
     boolean updateAccountType(AccountType at);
-    boolean deleteAccountType(AccountType at);	
+    boolean deleteAccountType(AccountType at);
+	List<AccountType> getAllAccountTypes();
+	AccountType getAccountTypeById(int id);
+		
 
 }

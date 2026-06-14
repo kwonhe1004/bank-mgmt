@@ -109,8 +109,7 @@ public class User {
 
 	@Override
 	public String toString() {
-//		return String.format("%d, %s: email= %s", id, getFullName(), email);
-		return getFullName();
+		return String.format("%s %s[%d]", first, last, id);
 	}
 
 }

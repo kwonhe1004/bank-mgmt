@@ -25,7 +25,14 @@
 	-fx-cursor: hand;
 }
 
-
+/* =========================
+   SHOW/HIDE PW BUTTON
+========================= */
+.pw-btn{
+	-fx-background-color: transparent;
+	-fx-border-width: 0;
+    -fx-cursor: hand;
+}
 
 /*
 .hyperlink:visited {

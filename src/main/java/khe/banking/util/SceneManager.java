@@ -1,4 +1,4 @@
-package khe.banking.utils;
+package khe.banking.util;
 
 import javafx.scene.Node;
 import javafx.scene.Parent;

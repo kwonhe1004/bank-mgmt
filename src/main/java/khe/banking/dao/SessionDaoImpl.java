@@ -17,7 +17,24 @@ public class SessionDaoImpl implements SessionDao {
 
 	@Override
 	public List<Session> findAll() {
-		return null;
+		List<Session> list = new ArrayList<>();
+		String sql = """
+				SELECT s.*, u.id AS user_id, u.last, u.first
+				FROM user_session s
+		        JOIN users u ON s.user_id = u.id
+		        ORDER BY s.id DESC""";
+		
+		try (Connection conn = ConnectDB.getConnection();
+				PreparedStatement ps = conn.prepareStatement(sql)) {
+			ResultSet rs = ps.executeQuery();
+			while(rs.next()) {
+				list.add(mapSession(rs));
+			}			
+		} catch (SQLException e) {
+//			e.printStackTrace();
+			throw new RuntimeException("Failed to retrieve sessions", e);
+		}
+		return list;
 	}
 	
 	@Override
@@ -36,14 +53,12 @@ public class SessionDaoImpl implements SessionDao {
 			if(rs.next()) {
 				o.setId(rs.getLong(1));
 			}
-			return o;			
-			
+			return o;
 		} catch (SQLException e) {
 			throw new RuntimeException("Failed to create session", e);
-		}		
+		}
 	}
 
-	// boolean logout(long sessionId);
 	@Override
 	public boolean update(Session o) {
 		String sql = """
@@ -57,10 +72,9 @@ public class SessionDaoImpl implements SessionDao {
 			ps.setLong(2, o.getId());
 			return ps.executeUpdate() > 0;			
 		} catch (SQLException e) {
-//			throw new RuntimeException("Failed to logout session", e);
-			e.printStackTrace();
+			throw new RuntimeException("Failed to logout session", e);
+//			e.printStackTrace();
 		}
-		return false;
 	}
 
 	@Override
@@ -79,7 +93,7 @@ public class SessionDaoImpl implements SessionDao {
 				return mapSession(rs);				
 			}			
 		} catch (SQLException e) {
-			e.printStackTrace();
+			throw new RuntimeException("Failed to create session", e);
 		}
 		return null;
 	}
@@ -102,7 +116,7 @@ public class SessionDaoImpl implements SessionDao {
 				list.add(mapSession(rs));
 			}			
 		} catch (SQLException e) {
-			e.printStackTrace();
+			throw new RuntimeException("Failed to create session", e);
 		}
 		return list;
 	}

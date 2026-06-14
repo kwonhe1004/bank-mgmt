@@ -17,15 +17,14 @@ import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.control.ToggleGroup;
 import javafx.scene.control.cell.PropertyValueFactory;
-import khe.banking.dao.TxnDaoImpl;
 import khe.banking.models.Transaction;
 import khe.banking.models.enums.FormMode;
 import khe.banking.models.enums.TxnType;
+import khe.banking.services.ServiceFactory;
 import khe.banking.services.TxnService;
-import khe.banking.services.TxnServiceImpl;
-import khe.banking.utils.ModalManager;
-import khe.banking.utils.TableFactory;
-import khe.banking.utils.UIUtil;
+import khe.banking.util.DialogUtil;
+import khe.banking.util.ModalManager;
+import khe.banking.util.TableFactory;
 
 public class TransactionsController {
 
@@ -79,7 +78,7 @@ public class TransactionsController {
 	private final ObservableList<Transaction> masterList = FXCollections.observableArrayList();
 	private FilteredList<Transaction> filteredList;
 
-	private TxnService ts = new TxnServiceImpl(new TxnDaoImpl());
+	private TxnService ts = ServiceFactory.TXN_SERVICE;
 
 	// =========================
 	// INITIALIZE
@@ -132,11 +131,12 @@ public class TransactionsController {
 	// ACTIONS
 	// =========================
 	private void handleDelete(Transaction t) {
-		if (UIUtil.showConfirm("Delete this transaction?")) {
-			ts.deleteTransaction(t);
-
-			UIUtil.showInfo("Transaction deleted.");
-			loadData();
+		if (DialogUtil.showConfirm("Delete this transaction?")) {
+//			ts.deleteTransaction(t);
+//
+//			DialogUtil.showInfo("Transaction deleted.");
+//			loadData();
+			System.out.println("TransactionsController.handleDelete(Transaction)");
 		}
 	}
 

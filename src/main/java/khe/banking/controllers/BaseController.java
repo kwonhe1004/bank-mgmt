@@ -1,9 +1,9 @@
 package khe.banking.controllers;
 
-import khe.banking.utils.NavigationManager;
-import khe.banking.utils.ViewData;
-import khe.banking.utils.ViewLoader;
-import khe.banking.utils.ViewType;
+import khe.banking.util.NavigationManager;
+import khe.banking.util.ViewData;
+import khe.banking.util.ViewLoader;
+import khe.banking.util.ViewType;
 
 // Shared functionality for all controllers & access to navigation system
 

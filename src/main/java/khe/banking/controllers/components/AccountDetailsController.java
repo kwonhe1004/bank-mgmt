@@ -4,9 +4,14 @@ import javafx.fxml.FXML;
 import javafx.scene.control.Hyperlink;
 import javafx.scene.control.Label;
 import javafx.scene.layout.HBox;
+import khe.banking.controllers.tag.TagsController;
 import khe.banking.models.Account;
-import khe.banking.utils.Refreshable;
-import khe.banking.utils.UIUtil;
+import khe.banking.util.FormatUtil;
+import khe.banking.util.NavigationManager;
+import khe.banking.util.Refreshable;
+import khe.banking.util.ViewData;
+import khe.banking.util.ViewLoader;
+import khe.banking.util.ViewType;
 
 public class AccountDetailsController implements Refreshable {
 	
@@ -33,9 +38,17 @@ public class AccountDetailsController implements Refreshable {
 	
 	private void loadAccount() {
 		numLabel.setText(account.getAccountNum());
-		balanceLabel.setText(UIUtil.formatCurrency(account.getBalance()));
+		balanceLabel.setText(FormatUtil.formatCurrency(account.getBalance()));
 		statusLabel.setText(account.getStatus().name());
 		typeLabel.setText(account.getAccountType().getName());		
+	}
+	
+	@FXML 
+	private void typeLink() {
+		ViewData<TagsController> data = ViewLoader.loadView("/fxml/tag/TagsView.fxml");
+		TagsController controller = data.getController();
+		controller.setHighlight(account.getAccountType());
+		NavigationManager.switchView(data, ViewType.TAGS);
 	}
 
 	private void clear() {

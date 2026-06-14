@@ -10,18 +10,15 @@ import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TitledPane;
 import javafx.scene.control.cell.PropertyValueFactory;
-import khe.banking.dao.AccountTypeDaoImpl;
-import khe.banking.dao.CategoryDaoImpl;
 import khe.banking.models.AccountType;
 import khe.banking.models.Category;
 import khe.banking.models.Category.CategoryType;
 import khe.banking.models.enums.AccountTypeEnum;
 import khe.banking.services.AccountTypeService;
-import khe.banking.services.AccountTypeServiceImpl;
 import khe.banking.services.CategoryService;
-import khe.banking.services.CategoryServiceImpl;
-import khe.banking.utils.HeaderManager;
-import khe.banking.utils.TableFactory;
+import khe.banking.services.ServiceFactory;
+import khe.banking.util.HeaderManager;
+import khe.banking.util.TableFactory;
 
 public class TagsController {
 		
@@ -61,8 +58,8 @@ public class TagsController {
 	private final ObservableList<Category> cList = FXCollections.observableArrayList();
 	private final ObservableList<AccountType> atList = FXCollections.observableArrayList();
 	
-	private final CategoryService cs = new CategoryServiceImpl(new CategoryDaoImpl());
-	private final AccountTypeService ats = new AccountTypeServiceImpl(new AccountTypeDaoImpl());
+	private final CategoryService cs = ServiceFactory.CATEGORY_SERVICE;
+	private final AccountTypeService ats = ServiceFactory.ACCOUNT_TYPE_SERVICE;
 	
 	private AccountType highlight;
 	

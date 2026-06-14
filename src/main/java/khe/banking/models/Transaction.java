@@ -103,4 +103,9 @@ public class Transaction {
 		this.note = note;
 	}
   
+	@Override
+	public String toString() {
+		return String.format("%s(%d, accountId=%d)", getClass().getSimpleName(), id, account.getId());
+	}
+	
 }

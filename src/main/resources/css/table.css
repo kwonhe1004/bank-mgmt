@@ -15,6 +15,15 @@
 }
 
 /* =====================================================
+   FOCUS FIX
+   -----------------------------------------------------
+   Removes default JavaFX focus border (cleaner UI).
+===================================================== */
+.table-view:focused {
+    -fx-background-insets: 0;
+}
+
+/* =====================================================
    TABLE HEADER
    -----------------------------------------------------
    Styles for column headers and header row.
@@ -22,7 +31,7 @@
 .table-view .column-header-background {		/* Header background strip */
     -fx-background-color: -color-black-muted;
     -fx-background-radius: 8 8 0 0; /* TL, TR, BR, BL */
-    -fx-padding: 10;
+    -fx-padding: 10 10 5 10;
 }
 
 .table-view .column-header {	/* Individual column header */
@@ -41,6 +50,10 @@
     -fx-font: 14px "Arial Black";
 }
 
+.table-view .column-header .arrow {
+    -fx-background-color: -color-white;	
+}
+
 /* =====================================================
    CELL STYLING
    -----------------------------------------------------
@@ -55,6 +68,7 @@
     -fx-text-fill: -color-black; 
     -fx-wrap-text: true;   
 }
+
 
 /* =====================================================
    DEFAULT ROW STRIPING
@@ -109,12 +123,11 @@
 .table-row-cell:selected .table-cell, 
 .table-row-cell:filled:even:selected .table-cell,
 .table-row-cell:filled:odd:selected .table-cell,
-.table-row-cell:selected .table-link-label {
+.table-row-cell:filled:selected .table-link-label {
 	-fx-padding: 5;
 	-fx-text-fill: white;
     -fx-font-weight: bold;
 }
-
 
 /* =========================================================
    CLICKABLE TABLE LABEL
@@ -134,53 +147,37 @@
     -fx-padding: 0;
 }
 
-/* HOVER */
-.table-link-label:hover {
-    /* subtle interaction */
-    -fx-text-fill: derive(-color-black, -20%);
-
-    /* optional */
-    -fx-opacity: 0.85;
-}
-
-
 /* =====================================================
    TRANSACTION TABLE OVERRIDES
    -----------------------------------------------------
    Applies ONLY to tables with styleClass="txn-table"
    Used for income/expense row highlighting.
 ===================================================== */
-.txn-table{
-    -color-red: #f6dada;	
-	-color-green: #dbe7d0;
-}
 
 /* Expense rows */
 .txn-table .table-row-expense {
-    -fx-background-color: -color-red;
+    -fx-background-color: #f6dada;
 }
 .table-row-cell.table-row-expense:hover {
     -fx-background-color: #e79c9c;
 }
 .table-row-cell.table-row-expense:selected {
-    -fx-background-color: -color-black-muted;
+    -fx-background-color: #d85e5e;
 }
 
 /* Income rows */
 .txn-table .table-row-income {
-    -fx-background-color: -color-green;
+    -fx-background-color: #dbe7d0;
 }
 .table-row-cell.table-row-income:hover {
     -fx-background-color: #b4cd9d;
 }
 .table-row-cell.table-row-income:selected {
-    -fx-background-color: -color-black-muted;
+    -fx-background-color: #8db36a;
 }
 
 /* =====================================================
    AMOUNT COLUMN STYLING
-   -----------------------------------------------------
-   Colors amount text based on transaction type.
 ===================================================== */
 
 /* Expense text (red) */
@@ -193,29 +190,10 @@
     -fx-text-fill: green;
 }
 
-/* =========================
-   MENU BUTTON
-========================= */
-.table-menu-btn {
-	-fx-background-color: transparent;
-    -fx-border-color: -color-white-muted;
-    -fx-border-radius: 5;
-    -fx-border-width: 2;
-}
 
-.table-menu-btn:hover {
-	-fx-border-color: -color-black-muted;
-    -fx-cursor: hand;
-}
-
-.table-menu-btn:focused {
-	-fx-border-color: -color-black-muted;
-    -fx-cursor: hand;
-}
-
-/* =========================
-   ACTION BUTTONS
-========================= */
+/* =====================================================
+   ACTION COLUMN BUTTONS   
+===================================================== */
 .action-btn {
 	-fx-background-color: transparent;	
 	-fx-border-color: transparent;
@@ -229,13 +207,132 @@
 }
 
 /* =====================================================
-   FOCUS FIX
+   SELECT COLUMN CHECKBOX
    -----------------------------------------------------
-   Removes default JavaFX focus border (cleaner UI).
+   styles the multi-select column
 ===================================================== */
-.table-view:focused {
-    -fx-background-insets: 0;
+
+/* Select column cells */
+.table-view .select-column-cell {
+    -fx-padding: 0;
+    -fx-alignment: CENTER;
+}
+
+/* Header wrapper around select-all checkbox */
+.select-column-header {
+    -fx-padding: 0;
+    -fx-alignment: CENTER;
+}
+
+/* Remove extra padding from the checkbox controls */
+.table-view .row-checkbox,
+.table-view .header-checkbox {
+    -fx-padding: 0;
+    -fx-label-padding: 0;
 }
 
 
+/* Shared checkbox box shape */
+.table-view .row-checkbox .box,
+.table-view .header-checkbox .box {
+    -fx-background-color: transparent;
+    -fx-border-width: 2;
+    -fx-border-radius: 5;
+    -fx-background-radius: 5;
+    -fx-padding: 2;
+}
+
+/* =========================
+   Row checkbox
+========================= */
+
+.table-view .row-checkbox .box {
+    -fx-border-color: -color-black-muted;
+}
+
+.table-view .row-checkbox:hover .box {
+    -fx-border-color: -color-black;
+}
+
+.table-view .row-checkbox:selected .box {
+    -fx-background-color: -color-black;
+    -fx-border-color: -color-black;
+}
+
+.table-view .row-checkbox:selected .mark {
+    -fx-background-color: -color-white-muted;
+}
+
+/* =========================
+   Header checkbox
+========================= */
+
+.table-view .header-checkbox .box {
+    -fx-border-color: -color-white-muted;
+}
+
+.table-view .header-checkbox:hover .box {
+    -fx-border-color: -white-focused;
+}
+
+.table-view .header-checkbox:selected .box {
+    -fx-background-color: -white-focused;
+    -fx-border-color: -white-focused;
+}
+
+.table-view .header-checkbox:selected .mark {
+    -fx-background-color: -color-black-muted;
+}
+
+
+/* =====================================================
+   TYPE COLUMN FILTERS (MENUBUTTON)
+   -----------------------------------------------------
+   styles the column header 
+===================================================== */
+.type-filter {
+	-fx-background-color: transparent;
+    -fx-border-color: transparent;
+	-fx-border-width: 0;
+	-fx-text-fill: -color-white;
+	-fx-alignment: CENTER;
+	-fx-font: 14px "Arial Black";
+    -fx-padding: 2 8;
+}
+
+.type-filter .arrow {
+    -fx-background-color: -color-white;	
+}
+
+.type-filter:hover, 
+.type-filter:focused {
+	-fx-background-color: -color-black;
+	-fx-background-radius: 5;
+	-fx-text-fill: -color-white;	
+    -fx-cursor: hand;
+}
+
+.type-filter .context-menu .radio-menu-item .label { 
+	-fx-text-fill: -color-black-muted;
+}
+
+.type-filter .context-menu .radio-menu-item:hover,
+.type-filter .context-menu .radio-menu-item:focused {
+    -fx-background-color: -color-black-muted;
+    -fx-text-fill: white;
+}
+
+.type-filter .context-menu .radio-menu-item:hover .label,
+.type-filter .context-menu .radio-menu-item:focused .label {
+    -fx-text-fill: white;	
+}
+
+
+.amount-distribution-bar {
+    -fx-fill: -color-black-muted;
+}
+
+.amount-distribution-bar:hover {
+    -fx-fill: -color-black;
+} 
 

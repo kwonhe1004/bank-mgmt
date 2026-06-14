@@ -57,5 +57,9 @@ public class Session {
 		logoutTime = LocalDateTime.now();
 	}
     
+	@Override
+	public String toString() {
+		return String.format("%s(%d, userId=%d)", getClass().getSimpleName(), id, user.getId());
+	}    
     
 }

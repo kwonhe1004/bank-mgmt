@@ -16,18 +16,19 @@ import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.util.Duration;
-import khe.banking.dao.UserDaoImpl;
 import khe.banking.models.User;
-import khe.banking.services.UserServiceImpl;
-import khe.banking.utils.HeaderManager;
-import khe.banking.utils.NavigationHistoryManager;
-import khe.banking.utils.NavigationManager;
-import khe.banking.utils.Refreshable;
-import khe.banking.utils.SceneManager;
-import khe.banking.utils.SessionManager;
-import khe.banking.utils.UIUtil;
-import khe.banking.utils.ViewState;
-import khe.banking.utils.ViewType;
+import khe.banking.services.ServiceFactory;
+import khe.banking.services.UserService;
+import khe.banking.util.DialogUtil;
+import khe.banking.util.FormatUtil;
+import khe.banking.util.HeaderManager;
+import khe.banking.util.NavigationHistoryManager;
+import khe.banking.util.NavigationManager;
+import khe.banking.util.Refreshable;
+import khe.banking.util.SceneManager;
+import khe.banking.util.SessionManager;
+import khe.banking.util.ViewState;
+import khe.banking.util.ViewType;
 
 public class DashboardController extends BaseController {
 
@@ -71,11 +72,11 @@ public class DashboardController extends BaseController {
 	@FXML
 	private Label loggedDate;
 		
-	private final UserServiceImpl us = new UserServiceImpl(new UserDaoImpl());
+	private final UserService us = ServiceFactory.USER_SERVICE;
 	private User u;
 	
 	private List<Button> btns;
-	private boolean expanded = true;
+	private boolean expanded;
 
 	/* =========================================
 	 * 	INITIALIZE
@@ -83,7 +84,7 @@ public class DashboardController extends BaseController {
 	public void initialize() {
 		if(SessionManager.getCurrentUser() == null) {
 			SessionManager.setCurrentUser(us.getOne("admin@admin.com"));
-//			SessionManager.setCurrentUser(us.getOne("johnsmith@gmail.com"));
+//			SessionManager.setCurrentUser(us.getOne("johnsmith@email.com"));
 		} 	
 		
 		u = SessionManager.getCurrentUser();		
@@ -96,7 +97,7 @@ public class DashboardController extends BaseController {
 		
 		// DEFAULT VIEW
 		setSidebar();
-		showSidebar();
+		setSidebarExpanded(false, false);
 		navigate(ViewType.HOME);			
 	}
 	
@@ -141,7 +142,7 @@ public class DashboardController extends BaseController {
 			SessionManager.createSession(u);
 		}
 		
-		loggedDate.setText(UIUtil.formatDateTime(
+		loggedDate.setText(FormatUtil.formatDateTime(
 				SessionManager.getCurrentSession().getLoginTime()));		
 	}
 	
@@ -158,19 +159,27 @@ public class DashboardController extends BaseController {
 	 * ========================================= */
 	@FXML
 	private void toggleSidebar() {
-		expanded = !expanded;
-		
-		double targetWidth = expanded ? 300 : 50;
+		setSidebarExpanded(!expanded, true);
+	}
+	
+	private void setSidebarExpanded(boolean expanded, boolean animate) {
+	    this.expanded = expanded;
 
-        Timeline timeline = new Timeline(new KeyFrame(
-        		Duration.millis(250), new KeyValue(sidebar.prefWidthProperty(), targetWidth)));
-        timeline.play();
-        
-        if(expanded) {
-        	showSidebar();
-        } else {
-        	hideSidebar();
-        }		
+	    double targetWidth = expanded ? 300 : 50;
+
+	    if (expanded) {
+	        showSidebar();
+	    } else {
+	        hideSidebar();
+	    }
+
+	    if (animate) {
+	        Timeline timeline = new Timeline(new KeyFrame(Duration.millis(250), 
+	        		new KeyValue(sidebar.prefWidthProperty(), targetWidth)));
+	        timeline.play();
+	    } else {
+	        sidebar.setPrefWidth(targetWidth);
+	    }
 	}
 	
 	private void showSidebar() {
@@ -199,8 +208,8 @@ public class DashboardController extends BaseController {
 	        return;
 	    }
 	    
-	    refreshIfNeeded(previous);
 	    NavigationManager.showHistoryView(previous);
+	    refreshIfNeeded(previous);
 	}
 	
 	@FXML
@@ -210,8 +219,8 @@ public class DashboardController extends BaseController {
             return;
         }
         
-        refreshIfNeeded(next);
         NavigationManager.showHistoryView(next);
+        refreshIfNeeded(next);
 	}
 	
 	private void refreshIfNeeded(ViewState state) {
@@ -260,7 +269,7 @@ public class DashboardController extends BaseController {
 	
 	@FXML
 	private void logout(ActionEvent e) {
-		if(UIUtil.showConfirm("Confirm to logout.")) {
+		if(DialogUtil.showConfirm("Confirm to logout.")) {
 			SessionManager.logout();
 			SceneManager.switchScene(menubtn, "/fxml/login/Login.fxml", false);
 		}

@@ -12,7 +12,7 @@ public class AuditLog {
     private LocalDateTime actionTime;
 
     private EntityType entityName;
-    private Integer entityId;
+    private int entityId;
 
     private AuditAction actionType;
 
@@ -22,8 +22,18 @@ public class AuditLog {
 
     public AuditLog() {
     }    
-    
-   	public AuditLog(long id, Session session, LocalDateTime actionTime, EntityType entityName, Integer entityId, AuditAction actionType, String description, String oldValues, String newValues) {
+      
+   	public AuditLog(Session session, EntityType entityName, int entityId, AuditAction actionType, String description, String oldValues, String newValues) {
+		this.session = session;
+		this.entityName = entityName;
+		this.entityId = entityId;
+		this.actionType = actionType;
+		this.description = description;
+		this.oldValues = oldValues;
+		this.newValues = newValues;
+	}
+	
+   	public AuditLog(long id, Session session, LocalDateTime actionTime, EntityType entityName, int entityId, AuditAction actionType, String description, String oldValues, String newValues) {
 		this.id = id;
 		this.session = session;
 		this.actionTime = actionTime;
@@ -34,7 +44,7 @@ public class AuditLog {
 		this.oldValues = oldValues;
 		this.newValues = newValues;
 	}
-   		
+
 	public long getId() {
 		return id;
 	}

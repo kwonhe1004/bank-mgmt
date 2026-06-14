@@ -2,45 +2,48 @@ package khe.banking.controllers.account;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
+import java.util.Comparator;
 import java.util.List;
+import java.util.Objects;
+import java.util.Set;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import javafx.collections.transformation.FilteredList;
 import javafx.fxml.FXML;
-import javafx.scene.control.DatePicker;
-import javafx.scene.control.MenuButton;
-import javafx.scene.control.RadioMenuItem;
+import javafx.scene.control.Button;
+import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
-import javafx.scene.control.TableCell;
 import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableRow;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
-import javafx.scene.control.ToggleGroup;
+import javafx.scene.control.ToggleButton;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.layout.StackPane;
 import javafx.scene.layout.TilePane;
 import khe.banking.controllers.components.AccountCardController;
-import khe.banking.dao.AccountDaoImpl;
-import khe.banking.dao.TxnDaoImpl;
+import khe.banking.controllers.components.FiltersController;
 import khe.banking.models.Account;
 import khe.banking.models.Category;
 import khe.banking.models.Transaction;
 import khe.banking.models.User;
 import khe.banking.models.enums.TxnType;
+import khe.banking.models.records.TableDataView;
+import khe.banking.models.records.TableSelection;
+import khe.banking.models.records.TxnFilter;
 import khe.banking.services.AccountService;
-import khe.banking.services.AccountServiceImpl;
+import khe.banking.services.ServiceFactory;
 import khe.banking.services.TxnService;
-import khe.banking.services.TxnServiceImpl;
-import khe.banking.utils.HeaderManager;
-import khe.banking.utils.NavigationManager;
-import khe.banking.utils.Refreshable;
-import khe.banking.utils.SessionManager;
-import khe.banking.utils.TableFactory;
-import khe.banking.utils.UIUtil;
-import khe.banking.utils.ViewData;
-import khe.banking.utils.ViewLoader;
-import khe.banking.utils.ViewType;
+import khe.banking.util.FilterFactory;
+import khe.banking.util.FormatUtil;
+import khe.banking.util.HeaderManager;
+import khe.banking.util.NavigationManager;
+import khe.banking.util.Refreshable;
+import khe.banking.util.SessionManager;
+import khe.banking.util.TableFactory;
+import khe.banking.util.UIUtil;
+import khe.banking.util.ViewData;
+import khe.banking.util.ViewLoader;
+import khe.banking.util.ViewType;
 
 public class AccountsController implements Refreshable {
 
@@ -48,29 +51,24 @@ public class AccountsController implements Refreshable {
 	private ScrollPane accountsScrollPane;
 	@FXML
 	private TilePane accountsContainer;
-	
+
 	@FXML
-	private MenuButton filterMenu;
+	private Button printBtn;
 	@FXML
-	private RadioMenuItem allItem;
-	@FXML
-	private RadioMenuItem incomeItem;
-	@FXML
-	private RadioMenuItem expenseItem;
-	@FXML
-	private ToggleGroup tg;
+	private Label selectedLabel;
 	@FXML
 	private TextField searchField;
 	@FXML
-	private DatePicker startDate;
+	private ToggleButton filterTg;
 	@FXML
-	private DatePicker endDate;	
+	private StackPane filterPane;
 	@FXML
-	private TextField balance;
+	private FiltersController filtersController;
 
-	// TABLE
 	@FXML
 	private TableView<Transaction> txnTable;
+	@FXML
+	private TableColumn<Transaction, Void> selectCol;
 	@FXML
 	private TableColumn<Transaction, String> accountCol;
 	@FXML
@@ -86,239 +84,238 @@ public class AccountsController implements Refreshable {
 	@FXML
 	private TableColumn<Transaction, String> notesCol;
 
-	// OTHER VARIABLES
 	private final ObservableList<Transaction> masterList = FXCollections.observableArrayList();
-	private FilteredList<Transaction> filteredList;
-
-	private TxnService ts = new TxnServiceImpl(new TxnDaoImpl());	
-	private final AccountService as = new AccountServiceImpl(new AccountDaoImpl());
-
+	
+	private final TxnService ts = ServiceFactory.TXN_SERVICE;
+	private final AccountService as = ServiceFactory.ACCOUNT_SERVICE;
 	private final User currentUser = SessionManager.getCurrentUser();
+	
+	private TableDataView<Transaction> tableDataView;
+	private TableSelection<Transaction> tableSelection;
+	private Set<TxnType> selectedTypes;
 
-	public void initialize() {	
+	// =========================
+	// INITIALIZE
+	// =========================
+	public void initialize() {
 		HeaderManager.setTitle("Accounts Overview");
+		UIUtil.bindVisibleManaged(filterPane, filterTg.selectedProperty());
 		
-		if(currentUser != null) {
-			loadAccounts(currentUser.getId());
-		}
+		tableDataView = TableFactory.setupFilteredSortedTable(txnTable, masterList);
 		
 		setupColumns();
-		setupStyling();
-
-		filteredList = new FilteredList<>(masterList, t -> true);
-		txnTable.setItems(filteredList);
-
-		setupFilters();
-		loadData();
-	}
-	
-	// =========================
-	// ACCOUNT SETUP
-	// =========================	
-	private void loadAccounts(int userId) {
-		List<Account> accounts;
-		int num;
-		if(userId == 1) {
-			accounts = as.getAllAccounts();
-			num = as.countAllAccount();
-		} else {
-			accounts = as.getAccounts(userId);
-			num = as.countUserAccount(userId);
+		updateSelectedLabel(Set.of());
+		
+		setupFilterComponent();
+		
+		UIUtil.onTextChanged(searchField, this::applyFilters);
+		TableFactory.setupStyling(txnTable, amountCol);
+		
+		if (currentUser != null) {
+			loadAccounts(currentUser.getId());
+			loadData();
 		}
-
-		accountsContainer.getChildren().clear();
-		for(Account account : accounts) {
-			ViewData<AccountCardController> data = 
-					ViewLoader.loadView("/fxml/components/AccountCard.fxml");
-			AccountCardController controller = data.getController();
-			controller.setAccount(account);
-			controller.setOnViewTransactions(a -> {
-				showAccountDetails(a);
-			});
-			accountsContainer.getChildren().add(data.getView());
-		}		
-		accountsContainer.setPrefColumns(num);
-	}
-
-	public void showAccountDetails(Account account) {
-		refresh();
-		ViewData<AccountTxnController> data = 
-				ViewLoader.loadView("/fxml/account/AccountTxnView.fxml");
-//		AccountTxnController controller = data.getController();
-//		controller.setAccount(account);
-		data.getController().setAccount(account);
-		NavigationManager.switchView(data, ViewType.TRANSACTIONS);
 	}
 
 	// =========================
-	// TABLE SETUP
+	// SETUP FILTER & TABLE
 	// =========================
-	private void loadData() {
-		if(currentUser.getId() == 1) {
-			masterList.setAll(ts.getAllTransactions());
-		} else {
-			masterList.setAll(ts.getTxnByUser(currentUser.getId()));
-		}    	
-	}
-	
-	private void setupStyling() {
-		setupRowStyling();
-		setupAmountStyling();
-	}
-
-	private void setupColumns() {		    
-	    accountCol.setCellValueFactory(cellData ->
-	        UIUtil.accountFormat(cellData.getValue().getAccount()));
-
-	    TableFactory.setupInteractiveCol(
-	    		accountCol, TableFactory::tooltipAccount, this::handleDetails);
-				
+	private void setupColumns() {		
 		nameCol.setCellValueFactory(new PropertyValueFactory<>("name"));
 		amountCol.setCellValueFactory(new PropertyValueFactory<>("amount"));
 		typeCol.setCellValueFactory(new PropertyValueFactory<>("type"));
 		categoryCol.setCellValueFactory(new PropertyValueFactory<>("category"));
 		dateCol.setCellValueFactory(new PropertyValueFactory<>("date"));
 		notesCol.setCellValueFactory(new PropertyValueFactory<>("note"));
-						
+		
+		tableSelection = TableFactory.setupSelect(txnTable, selectCol, Transaction::getId, this::handleSelectionChange);
+				
+		accountCol.setCellValueFactory(cellData -> 
+			FormatUtil.accountFormat(cellData.getValue().getAccount()));
+		TableFactory.setupInteractiveCol(
+				accountCol, TableFactory::tooltipAccount, this::handleDetails);
+
+		categoryCol.setSortable(false);
+		notesCol.setSortable(false);
+		
 		TableFactory.enableWrapping(nameCol);
 		TableFactory.enableWrapping(notesCol);
-	}
 		
-	public void handleDetails(Transaction t) {
-		refresh();
-		Account a = as.getAccountById(t.getAccount().getId());		
+		selectedTypes = FilterFactory.setupTypeFilter(typeCol, this::applyFilters);
+	}
+
+	private void handleDetails(Transaction t) {
+		Account a = as.getAccountById(t.getAccount().getId());
 		ViewData<AccountTxnController> data = 
 				ViewLoader.loadView("/fxml/account/AccountTxnView.fxml");
 		AccountTxnController controller = data.getController();
 		controller.setAccount(a);
 		controller.setHighlight(t);
-//		NavigationManager.switchView(data.getView(), "ACCOUNTS", data.getFxmlPath());
 		NavigationManager.switchView(data, ViewType.TRANSACTIONS);
 	}
+	
+	private void handleSelectionChange(Set<Integer> selectedIds) {
+	    updateSelectedLabel(selectedIds);
+	}
+
+	private void updateSelectedLabel(Set<Integer> selectedIds) {
+	    int count = selectedIds == null ? 0 : selectedIds.size();
+	    selectedLabel.setText(count + " selected");
+	}
+	
+	@FXML
+	private void print() {
+	    if (tableSelection == null) {
+	        System.out.println(Set.of());
+	        return;
+	    }
+
+	    System.out.println(Set.copyOf(tableSelection.selectedIds()));
+	}
+	
+	private void setupFilterComponent() {
+		filtersController.addSortOptions(List.of("Amount High-Low", "Amount Low-High"));
+		filtersController.showAmountFilter(true);
+		filtersController.showCategoryFilter(true);
+		filtersController.showDateFilter(true);
+		filtersController.setOnFilterChanged(this::applyFilters);
+	}
+
+	// =========================
+	// LOAD ACCOUNTS
+	// =========================
+	private void loadAccounts(int userId) {
+		List<Account> accounts = userId == 1 ? as.getAllAccounts() : as.getAccounts(userId);
+		accountsContainer.getChildren().clear();
 		
+		for (Account account : accounts) {
+			ViewData<AccountCardController> data = 
+					ViewLoader.loadView("/fxml/components/AccountCard.fxml");
+			AccountCardController controller = data.getController();
+			controller.setAccount(account);
+			controller.setOnViewTransactions(this::showAccountDetails);
+			accountsContainer.getChildren().add(data.getView());
+		}
+		accountsContainer.setPrefColumns(accounts.size());
+	}
+
+	private void showAccountDetails(Account account) {
+		ViewData<AccountTxnController> data = 
+				ViewLoader.loadView("/fxml/account/AccountTxnView.fxml");
+		data.getController().setAccount(account);
+		NavigationManager.switchView(data, ViewType.TRANSACTIONS);
+	}
+
+	// =========================
+	// LOAD DATA
+	// =========================
+	private void loadData() {
+		if (currentUser.getId() == 1) {
+			masterList.setAll(ts.getAllTransactions());
+		} else {
+			masterList.setAll(ts.getTxnByUser(currentUser.getId()));
+		}
+		
+		filtersController.setTransactions(masterList);
+		loadCategoriesFromTxn();
+		applyFilters();
+	}
+
+	private void loadCategoriesFromTxn() {
+		List<Category> categories = masterList.stream()
+				.map(Transaction::getCategory)
+				.filter(Objects::nonNull)
+				.toList();
+		
+		filtersController.setCategories(categories);
+	}
+
 	// =========================
 	// FILTER LOGIC
 	// =========================
-	private void setupFilters() {
-		tg.selectedToggleProperty().addListener((obs, o, n) -> {
-			applyFilters();
-			updateFilterMenu();
-		});
-		searchField.textProperty().addListener((obs, o, n) -> applyFilters());
-		startDate.valueProperty().addListener((obs, o, n) -> applyFilters());
-		endDate.valueProperty().addListener((obs, o, n) -> applyFilters());
-	}
-
 	private void applyFilters() {
-		String search = searchField.getText() == null ? "" : searchField.getText().toLowerCase();
-		LocalDate start = startDate.getValue();
-		LocalDate end = endDate.getValue();
+		if (tableDataView == null) return;
 
-		filteredList.setPredicate(tr -> {
+		String search = searchField.getText() == null 
+				? "" : searchField.getText().trim().toLowerCase();
 
-			//String type = tr.getType().name();
-			boolean matchesSearch = true;
+		TxnFilter filter = filtersController.getFilter();
+				
+		tableDataView.filteredList().setPredicate(tr -> {
+			boolean matchesSearch = search.isEmpty() 
+					|| safeLower(tr.getName()).contains(search)
+					|| safeLower(tr.getNote()).contains(search);
 
-			if(search.startsWith("S")) {
-				String amountText = search.substring(1).trim();
+			boolean matchesType = selectedTypes == null 
+					|| selectedTypes.isEmpty() 
+					|| selectedTypes.contains(tr.getType());
 
-				// VALID FORMATS: $10, 10.5, 10.50, 9999.99
-				boolean validAmount = amountText.matches("\\d+(\\.\\d{1,2})?");
+			boolean matchesCategory = filter == null 
+					|| filter.categories().isEmpty() 
+					|| filter.categories().stream()
+							.anyMatch(c -> sameCategory(c, tr.getCategory()));
+					
+			boolean matchesMinAmount = filter == null 
+					|| filter.minAmount() == null || tr.getAmount() == null
+					|| tr.getAmount().abs().compareTo(filter.minAmount()) >= 0;
 
-				if(validAmount) {
-					BigDecimal searchAmount = new BigDecimal(amountText);
+			boolean matchesMaxAmount = filter == null 
+					|| filter.maxAmount() == null || tr.getAmount() == null
+					|| tr.getAmount().abs().compareTo(filter.maxAmount()) <= 0;
 
-					// Compare BigDecimal values
-					matchesSearch = tr.getAmount().compareTo(searchAmount) == 0;
-				} else {
-					// Invalid amount format
-					matchesSearch = false;
-				}
-			} else {
-				matchesSearch = search.isEmpty() 
-						|| tr.getName().toLowerCase().contains(search) 
-						|| tr.getNote().toLowerCase().contains(search);
-			}
+			boolean matchesStartDate = filter == null 
+					|| filter.startDate() == null || tr.getDate() == null
+					|| !tr.getDate().isBefore(filter.startDate());
 
-			boolean matchesType = allItem.isSelected() 
-					|| (incomeItem.isSelected() && tr.getType() == TxnType.INCOME) 
-					|| (expenseItem.isSelected() && tr.getType() == TxnType.EXPENSE);
-
-			boolean matchesStart = (start == null) || !tr.getDate().isBefore(start);
-			boolean matchesEnd = (end == null) || !tr.getDate().isAfter(end);
-
-			return matchesSearch && matchesType && matchesStart && matchesEnd;
+			boolean matchesEndDate = filter == null 
+					|| filter.endDate() == null || tr.getDate() == null
+					|| !tr.getDate().isAfter(filter.endDate());
+			
+			return matchesSearch 
+					&& matchesType && matchesCategory 
+					&& matchesMinAmount && matchesMaxAmount 
+					&& matchesStartDate && matchesEndDate;
 		});
+
+		applySort();
 	}
 
-	private void updateFilterMenu() {
-		if (tg.getSelectedToggle() != null) {
-			RadioMenuItem selected = (RadioMenuItem) tg.getSelectedToggle();
-			filterMenu.setText("Filter: " + selected.getText());
-		}
+	private void applySort() {
+		String selectedSort = filtersController.getSelectedSort();
+		if (selectedSort == null) return;
+
+		Comparator<Transaction> comparator = switch (selectedSort) {
+			case "Newest First" -> Comparator.comparing(Transaction::getDate).reversed();
+			case "Oldest First" -> Comparator.comparing(Transaction::getDate);
+			case "Amount High-Low" -> Comparator.comparing(Transaction::getAmount).reversed();
+			case "Amount Low-High" -> Comparator.comparing(Transaction::getAmount);
+			default -> null;
+		};
+
+		if (comparator != null) FXCollections.sort(masterList, comparator);
 	}
 
+	private boolean sameCategory(Category a, Category b) {
+		if (a == null || b == null) return false;
+		return a.getId() == b.getId();
+	}
+
+	private String safeLower(String value) {
+		return value == null ? "" : value.toLowerCase();
+	}
 
 	// =========================
-	// CSS-BASED STYLING
+	// REFRESHABLE
 	// =========================
-	private void setupRowStyling() {
-		txnTable.setRowFactory(tv -> new TableRow<>() {
-			@Override
-			protected void updateItem(Transaction tr, boolean empty) {
-				super.updateItem(tr, empty);
-				getStyleClass().removeAll("table-row-expense", "table-row-income");
-
-				if (empty || tr == null) {
-					return;
-				}				
-
-				if(tr.getType() == TxnType.EXPENSE) {
-					getStyleClass().add("table-row-expense");
-				} else if(tr.getType() == TxnType.INCOME) {
-					getStyleClass().add("table-row-income");
-				}
-			}
-		});
-	}
-
-	private void setupAmountStyling() {
-		amountCol.setCellFactory(col -> new TableCell<>() {
-			@Override
-			protected void updateItem(BigDecimal amt, boolean empty) {
-				super.updateItem(amt, empty);
-				getStyleClass().removeAll("amount-expense", "amount-income");
-
-				if (empty || amt == null) {
-					setText(null);
-					return;
-				}
-
-				setText("$" + amt);
-
-				// handles index safety
-				if (getIndex() < 0 || getIndex() >= getTableView().getItems().size()) {
-					return;
-				}
-
-				Transaction tr = getTableView().getItems().get(getIndex());
-
-				if(tr != null) {
-					if(tr.getType() == TxnType.EXPENSE) {
-						getStyleClass().add("amount-expense");
-					} else if(tr.getType() == TxnType.INCOME) {
-						getStyleClass().add("amount-income");
-					}
-				}
-			}				
-		});
-	}
-
-	@Override 
+	@Override
 	public void refresh() {
-		loadAccounts(currentUser.getId());
-		loadData();
-	}
+		HeaderManager.setTitle("ACCOUNTS OVERVIEW");
+		HeaderManager.setHeaderAction(null);
 
+		if (currentUser != null) {
+            loadAccounts(currentUser.getId());
+            loadData();
+        }
+	}
 
 }

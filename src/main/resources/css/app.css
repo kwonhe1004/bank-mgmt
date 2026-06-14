@@ -20,81 +20,22 @@
     -color-black: #495057;
     -color-black-muted: #6b7280;
     -color-accent: #adbfce; /* #4f6170 */
+    
+    /* Effects */
+    -shadow-effect: dropshadow(three-pass-box, #495057, 5, 0, 0, 4);
 }
 
 /* =====================================================
-   BASE CONTAINERS
+   ROOT NODE / LAYOUT PANE STYLES
    -----------------------------------------------------
-   Ensures all layout containers inherit the same background.
+   Allows consistent styling applied to the layout panes
 ===================================================== */
-.pane { 	/* borderpane, stackpane, vbox, hbox, gridpane */
-    -fx-background-color: -fx-background-color;
-}
 
 .container-border {
 	-fx-background-color: transparent;
 	-fx-border-color: -color-black-muted;
     -fx-border-radius: 5;
     -fx-border-width: 3;
-}
-
-/* =====================================================
-   SCROLLPANE STYLES
-===================================================== */
-.scroll-pane {
-    -fx-background-color: transparent;
-}
-
-.scroll-pane > .viewport {
-    -fx-background-color: transparent;
-}
-
-/* =========================================================
-   SCROLLBAR STYLE
-========================================================= */
-.scroll-bar:horizontal {
-    -fx-pref-height: 8px;
-    -fx-background-color: transparent;
-}
-
-.scroll-bar:vertical {
-    -fx-pref-width: 8px;
-    -fx-background-color: transparent;
-}
-
-/* TRACK */
-.scroll-bar .track {
-    -fx-background-color: #cfd5dd;
-    -fx-background-radius: 100px;
-}
-
-/* THUMB */
-.scroll-bar .thumb {
-    -fx-background-color: #97a4b2;
-    -fx-background-radius: 100px;
-}
-
-/* HOVER */
-.scroll-bar .thumb:hover {
-    -fx-background-color: #7f8c99;
-}
-
-/* PRESSED */
-.scroll-bar .thumb:pressed {
-    -fx-background-color: #5f6d7c;
-}
-
-/* REMOVE BUTTONS */
-.scroll-bar .increment-button,
-.scroll-bar .decrement-button {
-    -fx-opacity: 0;
-    -fx-padding: 0;
-}
-
-.scroll-bar .increment-arrow,
-.scroll-bar .decrement-arrow {
-    -fx-shape: "";
-    -fx-padding: 0;
 }
 
 /* =====================================================
@@ -112,6 +53,39 @@
 }
 
 /* =====================================================
+   VALIDATION STYLES
+   -----------------------------------------------------
+   Used by hasEmptyFields() to highlight errors.
+===================================================== */
+.error-field {
+    -fx-border-color: red;
+    -fx-border-width: 1;
+}
+
+/* =====================================================
+   CURSOR STYLES
+===================================================== */
+.button:hover, .toggle-button:hover,
+.text-field:hover, .text-area:hover,
+.menu-button:hover, .combo-box:hover,
+.choice-box:hover, .date-picker:hover,
+.check-box:hover, .context-menu:hover,
+.radio-button:hover, .hyperlink:hover, 
+.table-row-cell:filled:hover {
+    -fx-cursor: hand;
+}
+
+.button:disabled, .toggle-button:disabled,
+.text-field:disabled, .text-area:disabled,
+.menu-button:disabled, .combo-box:disabled,
+.choice-box:disabled, .date-picker:disabled,
+.check-box:disabled, .context-menu:disabled,
+.radio-button:disabled, .hyperlink:disabled {
+    -fx-cursor: default;
+    -fx-opacity: 0.55;
+}
+
+/* =====================================================
    BUTTON STYLES
    -----------------------------------------------------
    Default button styling and variants.
@@ -122,105 +96,158 @@
     -fx-border-color: -color-white-muted;
     -fx-border-radius: 5;
     -fx-border-width: 2;
+    -fx-text-fill: -color-black-muted;
+	-fx-font-size: 12;
+	-fx-font-weight: bold;
 }
 
 .button:hover,
 .toggle-button:hover {
 	-fx-border-color: -color-black-muted;
-	-fx-cursor: hand;
+	-fx-text-fill: -color-black;
+	
 }
+
 
 /* =====================================================
    OTHER CONTROLS
 ===================================================== */
+.hyperlink {
+	-fx-text-fill: -color-black;
+		
+}
+
+.combo-box .list-cell,
+.menu-button,
 .text-input {
 	-fx-prompt-text-fill: -color-black-muted;
-	-fx-font-size: 14px;
+	-fx-font-size: 12px;
+	-fx-font-weight: bold;
 }
 
-.text-field{
-	-fx-background-color: transparent;
-    -fx-border-color: -color-white-muted;
-    -fx-border-radius: 5;
-    -fx-border-width: 0 0 2 0;
+.combo-box:hover .list-cell, .combo-box:focused .list-cell,
+.menu-button:hover, .menu-button:focused,
+.text-input:hover, .text-input:focused {
+	-fx-prompt-text-fill: -color-black;
 }
 
+.menu-button,
+.text-field,
 .text-area,
-.combo-box,
 .choice-box,
+.combo-box,
 .date-picker {
     -fx-background-color: transparent;
     -fx-border-color: -color-white-muted;
     -fx-border-radius: 5;
+    
+}
+
+.text-field {
+    -fx-border-width: 0 0 2 0;
+}
+
+.menu-button,
+.text-area,
+.choice-box,
+.combo-box,
+.date-picker {
     -fx-border-width: 2;
 }
 
+.menu-button,
 .text-field,
-.combo-box,
 .choice-box,
-.date-picker{
+.combo-box,
+.date-picker,
+.toggle-button {
 	-fx-pref-height: 30px;
 }
 
-.text-field:focused,
-.text-area:focused,
-.combo-box:focused,
-.date-picker:focused {	/* Focus state (active input field) */
+.menu-button:hover, .menu-button:focused,
+.text-field:hover, .text-field:focused,
+.text-area:hover, .text-area:focused,
+.choice-box:hover, .choice-box:focused,
+.combo-box:hover, .combo-box:focused,
+.date-picker:hover, .date-picker:focused {	
     -fx-border-color: -color-black-muted;
-    -fx-cursor: hand;
+    
+}
+
+/* =========================
+   DATEPICKER > TEXTFIELD
+========================= */
+.date-picker-popup {
+	-fx-effect: -shadow-effect;
 }
 
 .date-picker > .text-field {
     -fx-background-color: transparent;
     -fx-border-color: -color-white-muted;
-    -fx-border-width: 0;
-}
-
-.date-picker > .text-field:focused {
-    -fx-border-color: -color-black-muted;
-    -fx-border-width: 0 3 0 0;
-    -fx-cursor: hand;
-}
-
-.hyperlink{
-	-fx-text-fill: -color-black;
-	-fx-cursor: hand;	
-}
-
-/* =====================================================
-   VALIDATION STYLES
-   -----------------------------------------------------
-   Used by UIUtil.hasEmptyFields() to highlight errors.
-===================================================== */
-.error-field {
-    -fx-border-color: red;
+    -fx-border-radius: 0;
     -fx-border-width: 1;
 }
 
-/* =========================
-   SHOW/HIDE PW BUTTON
-========================= */
-.pw-btn{
-	-fx-background-color: transparent;
-	-fx-border-width: 0;
-    -fx-cursor: hand;
-}
-
-/* =========================
-   NAVIGATION BUTTONS
-========================= */
-.nav-btn {
-	-fx-background-color: transparent;
-	-fx-border-color: -color-white-muted;
-	-fx-border-radius: 5;
-	-fx-border-width: 2;
-}
-
-.nav-btn:hover {
+.date-picker > .text-field:focused {
 	-fx-border-color: -color-black-muted;
-	-fx-cursor: hand;	
+}
+
+/* =========================
+   MENUBUTTON / CONTEXTMENU
+========================= */
+.context-menu {
+	-fx-background-color: -color-white;
+	-fx-effect: -shadow-effect;
+}
+
+.context-menu .menu-item .label {
+	-fx-text-fill: -color-black-muted;
+}
+
+.context-menu .menu-item:hover,
+.context-menu .menu-item:focused {
+	-fx-background-color: -color-black-muted;
+}
+
+.context-menu .menu-item:hover .label,
+.context-menu .menu-item:focused .label {
+    -fx-text-fill: white;	
 }
 
 
+/* =========================
+   i.e, SORT FILTER
+========================= */
+.combo-box-popup .list-view {
+	-fx-background-color: -color-white;
+	-fx-effect: -shadow-effect;
+}
+
+.combo-box .list-cell,
+.combo-box-popup .list-cell {
+	-fx-text-fill: -color-black-muted;
+	-fx-font-size: 12px;
+	-fx-font-weight: bold;
+}
+
+.combo-box-popup .list-cell:filled:selected,
+.combo-box-popup .list-cell:filled:hover,
+.combo-box-popup .list-cell:filled:focused {
+	-fx-background-color: -color-black-muted;
+    -fx-text-fill: white;
+}
+
+
+/* =========================
+   FILTER PANE
+========================= */
+.filter-pane .label {
+	-fx-text-fill: -color-black-muted;	
+}
+
+.filter-text {
+	-fx-font-size: 14px;
+	-fx-font-weight: bold;	
+}
 
 

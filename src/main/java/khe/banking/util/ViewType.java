@@ -1,11 +1,11 @@
-package khe.banking.utils;
+package khe.banking.util;
 
 // Identifies screens (fxmlPath, viewId)
 
 public enum ViewType {
 	HOME("/fxml/HomeView.fxml"),
 	ACCOUNTS("/fxml/account/AccountsView.fxml"),
-    TAGS("/fxml/category/TagsView.fxml"),
+    TAGS("/fxml/tag/TagsView.fxml"),
     REPORTS("/fxml/report/ReportsView.fxml"),
     USERS("/fxml/user/UsersView.fxml"),
     TRANSACTIONS("/fxml/account/AccountTxnView.fxml");

@@ -1,4 +1,4 @@
-package khe.banking.utils;
+package khe.banking.util;
 
 import java.util.ArrayDeque;
 import java.util.Deque;

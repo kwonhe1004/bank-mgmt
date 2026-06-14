@@ -8,16 +8,17 @@ import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
-import khe.banking.dao.UserDaoImpl;
 import khe.banking.models.User;
 import khe.banking.models.enums.FormMode;
 import khe.banking.models.enums.UserRole;
-import khe.banking.services.UserServiceImpl;
-import khe.banking.utils.HeaderManager;
-import khe.banking.utils.ModalManager;
-import khe.banking.utils.Refreshable;
-import khe.banking.utils.TableFactory;
-import khe.banking.utils.UIUtil;
+import khe.banking.services.ServiceFactory;
+import khe.banking.services.UserService;
+import khe.banking.util.DialogUtil;
+import khe.banking.util.FormatUtil;
+import khe.banking.util.HeaderManager;
+import khe.banking.util.ModalManager;
+import khe.banking.util.Refreshable;
+import khe.banking.util.TableFactory;
 
 public class UsersController implements Refreshable {
 
@@ -48,7 +49,7 @@ public class UsersController implements Refreshable {
 	private final ObservableList<User> masterList = FXCollections.observableArrayList();
 	private FilteredList<User> filteredList;
 
-	private UserServiceImpl us = new UserServiceImpl(new UserDaoImpl());
+	private UserService us = ServiceFactory.USER_SERVICE;
 
 	public void initialize() {
 		HeaderManager.setTitle("USERS VIEW");
@@ -73,16 +74,16 @@ public class UsersController implements Refreshable {
         roleCol.setCellValueFactory(new PropertyValueFactory<>("role"));
         
         dobCol.setCellValueFactory(cellData -> 
-        	UIUtil.formatDate(cellData.getValue().getDob()));
+        	FormatUtil.formatDate(cellData.getValue().getDob()));
         
 		TableFactory.setupActionCol(actionCol, this::handleEdit, this::handleDelete);
 	}
 
 	private void handleDelete(User u) {
-		if (UIUtil.showConfirm("Delete user?")) {
+		if (DialogUtil.showConfirm("Delete user?")) {
 			us.deleteUser(u);
 
-			UIUtil.showInfo("User deleted.");
+			DialogUtil.showInfo("User deleted.");
 			loadData();
 		}
 	}

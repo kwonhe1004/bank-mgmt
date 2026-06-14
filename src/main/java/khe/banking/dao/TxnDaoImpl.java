@@ -19,6 +19,91 @@ import khe.banking.models.enums.TxnType;
 public class TxnDaoImpl implements TxnDao {
 
 	@Override
+	public Transaction findById(int id) {
+		String sql = "SELECT * FROM transactions WHERE id = ?";
+		
+		try (Connection conn = ConnectDB.getConnection();
+				PreparedStatement ps = conn.prepareStatement(sql)) {
+			ps.setInt(1, id);			
+			ResultSet rs = ps.executeQuery();
+			while(rs.next()) {
+				Transaction t = new Transaction(); //name=?, date=?, amount=?, type=?, note=?
+				t.setName(rs.getString("name"));
+				t.setDate(rs.getDate("date").toLocalDate());
+				t.setAmount(rs.getBigDecimal("amount"));
+				t.setType(TxnType.valueOf(rs.getString("type")));
+				t.setNote(rs.getString("note"));
+				return t;
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return null;
+	}
+	
+	@Override
+	public boolean add(Transaction o) {
+		String sql = """
+	            INSERT INTO transactions (name, date, amount, type, notes)
+	            VALUES (?, ?, ?, ?, ?)""";
+
+		try(Connection conn = ConnectDB.getConnection();
+				PreparedStatement ps = conn.prepareStatement(sql)) {
+			ps.setString(1, o.getName());
+			ps.setDate(2, Date.valueOf(o.getDate()));
+			ps.setBigDecimal(3, o.getAmount());
+            ps.setString(4, o.getType().name());
+            ps.setString(5, o.getNote());
+			return ps.executeUpdate() > 0;
+
+		} catch(SQLException e) {
+			e.printStackTrace();
+		}
+		return false;
+	}
+
+	@Override
+	public boolean update(Transaction o) {
+		String sql = """
+				UPDATE transactions
+				SET name=?, date=?, amount=?, type=?, note=?
+				WHERE id=?""";
+
+		try(Connection conn = ConnectDB.getConnection();
+				PreparedStatement ps = conn.prepareStatement(sql)) {
+			ps.setString(1, o.getName());
+            ps.setDate(2, Date.valueOf(o.getDate()));
+            ps.setBigDecimal(3, o.getAmount());
+            ps.setString(4, o.getType().name());
+            ps.setString(5, o.getNote());
+            ps.setInt(6, o.getId());
+            return ps.executeUpdate() > 0;
+		} catch(SQLException e) {
+			e.printStackTrace();
+		}
+		return false;
+	}
+
+	@Override
+	public boolean delete(Transaction o) {
+		return false;
+	}
+	
+	@Override
+	public boolean deleteById(int id) {
+		String sql = "DELETE FROM transactions WHERE id=?";
+
+		try(Connection conn = ConnectDB.getConnection();
+				PreparedStatement ps = conn.prepareStatement(sql)) {
+			ps.setInt(1, id);
+			return ps.executeUpdate() > 0;
+		} catch(SQLException e) {
+			e.printStackTrace();
+		}
+		return false;		
+	}
+
+	@Override
 	public List<Transaction> findAll() {
 		List<Transaction> list = new ArrayList<>();
 
@@ -70,80 +155,6 @@ public class TxnDaoImpl implements TxnDao {
 			e.printStackTrace();
 		}
 		return list;
-	}
-
-	@Override
-	public boolean add(Transaction o) {
-		String sql = """
-	            INSERT INTO transactions (name, date, amount, type, notes)
-	            VALUES (?, ?, ?, ?, ?)""";
-
-		try(Connection conn = ConnectDB.getConnection();
-				PreparedStatement ps = conn.prepareStatement(sql)) {
-			ps.setString(1, o.getName());
-			ps.setDate(2, Date.valueOf(o.getDate()));
-			ps.setBigDecimal(3, o.getAmount());
-            ps.setString(4, o.getType().name());
-            ps.setString(5, o.getNote());
-			return ps.executeUpdate() > 0;
-
-		} catch(SQLException e) {
-			e.printStackTrace();
-		}
-		return false;
-	}
-
-	@Override
-	public boolean update(Transaction o) {
-		String sql = """
-				UPDATE transactions
-				SET name=?, date=?, amount=?, type=?, note=?
-				WHERE id=?""";
-
-		try(Connection conn = ConnectDB.getConnection();
-				PreparedStatement ps = conn.prepareStatement(sql)) {
-			ps.setString(1, o.getName());
-            ps.setDate(2, Date.valueOf(o.getDate()));
-            ps.setBigDecimal(3, o.getAmount());
-            ps.setString(4, o.getType().name());
-            ps.setString(5, o.getNote());
-            ps.setInt(6, o.getId());
-            return ps.executeUpdate() > 0;
-		} catch(SQLException e) {
-			e.printStackTrace();
-		}
-		return false;
-	}
-
-	@Override
-	public boolean delete(Transaction o) {
-		String sql = "DELETE FROM transactions WHERE id=?";
-
-		try(Connection conn = ConnectDB.getConnection();
-				PreparedStatement ps = conn.prepareStatement(sql)) {
-			ps.setInt(1, o.getId());
-			return ps.executeUpdate() > 0;
-		} catch(SQLException e) {
-			e.printStackTrace();
-		}
-		return false;
-	}
-
-	@Override
-	public int countT() {
-		String sql = "SELECT COUNT(*) FROM transactions";
-		int num = 0;
-
-		try(Connection conn = ConnectDB.getConnection();
-				PreparedStatement ps = conn.prepareStatement(sql);
-				ResultSet rs = ps.executeQuery()) {
-			 while(rs.next()) {
-				 num = rs.getInt(1);
-			 }
-		} catch(SQLException e) {
-			e.printStackTrace();
-		}
-		return num;
 	}
 	
 	@Override
@@ -246,4 +257,20 @@ public class TxnDaoImpl implements TxnDao {
 	    return list;
 	}
 	
+	@Override
+	public int countT() {
+		String sql = "SELECT COUNT(*) FROM transactions";
+		int num = 0;
+
+		try(Connection conn = ConnectDB.getConnection();
+				PreparedStatement ps = conn.prepareStatement(sql);
+				ResultSet rs = ps.executeQuery()) {
+			 while(rs.next()) {
+				 num = rs.getInt(1);
+			 }
+		} catch(SQLException e) {
+			e.printStackTrace();
+		}
+		return num;
+	}
 }

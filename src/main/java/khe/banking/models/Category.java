@@ -45,6 +45,7 @@ public class Category {
 	
 	@Override
 	public String toString() {
+//		return String.format("%s(%d, %s, %s)", getClass().getSimpleName(), id, name, type);
 		return name;
 	}    
     

@@ -86,7 +86,7 @@ public class Account {
 
 	@Override
 	public String toString() {
-		return nickname + " - " + accountNum;
+		return getClass().getSimpleName() + "(" + id + ", " + accountNum + ")";
 	}
 	
 

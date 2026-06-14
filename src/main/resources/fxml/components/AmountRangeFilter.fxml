@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.chart.BarChart?>
+<?import javafx.scene.chart.CategoryAxis?>
+<?import javafx.scene.chart.NumberAxis?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.StackPane?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.shape.Rectangle?>
+
+<VBox fx:id="root" prefWidth="420.0" spacing="12.0" xmlns="http://javafx.com/javafx/26" xmlns:fx="http://javafx.com/fxml/1" fx:controller="khe.banking.controllers.components.AmountRangeFilterController">
+
+	<padding>
+        <Insets bottom="15.0" left="15.0" right="15.0" top="15.0" />
+    </padding>
+
+    <children>
+        <Label fx:id="summaryLabel" styleClass="filter-text" text="Available range" />
+
+        <!-- 1. Mini distribution bar -->
+        <VBox spacing="5.0">
+            <Label styleClass="filter-text" text="Distribution" />
+
+            <HBox fx:id="distributionBar" maxWidth="Infinity" prefHeight="35.0" spacing="3.0">
+                <children>
+                    <Rectangle height="20.0" width="40.0" />
+                    <Rectangle height="20.0" width="40.0" />
+                    <Rectangle height="20.0" width="40.0" />
+                    <Rectangle height="20.0" width="40.0" />
+                </children>
+            </HBox>
+        </VBox>
+
+        <!-- 2. Progress-style range display -->
+        <VBox spacing="5.0">
+            <Label styleClass="filter-text" text="Selected Range" />
+
+            <StackPane maxWidth="Infinity" prefHeight="18.0">
+                <children>
+                    <Rectangle fx:id="rangeTrack" arcHeight="8.0" arcWidth="8.0" height="8.0" styleClass="range-track" width="360.0" />
+
+                    <Rectangle fx:id="selectedRangeBar" arcHeight="8.0" arcWidth="8.0" height="8.0" styleClass="selected-range-bar" width="360.0" />
+                </children>
+            </StackPane>
+
+            <HBox spacing="10.0">
+                <Label fx:id="minRangeLabel" maxWidth="Infinity" text="\$0.00" HBox.hgrow="ALWAYS" />
+                <Label fx:id="maxRangeLabel" maxWidth="Infinity" text="\$0.00" HBox.hgrow="ALWAYS" />
+            </HBox>
+        </VBox>
+
+        <!-- 3.0. Small horizontal bar chart -->
+        <VBox spacing="5.0">
+            <Label styleClass="filter-text" text="Amount Buckets" />
+            <BarChart fx:id="amountChart" animated="false" legendVisible="false" prefHeight="190">
+                <xAxis>
+                    <NumberAxis label="Frequency" fx:id="xAxis" />
+                </xAxis>
+                <yAxis>
+                    <CategoryAxis fx:id="yAxis" label="Amount" />
+                </yAxis>
+            </BarChart>
+        </VBox>
+        
+        <VBox alignment="CENTER" spacing="5.0">
+         <children>
+            <Label styleClass="filter-text" text="Expense ◄ Amount Distribution ► Income" />
+            <BarChart fx:id="incomeExpenseChart" animated="false" legendVisible="false" prefHeight="220">
+               <xAxis>
+               		<NumberAxis label="Frequency" fx:id="xAxis1" />
+            	</xAxis>
+            	<yAxis>
+                	<CategoryAxis fx:id="yAxis1" label="Amount" />
+            	</yAxis>
+            </BarChart>
+         </children>
+      	</VBox>
+
+        <!-- Manual amount input -->
+        <HBox spacing="10.0">
+            <TextField fx:id="minField" maxWidth="Infinity" promptText="\$0.00" HBox.hgrow="ALWAYS" />
+
+            <Label text="-" />
+
+            <TextField fx:id="maxField" maxWidth="Infinity" promptText="\$0.00" HBox.hgrow="ALWAYS" />
+        </HBox>
+
+        <!-- Presets -->
+        <HBox spacing="8.0">
+            <Button fx:id="under50" maxWidth="Infinity" onAction="#select50" text="Under $50" HBox.hgrow="ALWAYS" />
+
+            <Button fx:id="under100" maxWidth="Infinity" onAction="#select100" text="\$50-$100" HBox.hgrow="ALWAYS" />
+        </HBox>
+
+        <HBox spacing="8.0">
+            <Button fx:id="under500" maxWidth="Infinity" onAction="#select500" text="\$100-$500" HBox.hgrow="ALWAYS" />
+
+            <Button fx:id="over500" maxWidth="Infinity" onAction="#selectOver500" text="Over $500" HBox.hgrow="ALWAYS" />
+        </HBox>
+
+        <HBox spacing="10.0">
+            <Button fx:id="clearbtn" maxWidth="Infinity" onAction="#clear" text="Clear" HBox.hgrow="ALWAYS" />
+
+            <Button fx:id="applybtn" maxWidth="Infinity" onAction="#apply" text="Apply" HBox.hgrow="ALWAYS" />
+        </HBox>
+    </children>
+</VBox>

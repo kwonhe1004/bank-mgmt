@@ -5,6 +5,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -17,6 +18,71 @@ import khe.banking.models.enums.AccountTypeEnum;
 
 public class AccountDaoImpl implements AccountDao {
 
+	@Override
+	public boolean add(Account o) {
+		String sql = """
+				INSERT INTO accounts (
+					user_id, account_type_id, account_number, nickname, balance, status)
+				VALUES (?, ?, ?, ?, ?, ?)""";
+
+		try (Connection conn = ConnectDB.getConnection();
+				PreparedStatement ps = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
+			ps.setInt(1, o.getUser().getId());
+	            ps.setInt(2, o.getAccountType().getId());
+	            ps.setString(3, o.getAccountNum());
+	            ps.setString(4, o.getNickname());
+	            ps.setBigDecimal(5, o.getBalance());
+	            ps.setString(6, o.getStatus().name());
+	            boolean b = ps.executeUpdate() > 0;
+	            
+	            try (ResultSet rs = ps.getGeneratedKeys()) {
+	                if (rs.next()) {
+	                    o.setId(rs.getInt(1));
+	                }
+	            }
+	            return b;
+	            
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return false;
+	}
+
+	@Override
+	public boolean update(Account o) {
+		String sql = """
+				UPDATE accounts 
+				SET account_type_id=?, nickname=?, balance=?, status=?
+				WHERE id=?""";
+
+		try (Connection conn = ConnectDB.getConnection();
+				PreparedStatement ps = conn.prepareStatement(sql)) {
+			ps.setInt(1, o.getAccountType().getId());
+			ps.setString(2, o.getNickname());
+			ps.setBigDecimal(3, o.getBalance());
+			ps.setString(4, o.getStatus().name());
+			ps.setInt(5, o.getId());
+			return ps.executeUpdate() > 0;		
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return false;
+	}
+
+	@Override
+	public boolean delete(Account o) {
+		String sql = "DELETE FROM accounts WHERE id=?";
+
+		try (Connection conn = ConnectDB.getConnection();
+				PreparedStatement ps = conn.prepareStatement(sql)) {
+			ps.setInt(1, o.getId());
+			return ps.executeUpdate() > 0;
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return false;
+	}
+	
 	@Override
 	public List<Account> findAll() {
 		List<Account> list = new ArrayList<>();
@@ -64,63 +130,6 @@ public class AccountDaoImpl implements AccountDao {
 			e.printStackTrace();
 		}
 		return list;
-	}
-
-	@Override
-	public boolean add(Account o) {
-		String sql = """
-				INSERT INTO accounts (
-					user_id, account_type_id, account_number, nickname, balance, status)
-				VALUES (?, ?, ?, ?, ?, ?)""";
-
-		try (Connection conn = ConnectDB.getConnection();
-				PreparedStatement ps = conn.prepareStatement(sql)) {
-			ps.setInt(1, o.getUser().getId());
-	            ps.setInt(2, o.getAccountType().getId());
-	            ps.setString(3, o.getAccountNum());
-	            ps.setString(4, o.getNickname());
-	            ps.setBigDecimal(5, o.getBalance());
-	            ps.setString(6, o.getStatus().name());
-	            return ps.executeUpdate() > 0;
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}
-		return false;
-	}
-
-	@Override
-	public boolean update(Account o) {
-		String sql = """
-				UPDATE accounts 
-				SET account_type_id=?, nickname=?, balance=?, status=?
-				WHERE id=?""";
-
-		try (Connection conn = ConnectDB.getConnection();
-				PreparedStatement ps = conn.prepareStatement(sql)) {
-			ps.setInt(1, o.getAccountType().getId());
-			ps.setString(2, o.getNickname());
-			ps.setBigDecimal(3, o.getBalance());
-			ps.setString(4, o.getStatus().name());
-			ps.setInt(5, o.getId());
-			return ps.executeUpdate() > 0;		
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}
-		return false;
-	}
-
-	@Override
-	public boolean delete(Account o) {
-		String sql = "DELETE FROM accounts WHERE id=?";
-
-		try (Connection conn = ConnectDB.getConnection();
-				PreparedStatement ps = conn.prepareStatement(sql)) {
-			ps.setInt(1, o.getId());
-			return ps.executeUpdate() > 0;
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}
-		return false;
 	}
 	
 	@Override

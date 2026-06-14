@@ -5,49 +5,61 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Timestamp;
-import java.sql.Types;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
 import khe.banking.models.AuditLog;
-import khe.banking.models.User;
 import khe.banking.models.Session;
+import khe.banking.models.User;
 import khe.banking.models.enums.AuditAction;
 import khe.banking.models.enums.EntityType;
 
 public class AuditLogDaoImpl implements AuditLogDao {
 
 	@Override
-	public List<AuditLog> findAll() {
-		return null;
-	}
-
-	@Override
 	public boolean add(AuditLog o) {
 		String sql = """
-				INSERT INTO audit_log(session_id, action_time, entity_name, entity_id, action_type, description, old_values, new_values)
-				VALUES (?, ?, ?, ?, ?, ?, ?, ?)""";
+				INSERT INTO audit_log(session_id, entity_name, entity_id, action_type, description, old_values, new_values)
+				VALUES (?, ?, ?, ?, ?, ?, ?)""";
 		
 		try (Connection conn = ConnectDB.getConnection();
-				PreparedStatement ps = conn.prepareStatement(sql)) {
+				PreparedStatement ps = conn.prepareStatement(sql)) {			
 			ps.setLong(1, o.getSession().getId());
-			ps.setTimestamp(2, Timestamp.valueOf(o.getActionTime()));
-			ps.setString(3, o.getEntityName().name());
-			if(o.getEntityId() == null) {
-				ps.setNull(4, Types.INTEGER);
-			} else {
-				ps.setInt(4, o.getEntityId());
-			}
-			ps.setString(5, o.getActionType().name());
-			ps.setString(6, o.getDescription());
-			ps.setString(7, o.getOldValues());
-			ps.setString(8, o.getNewValues());
+			ps.setString(2, o.getEntityName().name());
+			ps.setInt(3, o.getEntityId());
+			ps.setString(4, o.getActionType().name());
+			ps.setString(5, o.getDescription());
+			ps.setString(6, o.getOldValues());
+			ps.setString(7, o.getNewValues());
 			return ps.executeUpdate() > 0;
 			
 		} catch (SQLException e) {
 			throw new RuntimeException("Failed to add audit log", e);
 		}
+	}
+	
+	@Override
+	public List<AuditLog> findAll() {
+		List<AuditLog> list = new ArrayList<>();
+		String sql = """
+				SELECT l.*, u.id AS user_id, u.last, u.first,
+					s.id AS s_id, s.login_time, s.logout_time
+				FROM audit_log l
+				JOIN user_session s ON l.session_id = s.id
+				JOIN users u ON s.user_id = u.id
+				ORDER BY l.action_time DESC""";
+		
+		try (Connection conn = ConnectDB.getConnection();
+				PreparedStatement ps = conn.prepareStatement(sql)) {			
+			ResultSet rs = ps.executeQuery();
+			while(rs.next()) {
+				list.add(mapAuditLog(rs));
+			}			
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return list;
 	}
 
 	@Override
@@ -70,7 +82,7 @@ public class AuditLogDaoImpl implements AuditLogDao {
 				list.add(mapAuditLog(rs));
 			}			
 		} catch (SQLException e) {
-			e.printStackTrace();
+			throw new RuntimeException("Failed to add audit log", e);
 		}
 		return list;
 	}
@@ -95,7 +107,7 @@ public class AuditLogDaoImpl implements AuditLogDao {
 				list.add(mapAuditLog(rs));				
 			}			
 		} catch (SQLException e) {
-			e.printStackTrace();
+			throw new RuntimeException("Failed to add audit log", e);
 		}
 		return list;
 	}
@@ -133,5 +145,4 @@ public class AuditLogDaoImpl implements AuditLogDao {
 		return session;		
 	}
 	
-
 }

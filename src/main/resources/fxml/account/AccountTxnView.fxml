@@ -2,14 +2,10 @@
 
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
-<?import javafx.scene.control.DatePicker?>
-<?import javafx.scene.control.MenuButton?>
-<?import javafx.scene.control.RadioMenuItem?>
 <?import javafx.scene.control.TableColumn?>
 <?import javafx.scene.control.TableView?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.control.ToggleButton?>
-<?import javafx.scene.control.ToggleGroup?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.HBox?>
@@ -19,7 +15,7 @@
 
 <VBox prefHeight="780.0" prefWidth="880.0" spacing="20.0" xmlns="http://javafx.com/javafx/26" xmlns:fx="http://javafx.com/fxml/1" fx:controller="khe.banking.controllers.account.AccountTxnController">
    <children>
-      <ToggleButton fx:id="detailsTg" mnemonicParsing="false" onAction="#detailsBtn" style="-fx-background-color: transparent;">
+      <ToggleButton fx:id="detailsTg" mnemonicParsing="false" style="-fx-background-color: transparent;">
          <graphic>
             <ImageView fitHeight="20.0" pickOnBounds="true" preserveRatio="true">
                <image>
@@ -28,10 +24,23 @@
             </ImageView>
          </graphic>
       </ToggleButton>
-      <StackPane fx:id="detailsPane" />
-      <HBox alignment="CENTER" spacing="10.0">
+      
+      <StackPane fx:id="detailsPane" visible="false">
+      	<fx:include fx:id="details" source="../components/AccountDetails.fxml" />
+      </StackPane>
+      
+      <HBox alignment="CENTER" spacing="20.0">
 			<children>
-            <Button alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" prefHeight="30.0" prefWidth="40.0">
+            <Button fx:id="deleteBtn" alignment="CENTER" contentDisplay="CENTER" disable="true" mnemonicParsing="false" onAction="#delete" prefHeight="30.0" prefWidth="50.0">
+               <graphic>
+                  <ImageView fitHeight="20.0" fitWidth="20.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../../img/delete.png" />
+                     </image>
+                  </ImageView>
+               </graphic>
+            </Button>
+            <Button alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" prefHeight="30.0" prefWidth="50.0">
                <graphic>
                   <ImageView fitHeight="20.0" fitWidth="20.0" pickOnBounds="true" preserveRatio="true">
                      <image>
@@ -40,7 +49,7 @@
                   </ImageView>
                </graphic>
             </Button>
-				<Button alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" onAction="#createNew" prefHeight="30.0" prefWidth="40.0">
+				<Button alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" onAction="#createNew" prefHeight="30.0" prefWidth="50.0">
 					<graphic>
 						<ImageView fitHeight="20.0" fitWidth="20.0" pickOnBounds="true" preserveRatio="true">
 							<image>
@@ -49,24 +58,23 @@
 						</ImageView>
 					</graphic>
 				</Button>
-				<MenuButton fx:id="filterMenu" alignment="CENTER" maxWidth="-Infinity" minWidth="-Infinity" mnemonicParsing="false" prefHeight="30.0" styleClass="table-menu-btn" text="Filter: All" HBox.hgrow="NEVER">
-					<items>
-						<RadioMenuItem fx:id="allItem" mnemonicParsing="false" selected="true" text="All">
-                     <toggleGroup>
-                        <ToggleGroup fx:id="tg" />
-                     </toggleGroup></RadioMenuItem>							
-						<RadioMenuItem fx:id="incomeItem" mnemonicParsing="false" text="Income" toggleGroup="$tg" />
-						<RadioMenuItem fx:id="expenseItem" mnemonicParsing="false" text="Expense" toggleGroup="$tg" />
-					</items>
-				</MenuButton>
-				
-				
-				<TextField fx:id="searchField" prefHeight="30.0" prefWidth="170.0" promptText="Search transactions..." />
-				<Pane prefHeight="35.0" prefWidth="75.0" />
-				<DatePicker fx:id="startDate" prefHeight="30.0" prefWidth="150.0" promptText="Start Date" />
-				<DatePicker fx:id="endDate" prefHeight="30.0" prefWidth="150.0" promptText="End Date" />
+            <Pane prefWidth="250.0" />				      				
+				<TextField fx:id="searchField" prefHeight="30.0" prefWidth="250.0" promptText="Search transactions..." />
+            <ToggleButton fx:id="filterTg" mnemonicParsing="false" prefHeight="30.0" text="ADVANCED FILTERS">
+               <graphic>
+                  <ImageView fitHeight="20.0" fitWidth="20.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../../img/filter.png" />
+                     </image>
+                  </ImageView>
+               </graphic>
+            </ToggleButton>
 			</children>
 		</HBox>
+      
+      <StackPane fx:id="filterPane" visible="false">      
+      	<fx:include fx:id="filters" source="../components/Filters.fxml" />      
+      </StackPane>
       <TableView fx:id="txnTable" styleClass="txn-table" VBox.vgrow="ALWAYS">
         <columns>
           <TableColumn fx:id="nameCol" prefWidth="75.0" text="Name" />

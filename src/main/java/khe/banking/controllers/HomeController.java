@@ -8,16 +8,15 @@ import javafx.scene.control.TitledPane;
 import javafx.scene.layout.Region;
 import javafx.scene.layout.VBox;
 import khe.banking.controllers.components.AccountOverviewController;
-import khe.banking.controllers.components.AnalyticsViewController;
-import khe.banking.dao.AccountDaoImpl;
+import khe.banking.controllers.components.AnalyticsController;
 import khe.banking.models.Account;
 import khe.banking.models.User;
 import khe.banking.services.AccountService;
-import khe.banking.services.AccountServiceImpl;
-import khe.banking.utils.HeaderManager;
-import khe.banking.utils.SessionManager;
-import khe.banking.utils.ViewData;
-import khe.banking.utils.ViewLoader;
+import khe.banking.services.ServiceFactory;
+import khe.banking.util.HeaderManager;
+import khe.banking.util.SessionManager;
+import khe.banking.util.ViewData;
+import khe.banking.util.ViewLoader;
 
 public class HomeController {
 		
@@ -27,7 +26,7 @@ public class HomeController {
 	@FXML
 	private VBox analytics;
 		
-	private final AccountService as = new AccountServiceImpl(new AccountDaoImpl());
+	private final AccountService as = ServiceFactory.ACCOUNT_SERVICE;
 	
 	public void initialize() {
 		User u = SessionManager.getCurrentUser();
@@ -66,9 +65,9 @@ public class HomeController {
 	}
 	
 	private void loadAnalytics(User u) {
-		ViewData<AnalyticsViewController> data = ViewLoader.loadView("/fxml/components/AnalyticsView.fxml");
-		AnalyticsViewController controller = data.getController();
-		controller.loadCharts(u);	
+		ViewData<AnalyticsController> data = ViewLoader.loadView("/fxml/components/AnalyticsView.fxml");
+		AnalyticsController controller = data.getController();
+		controller.loadData(u);
 		analytics.getChildren().setAll(data.getView());
 		analytics.setMinHeight(Region.USE_PREF_SIZE);
 //		analytics.setPrefHeight(Region.USE_COMPUTED_SIZE);

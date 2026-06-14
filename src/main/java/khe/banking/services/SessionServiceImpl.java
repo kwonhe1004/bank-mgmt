@@ -14,11 +14,6 @@ public class SessionServiceImpl implements SessionService {
 	}
 
 	@Override
-	public List<Session> getAllSessions() {
-		return sd.findAll();
-	}
-
-	@Override
 	public Session create(Session o) {
 		return sd.add(o);
 	}
@@ -26,6 +21,11 @@ public class SessionServiceImpl implements SessionService {
 	@Override
 	public boolean logout(Session o) {
 		return sd.update(o);
+	}
+	
+	@Override
+	public List<Session> getAllSessions() {
+		return sd.findAll();
 	}
 
 	@Override

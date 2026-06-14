@@ -4,16 +4,15 @@ import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 import javafx.scene.layout.VBox;
 import khe.banking.controllers.account.AccountTxnController;
-import khe.banking.dao.AccountDaoImpl;
 import khe.banking.models.Account;
 import khe.banking.models.AccountSummary;
 import khe.banking.services.AccountService;
-import khe.banking.services.AccountServiceImpl;
-import khe.banking.utils.NavigationManager;
-import khe.banking.utils.UIUtil;
-import khe.banking.utils.ViewData;
-import khe.banking.utils.ViewLoader;
-import khe.banking.utils.ViewType;
+import khe.banking.services.ServiceFactory;
+import khe.banking.util.FormatUtil;
+import khe.banking.util.NavigationManager;
+import khe.banking.util.ViewData;
+import khe.banking.util.ViewLoader;
+import khe.banking.util.ViewType;
 
 public class AccountOverviewController {
 
@@ -30,7 +29,7 @@ public class AccountOverviewController {
 	@FXML
     private Label netLabel;
 	
-	private final AccountService as = new AccountServiceImpl(new AccountDaoImpl());
+	private final AccountService as = ServiceFactory.ACCOUNT_SERVICE;
 	
 	private Account a;
 	
@@ -46,10 +45,10 @@ public class AccountOverviewController {
 		}
 		
 		titleLabel.setText(a.getAccountNum());		
-		balanceLabel.setText(UIUtil.formatCurrency(summary.getTotalBalance()));
-		incomeLabel.setText(UIUtil.formatCurrency(summary.getTotalIncome()));
-		expenseLabel.setText(UIUtil.formatCurrency(summary.getTotalExpense()));
-		netLabel.setText(UIUtil.formatCurrency(summary.getNetSavings()));
+		balanceLabel.setText(FormatUtil.formatCurrency(summary.getTotalBalance()));
+		incomeLabel.setText(FormatUtil.formatCurrency(summary.getTotalIncome()));
+		expenseLabel.setText(FormatUtil.formatCurrency(summary.getTotalExpense()));
+		netLabel.setText(FormatUtil.formatCurrency(summary.getNetSavings()));
 	}
 	
 	public VBox getRoot() {
