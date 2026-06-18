@@ -14,23 +14,25 @@
       <Insets bottom="15.0" left="15.0" right="15.0" top="15.0" />
    </padding>
    <children>
-      <Label text="AMOUNT RANGE" />
+    
       <HBox fx:id="distributionBar" alignment="BOTTOM_CENTER" spacing="5.0" prefHeight="45.0" maxWidth="Infinity" />
+      
       <AnchorPane>
          <children>
             <Label text="Minimum" AnchorPane.leftAnchor="0.0" />
             <Label text="Maximum" AnchorPane.rightAnchor="0.0" />
          </children></AnchorPane>
+      
       <AnchorPane>
          <children>
-            <TextField fx:id="minField" alignment="CENTER" prefHeight="35.0" prefWidth="100.0" promptText="\$0.00" />
+            <TextField fx:id="minField" alignment="CENTER" prefHeight="35.0" prefWidth="100.0" promptText="\$0.00" AnchorPane.leftAnchor="0.0" />
             <TextField fx:id="maxField" alignment="CENTER" prefHeight="35.0" prefWidth="100.0" promptText="\$0.00" AnchorPane.rightAnchor="0.0" />
          </children>
       </AnchorPane>
       
       <AnchorPane>
          <children>
-            <Button fx:id="clearbtn" disable="true" mnemonicParsing="false" onAction="#clear" prefHeight="35.0" prefWidth="100.0" text="CLEAR ALL" />
+            <Button fx:id="clearbtn" disable="true" mnemonicParsing="false" onAction="#clear" prefHeight="35.0" prefWidth="100.0" text="CLEAR ALL" AnchorPane.leftAnchor="0.0" />
             <Button fx:id="applybtn" mnemonicParsing="false" onAction="#apply" prefHeight="35.0" prefWidth="100.0" text="APPLY" AnchorPane.rightAnchor="0.0" />
          </children>
       </AnchorPane>

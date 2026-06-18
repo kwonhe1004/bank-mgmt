@@ -83,7 +83,6 @@
 	-fx-background-radius: 5;
 	-fx-border-color: -color-black-muted;
 	-fx-border-width: 2;
-	-fx-padding: 5;
 }
 
 .table-row-cell:filled:even {
@@ -216,8 +215,8 @@
 }
 
 /* Header wrapper around select-all checkbox */
-.select-column-header {
-    -fx-padding: 0;
+.table-view  .select-column-header {
+	-fx-padding: 0;
     -fx-alignment: CENTER;
 }
 
@@ -226,6 +225,7 @@
 .table-view .header-checkbox {
     -fx-padding: 0;
     -fx-label-padding: 0;
+    -fx-alignment: CENTER;
 }
 
 

@@ -10,8 +10,6 @@ import java.util.Set;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
@@ -28,7 +26,6 @@ import khe.banking.models.Transaction;
 import khe.banking.models.User;
 import khe.banking.models.enums.TxnType;
 import khe.banking.models.records.TableDataView;
-import khe.banking.models.records.TableSelection;
 import khe.banking.models.records.TxnFilter;
 import khe.banking.services.AccountService;
 import khe.banking.services.ServiceFactory;
@@ -51,11 +48,7 @@ public class AccountsController implements Refreshable {
 	private ScrollPane accountsScrollPane;
 	@FXML
 	private TilePane accountsContainer;
-
-	@FXML
-	private Button printBtn;
-	@FXML
-	private Label selectedLabel;
+	
 	@FXML
 	private TextField searchField;
 	@FXML
@@ -67,8 +60,6 @@ public class AccountsController implements Refreshable {
 
 	@FXML
 	private TableView<Transaction> txnTable;
-	@FXML
-	private TableColumn<Transaction, Void> selectCol;
 	@FXML
 	private TableColumn<Transaction, String> accountCol;
 	@FXML
@@ -91,7 +82,6 @@ public class AccountsController implements Refreshable {
 	private final User currentUser = SessionManager.getCurrentUser();
 	
 	private TableDataView<Transaction> tableDataView;
-	private TableSelection<Transaction> tableSelection;
 	private Set<TxnType> selectedTypes;
 
 	// =========================
@@ -103,9 +93,7 @@ public class AccountsController implements Refreshable {
 		
 		tableDataView = TableFactory.setupFilteredSortedTable(txnTable, masterList);
 		
-		setupColumns();
-		updateSelectedLabel(Set.of());
-		
+		setupColumns();		
 		setupFilterComponent();
 		
 		UIUtil.onTextChanged(searchField, this::applyFilters);
@@ -128,8 +116,6 @@ public class AccountsController implements Refreshable {
 		dateCol.setCellValueFactory(new PropertyValueFactory<>("date"));
 		notesCol.setCellValueFactory(new PropertyValueFactory<>("note"));
 		
-		tableSelection = TableFactory.setupSelectCol(txnTable, selectCol, Transaction::getId, this::handleSelectionChange);
-				
 		accountCol.setCellValueFactory(cellData -> 
 			FormatUtil.accountFormat(cellData.getValue().getAccount()));
 		TableFactory.setupInteractiveCol(
@@ -154,24 +140,6 @@ public class AccountsController implements Refreshable {
 		NavigationManager.switchView(data, ViewType.TRANSACTIONS);
 	}
 	
-	private void handleSelectionChange(Set<Integer> selectedIds) {
-	    updateSelectedLabel(selectedIds);
-	}
-
-	private void updateSelectedLabel(Set<Integer> selectedIds) {
-	    int count = selectedIds == null ? 0 : selectedIds.size();
-	    selectedLabel.setText(count + " selected");
-	}
-	
-	@FXML
-	private void print() {
-	    if (tableSelection == null) {
-	        System.out.println(Set.of());
-	        return;
-	    }
-
-	    System.out.println(Set.copyOf(tableSelection.selectedIds()));
-	}
 	
 	private void setupFilterComponent() {
 		filtersController.addSortOptions(List.of("Amount High-Low", "Amount Low-High"));
@@ -216,8 +184,9 @@ public class AccountsController implements Refreshable {
 			masterList.setAll(ts.getTxnByUser(currentUser.getId()));
 		}
 		
-		filtersController.setTransactions(masterList);
 		loadCategoriesFromTxn();
+		filtersController.setTransactions(masterList);
+		
 		applyFilters();
 	}
 

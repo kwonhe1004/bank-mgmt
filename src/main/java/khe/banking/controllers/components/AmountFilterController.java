@@ -7,6 +7,7 @@ import java.util.Objects;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
+import javafx.scene.control.Tooltip;
 import javafx.scene.layout.HBox;
 import javafx.scene.shape.Rectangle;
 import khe.banking.models.Transaction;
@@ -48,11 +49,17 @@ public class AmountFilterController {
 			defaultMin = BigDecimal.ZERO;
 			defaultMax = BigDecimal.ZERO;
 		} else {
-			defaultMin = t.stream().map(Transaction::getAmount).filter(Objects::nonNull)
-					.map(BigDecimal::abs).min(BigDecimal::compareTo).orElse(BigDecimal.ZERO);
+			defaultMin = t.stream()
+					.map(Transaction::getAmount)
+					.filter(Objects::nonNull).map(BigDecimal::abs)
+					.min(BigDecimal::compareTo)
+					.orElse(BigDecimal.ZERO);
 
-			defaultMax = t.stream().map(Transaction::getAmount).filter(Objects::nonNull)
-					.map(BigDecimal::abs).max(BigDecimal::compareTo).orElse(BigDecimal.ZERO);
+			defaultMax = t.stream()
+					.map(Transaction::getAmount)
+					.filter(Objects::nonNull).map(BigDecimal::abs)
+					.max(BigDecimal::compareTo)
+					.orElse(BigDecimal.ZERO);
 		}
 		
 		updateDistributionBar(t);
@@ -71,8 +78,10 @@ public class AmountFilterController {
 		BigDecimal min = getMinAmount();
         BigDecimal max = getMaxAmount();
 
-        return min != null && max != null 
-        		&& min.compareTo(defaultMin) == 0 && max.compareTo(defaultMax) == 0;
+        return min != null 
+        		&& max != null 
+        		&& min.compareTo(defaultMin) == 0 
+        		&& max.compareTo(defaultMax) == 0;
 	}
 
 	@FXML
@@ -102,8 +111,9 @@ public class AmountFilterController {
 	    int bucketCount = 10;
 	    int[] buckets = new int[bucketCount];
 
-	    if (transactions == null || transactions.isEmpty() 
-	    		|| defaultMax.compareTo(defaultMin) == 0) { return; }
+	    if (transactions == null 
+	    		|| transactions.isEmpty() 
+	    		|| defaultMax.compareTo(defaultMin) == 0) return;
 
 	    double min = defaultMin.doubleValue();
 	    double max = defaultMax.doubleValue();
@@ -115,12 +125,15 @@ public class AmountFilterController {
 	        double amount = tr.getAmount().abs().doubleValue();
 	        int index = (int) ((amount - min) / bucketSize);
 
-	        if (index >= bucketCount) index = bucketCount - 1;
+	        if (index >= bucketCount) {
+	        	index = bucketCount - 1;
+	        }
+	        
 	        buckets[index]++;
 	    }
 
 	    int maxFrequency = 0;
-
+	    
 		for (int count : buckets) { 
 			maxFrequency = Math.max(maxFrequency, count);
 		}
@@ -128,18 +141,35 @@ public class AmountFilterController {
 	    if (maxFrequency == 0) {
 	        maxFrequency = 1;
 	    }
+	    
+	    double spacing = distributionBar.getSpacing();
+	    
+	    for (int i = 0; i < bucketCount; i++) {
+	    	int count = buckets[i];
 
-	    for (int count : buckets) {
-	        Rectangle bar = new Rectangle();
-	        double height = 6 + ((double) count / maxFrequency) * 35;
+            double rangeStart = min + (i * bucketSize);
+            double rangeEnd = i == bucketCount - 1 ? max : rangeStart + bucketSize;
 
-	        bar.setWidth(18);
-	        bar.setHeight(height);
-	        bar.setArcWidth(4);
-	        bar.setArcHeight(4);
-	        bar.getStyleClass().add("amount-distribution-bar");
+            Rectangle bar = new Rectangle();
+            double height = 6 + ((double) count / maxFrequency) * 35;
+            bar.widthProperty().bind(distributionBar.widthProperty()
+                            .subtract((bucketCount - 1) * spacing)
+                            .divide(bucketCount));
 
-	        distributionBar.getChildren().add(bar);
+            bar.setHeight(height);
+            bar.setArcWidth(4);
+            bar.setArcHeight(4);
+            bar.getStyleClass().add("amount-distribution-bar");
+
+            Tooltip tooltip = new Tooltip(
+            		FormatUtil.formatCurrency(BigDecimal.valueOf(rangeStart))
+                            + " - "
+                            + FormatUtil.formatCurrency(BigDecimal.valueOf(rangeEnd))
+                            + "\n"
+                            + count + " transaction(s)");
+
+            Tooltip.install(bar, tooltip);
+            distributionBar.getChildren().add(bar);	    	
 	    }
 	}
 

@@ -108,6 +108,15 @@
 	
 }
 
+.reset-button {
+	-fx-border-width: 0;	
+}
+
+.reset-button:hover,
+.reset-button:focused {
+	-fx-background-color: -color-white-muted;
+}
+
 
 /* =====================================================
    OTHER CONTROLS
@@ -121,6 +130,7 @@
 .menu-button,
 .text-input {
 	-fx-prompt-text-fill: -color-black-muted;
+	-fx-text-fill: -color-black-muted;
 	-fx-font-size: 12px;
 	-fx-font-weight: bold;
 }
@@ -129,8 +139,10 @@
 .menu-button:hover, .menu-button:focused,
 .text-input:hover, .text-input:focused {
 	-fx-prompt-text-fill: -color-black;
+	-fx-text-fill: -color-black;
 }
 
+.spinner,
 .menu-button,
 .text-field,
 .text-area,
@@ -147,6 +159,7 @@
     -fx-border-width: 0 0 2 0;
 }
 
+.spinner,
 .menu-button,
 .text-area,
 .choice-box,
@@ -155,6 +168,7 @@
     -fx-border-width: 2;
 }
 
+.spinner,
 .menu-button,
 .text-field,
 .choice-box,
@@ -164,6 +178,7 @@
 	-fx-pref-height: 30px;
 }
 
+.spinner:hover, .spinner:focused,
 .menu-button:hover, .menu-button:focused,
 .text-field:hover, .text-field:focused,
 .text-area:hover, .text-area:focused,
@@ -172,6 +187,42 @@
 .date-picker:hover, .date-picker:focused {	
     -fx-border-color: -color-black-muted;
     
+}
+
+/* =========================
+   SPINNER
+========================= */
+
+.spinner {
+    -fx-background-color: transparent;
+}
+
+.spinner .text-field {
+    -fx-background-color: transparent;
+    -fx-border-color: transparent;
+    -fx-border-width: 0;
+    -fx-text-fill: -color-black-muted;
+    -fx-font-size: 12px;
+    -fx-font-weight: bold;
+}
+
+.spinner:hover .text-field,
+.spinner:focused .text-field,
+.spinner:focused-within .text-field {
+    -fx-text-fill: -color-black;
+}
+
+.spinner .increment-arrow-button,
+.spinner .decrement-arrow-button {
+    -fx-background-color: transparent;
+    -fx-border-color: transparent;
+    -fx-padding: 0 6;
+}
+
+.spinner .increment-arrow-button:hover,
+.spinner .decrement-arrow-button:hover {
+    -fx-background-color: -color-white-muted;
+    -fx-background-radius: 4;
 }
 
 /* =========================

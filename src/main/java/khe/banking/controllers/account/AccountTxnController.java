@@ -172,7 +172,10 @@ public class AccountTxnController implements Refreshable {
 		clearSelection();
 		
 		masterList.setAll(ts.getTxnByAccount(account.getId()));
+		
 		loadCategoriesFromTxn();
+		filtersController.setTransactions(masterList);
+		
 		applyFilters();
 	}
 
@@ -288,7 +291,6 @@ public class AccountTxnController implements Refreshable {
 	// =========================
 //	private void handleSelectionChange(Set<Integer> selectedIds) {
 //		boolean hasSelection = selectedIds != null && !selectedIds.isEmpty();
-//		
 //		if(deleteBtn != null) {
 //			deleteBtn.setDisable(!hasSelection);
 //		}
